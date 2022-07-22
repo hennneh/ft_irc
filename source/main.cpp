@@ -1,8 +1,11 @@
 #include <iostream>
+#include <vector>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <poll.h>
 
 void error(const std::string& msg) {
 	std::cout << "ERROR: " << msg << std::endl;
@@ -39,13 +42,47 @@ int	main(int argc, char **argv)
 	int listenreturn = listen(sockfd, 3);
 	if (listenreturn < 0)
 		error("Could not listen");
-	int socket = accept(sockfd, (struct sockaddr*)&address, (socklen_t*)&addrlen);
-	if (socket < 0)
-		error("Could not accept");
-	int valread = read(socket, buffer, 1024);
-	std::cout << "BUFFER: " << buffer << ", size: " << valread << std::endl;
-	send(socket, buffer, valread, 0);
-	close(socket);
+	fcntl(sockfd, F_SETFL, O_NONBLOCK);
+	std::vector<int> connections;
+	while(1) {
+		int socket = accept(sockfd, (struct sockaddr*)&address, (socklen_t*)&addrlen);
+		if (socket != -1) {
+			connections.push_back(socket);
+			std::cout << "Client connected" << std::endl;
+		}
+		size_t connlen = connections.size();
+		struct pollfd fds[connlen];
+		for(size_t i = 0; i < connlen; i++) {
+			fds[i].fd = connections[i];
+			fds[i].events = POLLRDNORM;
+		}
+		int pollreturn = poll(fds, connlen, 0);
+		if (pollreturn == -1)
+			error("Poll failed");
+		if (pollreturn > 0) {
+			std::cout << "Some files are ready" << std::endl;
+			for(size_t i = 0; i < connlen; i++) {
+				std::cout << "Checking file " << i << std::endl;
+				if ((fds[i].revents & POLLRDNORM) > 1) {
+					std::cout << "Reading..." << std::endl;
+					int valread = read(connections[i], buffer, 1024);
+					std::cout << "BUFFER: " << buffer << ", size: " << valread << std::endl;
+					if (valread == 0) {
+						std::cout << "Client connection lost!" << std::endl;
+						connections.erase(connections.begin() + i);
+					}
+					std::string buf(buffer);
+					send(connections[i], buffer, valread, 0);
+					if (buf.find("QUIT") != std::string::npos) {
+						send(connections[i], "bye!\n", 5, 0);
+						close(connections[i]);
+						std::cout << "Client disconnected!" << std::endl;
+						connections.erase(connections.begin() + i);
+					}
+				}
+			}
+		}
+	}
 	shutdown(sockfd, SHUT_RDWR);
 	return (0);
 }
