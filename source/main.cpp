@@ -1,25 +1,14 @@
-#include <iostream>
-
-int ft_strlen(char *s)
-{
-	int i = 0;
-	while (s[i])
-		i++;
-	return (i);
-}
+#include "irc.hpp"
 
 int	main(int argc, char **argv)
 {
-	(void)argv;
-	try
-	{
-		if (argc != 3 || ft_strlen(argv[1]) == 0 || ft_strlen(argv[2]) == 0)
-			throw std::runtime_error("Please execute the binary as follows: ./ircserv <port> <password>");
-	}
-	catch (const std::exception &exception)
-	{
-		std::cerr << exception.what() << std::endl;
-		return (1);
-	}
+	if (argc != 3)
+		return (ft::error("invalid number of arguments"));
+	std::string port(argv[1]);
+	std::string passwd(argv[2]);
+	if (port.length() == 0 || !ft::isStringNumber(port))
+		return (ft::error("port needs to be a number"));
+	if (ft::stoi(port) < 0 || ft::stoi(port) > 65535)
+		return (ft::error("port needs to be between 0 and 65535"));
 	return (0);
 }

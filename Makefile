@@ -7,12 +7,13 @@ SOURCE:=		./source
 TESTS:=			./tests
 
 # Other Variables:
-COMPILER:=		g++
+COMPILER:=		c++
 COMPFLAGS:=		-Wall -Werror -Wextra -g -std=c++98
 
 # Source Files:
 SRCFILES:=\
 		  main.cpp\
+		  utils.cpp\
 
 # ------------------------------------------
 # Do not change anything beyond this point!
