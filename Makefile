@@ -7,7 +7,7 @@ SOURCE:=		./source
 TESTS:=			./tests
 
 # Other Variables:
-COMPILER:=		g++
+COMPILER:=		c++
 COMPFLAGS:=		-Wall -Werror -Wextra -g -std=c++98
 
 # Source Files:
@@ -61,6 +61,6 @@ endif
 #Run the executable
 run: re
 	@echo "--------------------------------"
-	@$(NAME)
+	@valgrind -q --leak-check=full --errors-for-leak-kinds=all $(NAME)
 
 
