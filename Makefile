@@ -14,6 +14,7 @@ COMPFLAGS:=		-Wall -Werror -Wextra -g -std=c++98
 SRCFILES:=\
 		  main.cpp\
 		  utils.cpp\
+		  irc.cpp\
 
 # ------------------------------------------
 # Do not change anything beyond this point!
