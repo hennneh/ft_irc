@@ -1,4 +1,6 @@
 #include "irc.hpp"
+#include <string>
+#include <sstream>
 
 // Constructor
 ft::IRC::IRC(const int& port, const std::string& password): _port(port), _password(password) {
@@ -41,7 +43,6 @@ void	ft::IRC::run() {
 	char	buffer[this->_buffersize];
 	bool	done = false;
 
-	memset(buffer, 0, this->_buffersize);
 	while(!done) {
 		int	addrlen = sizeof(this->_address);
 		int socket = accept(this->_server, (struct sockaddr*)&(this->_address), (socklen_t*)&addrlen);
@@ -65,28 +66,33 @@ void	ft::IRC::run() {
 					int readval = recv(this->_connections[i], buffer, this->_buffersize, 0);
 					if (readval == -1)
 						throw std::runtime_error("Reading message failed");
-					std::string buf(buffer);
-					memset(buffer, 0, this->_buffersize);
+					std::string buf(buffer, readval);
 					if (buf.length() == 0) {
 						std::cout << TXT_FAT << "Client " << i << " connection lost!" << TXT_NUL << std::endl;
 						this->_connections.erase(this->_connections.begin() + i);
 						continue;
 					}
-					buf.erase(std::remove(buf.begin(), buf.end(), '\r'), buf.end());
-					buf.erase(std::remove(buf.begin(), buf.end(), '\n'), buf.end());
-					if (buf == "QUIT") {
-						send(this->_connections[i], "bye!\n", 5, 0);
-						close(this->_connections[i]);
-						std::cout << TXT_FAT << "Client " << i << " disconnected!" << TXT_NUL << std::endl;
-						this->_connections.erase(this->_connections.begin() + i);
-						continue;
+					buf.replace(std::remove(buf.begin(), buf.end(), '\r'), buf.end(), "\n");
+					std::string msg;
+					std::stringstream bufstream(buf);
+					while(std::getline(bufstream, msg, '\n')) {
+						msg.erase(std::remove(msg.begin(), msg.end(), '\n'), msg.end());
+						if (msg.length() == 0)
+							continue;
+						if (msg == "QUIT") {
+							send(this->_connections[i], "bye!\n", 5, 0);
+							close(this->_connections[i]);
+							std::cout << TXT_FAT << "Client " << i << " disconnected!" << TXT_NUL << std::endl;
+							this->_connections.erase(this->_connections.begin() + i);
+							break;
+						}
+						if (msg == "SHUTDOWN") {
+							done = true;
+							break;
+						}
+						std::cout << TXT_FAT << "Client " << i << ": " << TXT_NUL << msg << std::endl;
+						send(this->_connections[i], (msg + "\n").c_str(), msg.length() + 1, 0);
 					}
-					if (buf == "SHUTDOWN") {
-						done = true;
-						continue;
-					}
-					std::cout << TXT_FAT << "Client " << i << ": " << TXT_NUL << buf << std::endl;
-					send(this->_connections[i], (buf + "\n").c_str(), buf.length() + 1, 0);
 				}
 			}
 		}
