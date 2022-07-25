@@ -9,7 +9,7 @@ bool ft::isStringNumber(const std::string & s)
 
 int ft::error(const std::string & s)
 {
-	std::cerr << s << std::endl;
+	std::cerr << TXT_RED << s << TXT_NUL << std::endl;
 	return (1);
 }
 
