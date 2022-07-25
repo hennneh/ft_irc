@@ -1,3 +1,4 @@
+#include "irc.hpp"
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -16,7 +17,6 @@
 #define TXT_NUL		"\e[0m"
 
 #define BUFFERSIZE	1024 // min 512 bytes
-#define PORT		6669
 
 void error(const std::string& msg) {
 	std::cout << TXT_FAT << TXT_RED << "ERROR: " << msg << std::endl;
@@ -27,9 +27,6 @@ void error(const std::string& msg) {
 
 int	main(int argc, char **argv)
 {
-	(void)argc;
-	(void)argv;
-
 	int					opt = 1;
 	struct sockaddr_in	address;
 	struct protoent		*prtdb;
@@ -37,8 +34,16 @@ int	main(int argc, char **argv)
 	int					addrlen = sizeof(address);
 	bool				done = false;
 
-	prtdb = getprotobyname("TCP");
+	if (argc != 3)
+		return (ft::error("invalid number of arguments"));
+	std::string port(argv[1]);
+	std::string passwd(argv[2]);
+	if (port.length() == 0 || !ft::isStringNumber(port))
+		return (ft::error("port needs to be a number"));
+	if (ft::stoi(port) < 0 || ft::stoi(port) > 65535)
+		return (ft::error("port needs to be between 0 and 65535"));
 
+	prtdb = getprotobyname("TCP");
 	std::cout << "Protocol: " << prtdb->p_name << " (" << prtdb->p_proto << ")" << std::endl;
 	int sockfd = socket(PF_INET, SOCK_STREAM, prtdb->p_proto);
 	//int sockfd = socket(PF_INET, SOCK_STREAM, 6);
@@ -49,7 +54,7 @@ int	main(int argc, char **argv)
 		error("Could not set socket options");
 	address.sin_family = AF_INET;
 	address.sin_addr.s_addr = htonl(INADDR_ANY);
-	address.sin_port = htons(PORT);
+	address.sin_port = htons(ft::stoi(port));
 
 	int bindreturn = bind(sockfd, (struct sockaddr*)&address, sizeof(address));
 	if (bindreturn < 0)
@@ -115,5 +120,5 @@ int	main(int argc, char **argv)
 		}
 	}
 	shutdown(sockfd, SHUT_RDWR);
-	return (0);
 }
+

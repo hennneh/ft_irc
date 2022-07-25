@@ -13,6 +13,7 @@ COMPFLAGS:=		-Wall -Werror -Wextra -g -std=c++98
 # Source Files:
 SRCFILES:=\
 		  main.cpp\
+		  utils.cpp\
 
 # ------------------------------------------
 # Do not change anything beyond this point!
@@ -63,11 +64,11 @@ endif
 run: re
 	@echo "--------------------------------"
 ifeq ($(UNAME),Linux)
-	@valgrind -q --leak-check=full --errors-for-leak-kinds=all $(NAME)
+	@valgrind -q --leak-check=full --errors-for-leak-kinds=all $(NAME) 6669 ""
 else ifeq ($(UNAME),Darwin)
-	@leaks -q --atExit -- $(NAME)
+	@leaks -q --atExit -- $(NAME) 6669 ""
 else
-	$(NAME)
+	$(NAME) 6669 ""
 endif
 
 
