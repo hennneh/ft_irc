@@ -24,6 +24,7 @@ CXXFLAGS:=	$(COMPFLAGS)
 SRCS:=		$(addprefix $(SOURCE)/,$(SRCFILES))
 OBJS:=		$(SRCS:$(SOURCE)/%.cpp=$(BUILD)/%.o)
 NAME:=		./$(NAME)
+OS:=		$(shell uname -s)
 
 .PHONY: all clean fclean re test run
 
@@ -61,6 +62,12 @@ endif
 #Run the executable
 run: re
 	@echo "--------------------------------"
+ifeq ($(UNAME),Linux)
 	@valgrind -q --leak-check=full --errors-for-leak-kinds=all $(NAME)
+else ifeq ($(UNAME),Darwin)
+	@leaks -q --atExit -- $(NAME)
+else
+	$(NAME)
+endif
 
 

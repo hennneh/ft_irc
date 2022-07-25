@@ -15,8 +15,8 @@
 #define TXT_RED		"\e[31m"
 #define TXT_NUL		"\e[0m"
 
-#define BUFFERSIZE	4
-#define PORT		8080
+#define BUFFERSIZE	1024 // min 512 bytes
+#define PORT		6669
 
 void error(const std::string& msg) {
 	std::cout << TXT_FAT << TXT_RED << "ERROR: " << msg << std::endl;
@@ -41,6 +41,7 @@ int	main(int argc, char **argv)
 
 	std::cout << "Protocol: " << prtdb->p_name << " (" << prtdb->p_proto << ")" << std::endl;
 	int sockfd = socket(PF_INET, SOCK_STREAM, prtdb->p_proto);
+	//int sockfd = socket(PF_INET, SOCK_STREAM, 6);
 	if (sockfd == 0)
 		error("Could not open socket fd");
 	int optreturn = setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
@@ -77,19 +78,11 @@ int	main(int argc, char **argv)
 			for(size_t i = 0; i < connlen; i++) {
 				if ((fds[i].revents & POLLRDNORM) > 1) {
 					std::cout << TXT_FAT << "Client " << i << " has pending data"<< TXT_NUL << std::endl;
-					std::string buf;
-					while(1) {
-						int readval = recv(connections[i], buffer, BUFFERSIZE, 0);
-						if (readval == -1)
-							error("Reading message failed");
-						buf.insert(buf.length(), std::string(buffer));
-						memset(buffer, 0, BUFFERSIZE);
-						if (readval < BUFFERSIZE || readval == 0) {
-							break;
-						}
-						if (readval == BUFFERSIZE && buf.length() > 0 && buf.at(buf.length() - 1) == '\n')
-							break;
-					}
+					int readval = recv(connections[i], buffer, BUFFERSIZE, 0);
+					if (readval == -1)
+						error("Reading message failed");
+					std::string buf(buffer);
+					memset(buffer, 0, BUFFERSIZE);
 					if (buf.length() == 0) {
 						std::cout << TXT_FAT << "Client " << i << " connection lost!" << TXT_NUL << std::endl;
 						connections.erase(connections.begin() + i);
