@@ -1,7 +1,8 @@
 #ifndef MESSAGE_HPP
 #define MESSAGE_HPP
 
-#include "../irc.hpp"
+#include <string>
+#include <vector>
 
 class Message
 {

@@ -15,6 +15,7 @@ SRCFILES:=\
 		  main.cpp\
 		  utils.cpp\
 		  irc.cpp\
+		  parse/message.cpp \
 
 # ------------------------------------------
 # Do not change anything beyond this point!

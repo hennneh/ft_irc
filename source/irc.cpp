@@ -78,7 +78,7 @@ void	ft::IRC::run() {
 						this->_connections.erase(this->_connections.begin() + i);
 						continue;
 					}
-					buf.replace(std::remove(buf.begin(), buf.end(), '\r'), buf.end(), "\n");
+					buf.replace(std::remove(buf.begin(), buf.end(), '\r'), buf.end(), "\n"); // Change to std::vector<Message>
 					std::string msg;
 					std::stringstream bufstream(buf);
 					while(std::getline(bufstream, msg, '\n')) {

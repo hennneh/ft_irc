@@ -18,6 +18,9 @@
 #include <stdlib.h>
 #include <memory.h>
 
+//US INCLUDE
+#include "parse/message.hpp"
+
 #define TXT_FAT		"\e[1m"
 #define TXT_RED		"\e[31m"
 #define TXT_NUL		"\e[0m"
