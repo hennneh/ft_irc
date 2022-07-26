@@ -1,4 +1,4 @@
-#include "message.h"
+#include "message.hpp"
 
 std::vector<Message> parse(std::string s)
 {
