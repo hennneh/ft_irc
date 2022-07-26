@@ -9,6 +9,7 @@ ft::Client::Client(const int& socket, const std::string& nick, const std::string
 	this->_nickname = nick;
 	this->_username = user;
 	this->_fullname = full;
+	this->_operator = false;
 }
 
 ft::Client::Client(const Client& client)
@@ -23,6 +24,7 @@ ft::Client& ft::Client::operator=(const ft::Client& client)
 	this->_fullname = client.getFull();
 	this->_nickname = client.getNick();
 	this->_username = client.getUser();
+	this->_operator = client.getOperator;
 	return *this;
 }
 
@@ -50,6 +52,11 @@ int	ft::Client::getSocket(void) const
 	return this->_socket;
 }
 
+bool ft::Client::getOperator(void) const
+{
+	return this->_operator;
+}
+
 //Setters
 void	ft::Client::setNick(const std::string& nick)
 {
@@ -69,4 +76,9 @@ void	ft::Client::setFull(const std::string& full)
 void	ft::Client::setSocket(const int& socket)
 {
 	this->_socket = socket;
+}
+
+void ft::Client::setOperator(const bool & op)
+{
+	this->_operator = op;
 }
