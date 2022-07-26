@@ -14,8 +14,8 @@ COMPFLAGS:=		-Wall -Werror -Wextra -g -std=c++98
 SRCFILES:=\
 		  main.cpp\
 		  utils.cpp\
+		  parse/message.cpp\
 		  irc.cpp\
-		  parse/message.cpp \
 
 # ------------------------------------------
 # Do not change anything beyond this point!
