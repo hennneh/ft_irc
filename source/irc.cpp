@@ -78,16 +78,11 @@ void	ft::IRC::run() {
 						this->_connections.erase(this->_connections.begin() + i);
 						continue;
 					}
-					buf.replace(std::remove(buf.begin(), buf.end(), '\r'), buf.end(), "\n"); // Change to std::vector<Message>
-					std::string msg;
-					std::stringstream bufstream(buf);
-					while(std::getline(bufstream, msg, '\n')) {
-						msg.erase(std::remove(msg.begin(), msg.end(), '\n'), msg.end());
-						if (msg.length() == 0)
-							continue;
-						std::cout << TXT_FAT << "Client " << i << ": " << TXT_NUL << msg << std::endl;
-						if (msg.compare(0, 4, "NICK") == 0) {
-							std::string username(msg.substr(5, msg.length() - 5));
+					std::vector<ft::Message> all_msg = ft::parse(buf);
+					for(std::vector<ft::Message>::iterator it = all_msg.begin(); it != all_msg.end(); it++) {
+						std::cout << TXT_FAT << "Client " << i << ": " << TXT_NUL << it->command << std::endl;
+						if (it->command == "NICK") {
+							std::string username(it->parameters.at(0));
 							ft_sendmsg(this->_connections[i], "001 " + username + " :Welcome to the Internet Relay Network " + username + "!*@127.0.0.1");
 							ft_sendmsg(this->_connections[i], "002 " + username + " :Your host is 127.0.0.1, running version ft_irc0.1");
 							ft_sendmsg(this->_connections[i], "003 " + username + " :This server was created 2022-07-25");
@@ -97,27 +92,24 @@ void	ft::IRC::run() {
 							ft_sendmsg(this->_connections[i], "376 " + username + " :-- Message of the day --");
 							continue;
 						}
-						if (msg.compare(0, 4, "USER") == 0)
+						if (it->command == "USER")
 							continue;
-						if (msg.compare(0, 4, "PING") == 0) {
-							std::string token(msg.substr(5, msg.length() - 5));
+						if (it->command == "PING") {
+							std::string token = it->parameters.at(0);
 							ft_sendmsg(this->_connections[i], "PONG " + token);
 							continue;
 						}
-						if (msg.compare(0, 4, "PONG") == 0)
-							continue;
-						if (msg.compare(0, 4, "QUIT") == 0) {
+						if (it->command == "QUIT") {
 							send(this->_connections[i], "bye!\n", 5, 0);
 							close(this->_connections[i]);
 							std::cout << TXT_FAT << "Client " << i << " disconnected!" << TXT_NUL << std::endl;
 							this->_connections.erase(this->_connections.begin() + i);
 							break;
 						}
-						if (msg.compare(0, 8, "SHUTDOWN") == 0) {
+						if (it->command == "DIE") {
 							done = true;
 							break;
 						}
-						ft_sendmsg(this->_connections[i], msg);
 					}
 				}
 			}

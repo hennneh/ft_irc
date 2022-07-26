@@ -1,10 +1,10 @@
 #include "message.hpp"
 
-std::vector<Message> parse(std::string s)
+std::vector<ft::Message> ft::parse(std::string s)
 {
 	size_t x = 0;
 	size_t y = 0;
-	std::vector<Message> v;
+	std::vector<ft::Message> v;
 
 	while (x < s.length())
 	{
@@ -15,7 +15,7 @@ std::vector<Message> parse(std::string s)
 				y = ++ x;
 				continue;
 			}
-			v.push_back(Message(s.substr(y, x - y)));
+			v.push_back(ft::Message(s.substr(y, x - y)));
 			x ++;
 			if (x < s.length() && s[x - 1] == '\r' && s[x] == '\n')
 				x ++;
@@ -25,15 +25,15 @@ std::vector<Message> parse(std::string s)
 			x ++;
 	}
 	if (y != s.length())
-		v.push_back(Message(s.substr(y, x - y)));
+		v.push_back(ft::Message(s.substr(y, x - y)));
 	return (v);
 }
 
 // int main(void)
 // {
 // 	std::string s = ":12345 PRIVMESG hello Vincent\r\nPRIVMSG hello Pete\r";
-// 	std::vector<Message> m = parse(s);
-// 	std::vector<Message>::iterator it_m = m.begin();
+// 	std::vector<ft::Message> m = parse(s);
+// 	std::vector<ft::Message>::iterator it_m = m.begin();
 // 	int i = 1;
 // 	while (it_m != m.end())
 // 	{
