@@ -73,10 +73,10 @@ endif
 #Run the executable
 run: re
 	@echo "--------------------------------"
-ifeq ($(UNAME),Linux)
-	@valgrind -q --leak-check=full --errors-for-leak-kinds=all $(NAME) 6669 ""
-else ifeq ($(UNAME),Darwin)
-	@leaks -q --atExit -- $(NAME) 6669 ""
+ifeq ($(OS),Linux)
+	valgrind -q --leak-check=full --errors-for-leak-kinds=all $(NAME) 6669 ""
+else ifeq ($(OS),Darwin)
+	leaks -q --atExit -- $(NAME) 6669 ""
 else
 	$(NAME) 6669 ""
 endif
