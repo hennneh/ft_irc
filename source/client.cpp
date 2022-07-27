@@ -19,10 +19,10 @@ ft::Client::Client(const Client& client)
 //Assignment Operator
 ft::Client& ft::Client::operator=(const ft::Client& client)
 {
-	this->_socket = client.getSocket();
-	this->_fullname = client.getFull();
-	this->_nickname = client.getNick();
-	this->_username = client.getUser();
+	this->setSocket(client.getSocket());
+	this->setFull(client.getFull());
+	this->setNick(client.getNick());
+	this->setUser(client.getUser());
 	return *this;
 }
 

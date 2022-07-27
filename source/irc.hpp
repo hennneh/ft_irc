@@ -20,6 +20,7 @@
 
 //US INCLUDE
 #include "parse/message.hpp"
+#include "client.hpp"
 
 #define TXT_FAT		"\e[1m"
 #define TXT_RED		"\e[31m"
@@ -29,12 +30,12 @@ namespace ft
 {
 	class IRC {
 		protected:
-			const int			_port;
-			const std::string	_password;
-			static const int	_buffersize = 1024;
-			struct sockaddr_in	_address;
-			int					_server;
-			std::vector<int>	_connections;
+			const int				_port;
+			const std::string		_password;
+			static const int		_buffersize = 1024;
+			struct sockaddr_in		_address;
+			int						_server;
+			std::vector<ft::Client>	_connections;
 
 		public:
 			IRC(const int& port, const std::string& password);
