@@ -46,6 +46,7 @@ namespace ft
 
 		public:
 			connection_map		_connections;
+			bool				_breakloop;
 
 			IRC(const int& port, const std::string& password);
 			~IRC();

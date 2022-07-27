@@ -11,9 +11,10 @@ void cmd::user(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 		return;
 	for(ft::IRC::connection_map::iterator it = irc._connections.begin(); it != irc._connections.end(); it++) {
 		if (it->second.getSocket() == client.getSocket()) {
-			irc._connections.erase(it);
-			irc._connections.insert(std::make_pair(client.getNick(), client));
 			cmd::welcome(msg, client, irc);
+			irc._connections.insert(std::make_pair(client.getNick(), ft::Client(client)));
+			irc._connections.erase(it);
+			irc._breakloop = true;
 			break;
 		}
 	}

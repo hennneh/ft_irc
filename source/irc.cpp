@@ -68,7 +68,7 @@ void	ft::IRC::run() {
 		if (pollreturn == 0) // No ready files
 			continue;
 		i = 0;
-		size_t savesize = this->_connections.size();
+		this->_breakloop = false;
 		for(connection_map::iterator it = this->_connections.begin(); it != this->_connections.end(); it++, i++)
 		{
 			if ((fds[i].revents & POLLRDNORM) == 0)
@@ -82,13 +82,8 @@ void	ft::IRC::run() {
 				done = true;
 				break;
 			}
-			if (savesize != this->_connections.size())
-			{
-				// The number of connections has changed since starting the loop.
-				// For safety (actually avoid segfaults) we stop the loop here
-				// and continue on the next iteration
+			if (this->_breakloop)
 				break;
-			}
 		}
 	}
 }

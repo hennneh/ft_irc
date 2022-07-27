@@ -56,7 +56,7 @@ void ft::Message::deserialize(const std::string& s)
 	x = msg.find(' ');
 	this->command = msg.substr(0, x);
 	msg.erase(0, x + 1);
-	while (x != std::string::npos)
+	while (msg.length() != 0 && x != std::string::npos)
 	{
 		if (msg.at(0) == ':') {
 			this->parameters.push_back(msg.substr(1));
