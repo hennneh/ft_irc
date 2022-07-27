@@ -13,11 +13,12 @@ namespace ft {
 			std::vector<std::string>	parameters;
 
 			// Constructors
+			Message (void);
 			Message (const std::string& prefix, const std::string& command, const std::vector<std::string>& parameters);
 			Message (const std::string& s);
 
 			void		deserialize(const std::string& s);
-			std::string	serialize(void);
+			std::string	serialize(void) const;
 	};
 
 	std::vector<Message> parse(std::string s);

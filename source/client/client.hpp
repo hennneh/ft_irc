@@ -2,6 +2,11 @@
 #define CLIENT_HPP
 
 #include <string>
+#include <iostream>
+
+#include <sys/socket.h>
+
+#include "../message/message.hpp"
 
 namespace ft {
 	class Client
@@ -27,6 +32,8 @@ namespace ft {
 			void setUser(const std::string& user);
 			void setFull(const std::string& full);
 			void setSocket(const int& socket);
+
+			void sendmsg(const ft::Message& msg);
 	};
 }
 
