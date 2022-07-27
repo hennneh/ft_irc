@@ -2,10 +2,19 @@
 #include <string>
 #include <sstream>
 
-void ft_sendmsg(int socketfd, std::string msg) {
-	msg = ":127.0.0.1 " + msg;
-	send(socketfd, (msg + "\r\n").c_str(), msg.length() + 2, 0);
-	std::cout << "Sending: '" << msg << "\\r\\n'" << std::endl;
+void ft_sendmsg(ft::Client client, ft::Message msg) {
+	std::string msgstr;
+	if (msg.prefix.length() != 0)
+		msgstr.insert(msgstr.length(), msg.prefix);
+	else
+		msgstr.insert(msgstr.length(), ":127.0.0.1");
+	msgstr.push_back(' ');
+	msgstr.insert(msgstr.length(), msg.command);
+	msgstr.push_back(' ');
+	for(size_t i = 0; i < msg.parameters.size(); i++)
+		msgstr.insert(msgstr.length(), (msg.parameters.at(i) + " "));
+	send(client.getSocket(), (msgstr + "\r\n").c_str(), msgstr.length() + 2, 0);
+	std::cout << "Sending: '" << msgstr << "\\r\\n'" << std::endl;
 }
 
 // Constructor
@@ -37,8 +46,7 @@ ft::IRC::IRC(const int& port, const std::string& password): _port(port), _passwo
 ft::IRC::~IRC() {
 	std::cout << TXT_FAT << "Shutting down server" << TXT_NUL << std::endl;
 	for(size_t j = 0;j < this->_connections.size(); j++) {
-		send(this->_connections[j], "bye!\n", 5, 0);
-		close(this->_connections[j]);
+		close(this->_connections[j].getSocket());
 		std::cout << TXT_FAT << "Client " << j << " disconnected!" << TXT_NUL << std::endl;
 	}
 	this->_connections.clear();
@@ -53,13 +61,13 @@ void	ft::IRC::run() {
 		int	addrlen = sizeof(this->_address);
 		int socket = accept(this->_server, (struct sockaddr*)&(this->_address), (socklen_t*)&addrlen);
 		if (socket != -1) {
-			this->_connections.push_back(socket);
+			this->_connections.push_back(ft::Client(socket, "", "", ""));
 			std::cout << TXT_FAT << "Client " << this->_connections.size() - 1 << " connected" << TXT_NUL << std::endl;
 		}
 		size_t connlen = this->_connections.size();
 		struct pollfd fds[connlen];
 		for(size_t i = 0; i < connlen; i++) {
-			fds[i].fd = this->_connections[i];
+			fds[i].fd = this->_connections[i].getSocket();
 			fds[i].events = POLLRDNORM;
 		}
 		int pollreturn = poll(fds, connlen, 0);
@@ -69,7 +77,8 @@ void	ft::IRC::run() {
 			for(size_t i = 0; i < connlen; i++) {
 				if ((fds[i].revents & POLLRDNORM) > 1) {
 					std::cout << TXT_FAT << "Client " << i << " has pending data"<< TXT_NUL << std::endl;
-					int readval = recv(this->_connections[i], buffer, this->_buffersize, 0);
+					ft::Client& client(this->_connections[i]);
+					int readval = recv(client.getSocket(), buffer, this->_buffersize, 0);
 					if (readval == -1)
 						throw std::runtime_error("Reading message failed");
 					std::string buf(buffer, readval);
@@ -82,26 +91,54 @@ void	ft::IRC::run() {
 					for(std::vector<ft::Message>::iterator it = all_msg.begin(); it != all_msg.end(); it++) {
 						std::cout << TXT_FAT << "Client " << i << ": " << TXT_NUL << it->command << std::endl;
 						if (it->command == "NICK") {
-							std::string username(it->parameters.at(0));
-							ft_sendmsg(this->_connections[i], "001 " + username + " :Welcome to the Internet Relay Network " + username + "!*@127.0.0.1");
-							ft_sendmsg(this->_connections[i], "002 " + username + " :Your host is 127.0.0.1, running version ft_irc0.1");
-							ft_sendmsg(this->_connections[i], "003 " + username + " :This server was created 2022-07-25");
-							ft_sendmsg(this->_connections[i], "004 " + username + " 127.0.0.1 ft_irc0.1 iswo opsitnmlbvk");
-							ft_sendmsg(this->_connections[i], "375 " + username + " :-- Message of the day --");
-							ft_sendmsg(this->_connections[i], "372 " + username + " :-    Hello People!     -");
-							ft_sendmsg(this->_connections[i], "376 " + username + " :-- Message of the day --");
+							client.setNick(it->parameters.at(0));
+							ft_sendmsg(client, "001 " + client.getNick() + " :Welcome to the Internet Relay Network " + client.getNick() + "!" + client.getUser() + "@127.0.0.1");
+							ft_sendmsg(client, "002 " + client.getNick() + " :Your host is 127.0.0.1, running version ft_irc0.1");
+							ft_sendmsg(client, "003 " + client.getNick() + " :This server was created 2022-07-25");
+							ft_sendmsg(client, "004 " + client.getNick() + " 127.0.0.1 ft_irc0.1 iswo opsitnmlbvk");
+							ft_sendmsg(client, "375 " + client.getNick() + " :-- Message of the day --");
+							ft_sendmsg(client, "372 " + client.getNick() + " :-    Hello People!     -");
+							ft_sendmsg(client, "376 " + client.getNick() + " :-- Message of the day --");
 							continue;
 						}
-						if (it->command == "USER")
+						if (it->command == "USER") {
+							if (it->parameters.size() < 4)
+								continue;
+							std::string username = it->parameters.at(0);
+							std::cout << "Username: " << username << std::endl;
+							client.setUser(username);
+							std::string realname;
+							for(size_t i = 3; i < it->parameters.size(); i++) {
+								realname.insert(realname.length(), it->parameters.at(i));
+							}
+							client.setFull(realname);
 							continue;
+						}
 						if (it->command == "PING") {
 							std::string token = it->parameters.at(0);
-							ft_sendmsg(this->_connections[i], "PONG " + token);
+							ft_sendmsg(client, "PONG " + token);
+							continue;
+						}
+						if (it->command == "PRIVMSG") {
+							if (it->parameters.size() < 2)
+								continue;
+							ft::Client target;
+							for (std::vector<ft::Client>::iterator clnt = this->_connections.begin(); clnt != this->_connections.end(); clnt++) {
+								if (clnt->getNick() == it->parameters.at(0)) {
+									std::cout << "Found target" << std::endl;
+									target = *clnt;
+									break;
+								}
+							}
+							std::vector<std::string> params;
+							params.push_back(target.getNick());
+							params.insert(params.end(), it->parameters.begin() + 1, it->parameters.end());
+							ft::Message msg(":" + client.getNick() + "!" + client.getUser() + "@127.0.0.1", "PRIVMSG", params);
+							ft_sendmsg(target, msg);
 							continue;
 						}
 						if (it->command == "QUIT") {
-							send(this->_connections[i], "bye!\n", 5, 0);
-							close(this->_connections[i]);
+							close(client.getSocket());
 							std::cout << TXT_FAT << "Client " << i << " disconnected!" << TXT_NUL << std::endl;
 							this->_connections.erase(this->_connections.begin() + i);
 							break;

@@ -8,7 +8,12 @@ namespace ft {
 	class Message
 	{
 		public:
-
+			Message (const std::string& prefix, const std::string& command, const std::vector<std::string>& parameters)
+			{
+				this->prefix = prefix;
+				this->command = command;
+				this->parameters = parameters;
+			}
 			Message (std::string s)
 			{
 				size_t x = 0;
