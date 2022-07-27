@@ -3,16 +3,7 @@
 #include <sstream>
 
 void ft_sendmsg(ft::Client client, ft::Message msg) {
-	std::string msgstr;
-	if (msg.prefix.length() != 0)
-		msgstr.insert(msgstr.length(), msg.prefix);
-	else
-		msgstr.insert(msgstr.length(), ":127.0.0.1");
-	msgstr.push_back(' ');
-	msgstr.insert(msgstr.length(), msg.command);
-	msgstr.push_back(' ');
-	for(size_t i = 0; i < msg.parameters.size(); i++)
-		msgstr.insert(msgstr.length(), (msg.parameters.at(i) + " "));
+	std::string msgstr(msg.serialize());
 	send(client.getSocket(), (msgstr + "\r\n").c_str(), msgstr.length() + 2, 0);
 	std::cout << "Sending: '" << msgstr << "\\r\\n'" << std::endl;
 }
@@ -92,20 +83,19 @@ void	ft::IRC::run() {
 						std::cout << TXT_FAT << "Client " << i << ": " << TXT_NUL << it->command << std::endl;
 						if (it->command == "NICK") {
 							client.setNick(it->parameters.at(0));
-							ft_sendmsg(client, "001 " + client.getNick() + " :Welcome to the Internet Relay Network " + client.getNick() + "!" + client.getUser() + "@127.0.0.1");
-							ft_sendmsg(client, "002 " + client.getNick() + " :Your host is 127.0.0.1, running version ft_irc0.1");
-							ft_sendmsg(client, "003 " + client.getNick() + " :This server was created 2022-07-25");
-							ft_sendmsg(client, "004 " + client.getNick() + " 127.0.0.1 ft_irc0.1 iswo opsitnmlbvk");
-							ft_sendmsg(client, "375 " + client.getNick() + " :-- Message of the day --");
-							ft_sendmsg(client, "372 " + client.getNick() + " :-    Hello People!     -");
-							ft_sendmsg(client, "376 " + client.getNick() + " :-- Message of the day --");
+							ft_sendmsg(client, ":127.0.0.1 001 " + client.getNick() + " :Welcome to the Internet Relay Network " + client.getNick() + "!" + client.getUser() + "@127.0.0.1");
+							ft_sendmsg(client, ":127.0.0.1 002 " + client.getNick() + " :Your host is 127.0.0.1, running version ft_irc0.1");
+							ft_sendmsg(client, ":127.0.0.1 003 " + client.getNick() + " :This server was created 2022-07-25");
+							ft_sendmsg(client, ":127.0.0.1 004 " + client.getNick() + " 127.0.0.1 ft_irc0.1 iswo opsitnmlbvk");
+							ft_sendmsg(client, ":127.0.0.1 375 " + client.getNick() + " :-- Message of the day --");
+							ft_sendmsg(client, ":127.0.0.1 372 " + client.getNick() + " :-    Hello People!     -");
+							ft_sendmsg(client, ":127.0.0.1 376 " + client.getNick() + " :-- Message of the day --");
 							continue;
 						}
 						if (it->command == "USER") {
 							if (it->parameters.size() < 4)
 								continue;
 							std::string username = it->parameters.at(0);
-							std::cout << "Username: " << username << std::endl;
 							client.setUser(username);
 							std::string realname;
 							for(size_t i = 3; i < it->parameters.size(); i++) {
@@ -133,7 +123,7 @@ void	ft::IRC::run() {
 							std::vector<std::string> params;
 							params.push_back(target.getNick());
 							params.insert(params.end(), it->parameters.begin() + 1, it->parameters.end());
-							ft::Message msg(":" + client.getNick() + "!" + client.getUser() + "@127.0.0.1", "PRIVMSG", params);
+							ft::Message msg(client.getNick() + "!" + client.getUser() + "@127.0.0.1", "PRIVMSG", params);
 							ft_sendmsg(target, msg);
 							continue;
 						}
