@@ -50,6 +50,11 @@ int	ft::Client::getSocket(void) const
 	return this->_socket;
 }
 
+std::string ft::Client::getIp(void) const
+{
+	return this->_ip;
+}
+
 //Setters
 void	ft::Client::setNick(const std::string& nick)
 {
@@ -69,4 +74,9 @@ void	ft::Client::setFull(const std::string& full)
 void	ft::Client::setSocket(const int& socket)
 {
 	this->_socket = socket;
+}
+
+void ft::Client::setIp(const struct sockaddr  *restrict & addr)
+{
+	this->_ip = addr.sa_data;
 }
