@@ -19,8 +19,8 @@
 #include <memory.h>
 
 //US INCLUDE
-#include "parse/message.hpp"
-#include "client.hpp"
+#include "message/message.hpp"
+#include "client/client.hpp"
 
 #define TXT_FAT		"\e[1m"
 #define TXT_RED		"\e[31m"
