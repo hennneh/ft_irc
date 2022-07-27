@@ -17,6 +17,13 @@ SRCFILES:=\
 		  irc.cpp\
 		  client/client.cpp\
 		  message/message.cpp\
+		  commands/user.cpp\
+		  commands/nick.cpp\
+		  commands/motd.cpp\
+		  commands/quit.cpp\
+		  commands/privmsg.cpp\
+		  commands/ping.cpp\
+		  commands/welcome.cpp\
 
 # ------------------------------------------
 # Do not change anything beyond this point!
