@@ -68,20 +68,25 @@ void	ft::IRC::run() {
 		if (pollreturn == 0) // No ready files
 			continue;
 		i = 0;
+		size_t savesize = this->_connections.size();
 		for(connection_map::iterator it = this->_connections.begin(); it != this->_connections.end(); it++, i++)
 		{
-			if (i > this->_connections.size())
-				break;
-			if (!((fds[i].revents & POLLRDNORM) > 0))
+			if ((fds[i].revents & POLLRDNORM) == 0)
 				continue;
-			ft::Client& client = it->second;
-			int status = this->__check_client(client);
+			int status = this->__check_client(it->second);
 			if (status == 1) {
 				this->_connections.erase(it);
 				break;
 			}
 			if (status == 2) {
 				done = true;
+				break;
+			}
+			if (savesize != this->_connections.size())
+			{
+				// The number of connections has changed since starting the loop.
+				// For safety (actually avoid segfaults) we stop the loop here
+				// and continue on the next iteration
 				break;
 			}
 		}
@@ -109,12 +114,12 @@ int	ft::IRC::__check_client(ft::Client& client)
 	for(std::vector<ft::Message>::iterator msg = all_msg.begin(); msg != all_msg.end(); msg++) {
 		std::map<std::string, cmd_func>::iterator cmd_itr = this->_commands.find(msg->command);
 		std::cout << TXT_FAT << "Client " << client.getNick() << ": " << TXT_NUL << msg->serialize() << std::endl;
-		if (msg->command == "DIE") {
-			return 2;
-		}
 		if (client.getNick().empty() || client.getUser().empty()) {
 			if (msg->command != "NICK" && msg->command != "USER" && msg->command != "PASS")
 				return 4;
+		}
+		if (msg->command == "DIE") {
+			return 2;
 		}
 		if (cmd_itr == this->_commands.end()) {
 			std::cout << TXT_FAT << "Invalid message" << TXT_NUL << std::endl;
