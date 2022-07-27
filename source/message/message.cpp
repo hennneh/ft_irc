@@ -29,6 +29,8 @@ std::vector<ft::Message> ft::parse(std::string s)
 	return (v);
 }
 
+ft::Message::Message(void) {}
+
 ft::Message::Message (const std::string& prefix, const std::string& command, const std::vector<std::string>& parameters)
 {
 	this->prefix = prefix;
@@ -66,7 +68,7 @@ void ft::Message::deserialize(const std::string& s)
 	}
 }
 
-std::string ft::Message::serialize(void)
+std::string ft::Message::serialize(void) const
 {
 	std::string msg;
 
@@ -78,7 +80,7 @@ std::string ft::Message::serialize(void)
 	msg.append(this->command);
 	if (this->parameters.empty())
 		return msg;
-	for(std::vector<std::string>::iterator it = this->parameters.begin(); it != this->parameters.end(); it++) {
+	for(std::vector<std::string>::const_iterator it = this->parameters.begin(); it != this->parameters.end(); it++) {
 		msg.append(" ");
 		if (it->find(' ') != std::string::npos) {
 			msg.append(":");

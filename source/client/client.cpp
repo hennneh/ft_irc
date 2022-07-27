@@ -1,5 +1,4 @@
 #include "client.hpp"
-#include <string>
 
 //Constructors
 ft::Client::Client() {};
@@ -69,4 +68,11 @@ void	ft::Client::setFull(const std::string& full)
 void	ft::Client::setSocket(const int& socket)
 {
 	this->_socket = socket;
+}
+
+void ft::Client::sendmsg(const ft::Message& msg)
+{
+	std::string msgstr(msg.serialize());
+	send(this->getSocket(), (msgstr + "\r\n").c_str(), msgstr.length() + 2, 0);
+	std::cout << "Client " << this->getNick() << " sending: '" << msgstr << "\\r\\n'" << std::endl;
 }
