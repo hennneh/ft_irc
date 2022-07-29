@@ -13,6 +13,7 @@ namespace ft {
 	{
 		private:
 			int			_socket;
+			bool		_operator;
 			std::string _nickname;
 			std::string _username;
 			std::string _fullname;

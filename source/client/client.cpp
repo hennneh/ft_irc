@@ -8,6 +8,7 @@ ft::Client::Client(const int& socket, const std::string& nick, const std::string
 	this->_nickname = nick;
 	this->_username = user;
 	this->_fullname = full;
+	this->_operator = false;
 }
 
 ft::Client::Client(const Client& client): _pi(client._pi), _raspberry(client._raspberry)
@@ -22,6 +23,11 @@ ft::Client& ft::Client::operator=(const ft::Client& client)
 	this->setFull(client.getFull());
 	this->setNick(client.getNick());
 	this->setUser(client.getUser());
+	this->_socket = client.getSocket();
+	this->_fullname = client.getFull();
+	this->_nickname = client.getNick();
+	this->_username = client.getUser();
+	this->_operator = client.getOperator;
 	return *this;
 }
 
@@ -52,6 +58,11 @@ int	ft::Client::getSocket(void) const
 std::string ft::Client::getIp(void) const
 {
 	return this->_ip;
+}
+bool ft::Client::getOperator(void) const
+{
+	return this->_operator;
+>>>>>>> 12-storage-for-channels:source/client.cpp
 }
 
 //Setters
@@ -85,4 +96,9 @@ void ft::Client::sendmsg(const ft::Message& msg)
 	std::string msgstr(msg.serialize());
 	send(this->getSocket(), (msgstr + "\r\n").c_str(), msgstr.length() + 2, 0);
 	std::cout << "Client " << this->getNick() << " sending: '" << msgstr << "\\r\\n'" << std::endl;
+}
+
+void ft::Client::setOperator(const bool & op)
+{
+	this->_operator = op;
 }
