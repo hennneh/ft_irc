@@ -34,8 +34,11 @@ namespace ft {
 			void setUser(const std::string& user);
 			void setFull(const std::string& full);
 			void setSocket(const int& socket);
-			void setIp(const struct sockaddr *restrict addr);
+			void setIp(const struct sockaddr *addr);
 			void sendmsg(const ft::Message& msg);
+
+			bool _pi; // autheticated, Good Nick
+			bool _raspberry; // authorised, Good Pass
 	};
 }
 

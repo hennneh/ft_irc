@@ -52,6 +52,7 @@ namespace ft
 			~IRC();
 			void	run();
 			void	reg_cmd(const std::string& cmd, cmd_func);
+			const std::string getPass( void ) const;
 
 		private:
 			int		__check_client(ft::Client& client);

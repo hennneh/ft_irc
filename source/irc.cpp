@@ -88,6 +88,11 @@ void	ft::IRC::run() {
 	}
 }
 
+const std::string ft::IRC::getPass( void ) const
+{
+	return (this->_password);
+}
+
 void	ft::IRC::reg_cmd(const std::string& cmd, cmd_func f) {
 	this->_commands.insert(std::make_pair(cmd, f));
 }

@@ -17,6 +17,7 @@ int	main(int argc, char **argv)
 	irc.reg_cmd("PING", cmd::ping);
 	irc.reg_cmd("PRIVMSG", cmd::privmsg);
 	irc.reg_cmd("QUIT", cmd::quit);
+	irc.reg_cmd("PASS", cmd::pass);
 	irc.run();
 }
 

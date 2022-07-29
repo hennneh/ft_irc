@@ -17,6 +17,7 @@ namespace cmd {
 	void privmsg(const ft::Message& msg, ft::Client& client, ft::IRC& irc);
 	void quit(const ft::Message& msg, ft::Client& client, ft::IRC& irc);
 	void welcome(const ft::Message& msg, ft::Client& client, ft::IRC& irc);
+	void pass(const ft::Message& msg, ft::Client& client, ft::IRC& irc);
 }
 
 #endif

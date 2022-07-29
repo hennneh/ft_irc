@@ -1,8 +1,8 @@
 #include "client.hpp"
 
 //Constructors
-ft::Client::Client() {};
-ft::Client::Client(const int& socket, const std::string& nick, const std::string& user, const std::string& full)
+ft::Client::Client(): _pi(false), _raspberry(false) {};
+ft::Client::Client(const int& socket, const std::string& nick, const std::string& user, const std::string& full): _pi(false), _raspberry(false)
 {
 	this->_socket = socket;
 	this->_nickname = nick;
@@ -10,7 +10,7 @@ ft::Client::Client(const int& socket, const std::string& nick, const std::string
 	this->_fullname = full;
 }
 
-ft::Client::Client(const Client& client)
+ft::Client::Client(const Client& client): _pi(client._pi), _raspberry(client._raspberry)
 {
 	*this = client;
 }
@@ -75,9 +75,9 @@ void	ft::Client::setSocket(const int& socket)
 	this->_socket = socket;
 }
 
-void ft::Client::setIp(const struct sockaddr  *restrict & addr)
+void ft::Client::setIp(const struct sockaddr  *addr)
 {
-	this->_ip = addr.sa_data;
+	this->_ip = addr->sa_data;
 }
 
 void ft::Client::sendmsg(const ft::Message& msg)
