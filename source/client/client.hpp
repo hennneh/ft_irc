@@ -13,7 +13,6 @@ namespace ft {
 	{
 		private:
 			int			_socket;
-			bool		_operator;
 			std::string _nickname;
 			std::string _username;
 			std::string _fullname;
@@ -40,6 +39,7 @@ namespace ft {
 
 			bool _pi; // autheticated, Good Nick
 			bool _raspberry; // authorised, Good Pass
+			bool _operator;
 	};
 }
 
