@@ -24,6 +24,7 @@ SRCFILES:=\
 		  commands/privmsg.cpp\
 		  commands/ping.cpp\
 		  commands/welcome.cpp\
+		  commands/pass.cpp\
 
 # ------------------------------------------
 # Do not change anything beyond this point!
@@ -76,7 +77,7 @@ run: re
 ifeq ($(OS),Linux)
 	valgrind -q --leak-check=full --errors-for-leak-kinds=all $(NAME) 6669 ""
 else ifeq ($(OS),Darwin)
-	leaks -q --atExit -- $(NAME) 6669 ""
+	leaks -q --atExit -- $(NAME) 6669 "Henne Suxs"
 else
 	$(NAME) 6669 ""
 endif
