@@ -1,9 +1,38 @@
 #include "commands.hpp"
 
+bool checkNick(std::string nick)
+{
+	if (!((nick[0] >= 'a' && nick[0] <= 'z') || (nick[0] >= 'A' && nick[0] <= 'Z')))
+		return (false);
+	return (true);
+}
+
 void cmd::nick(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {
 	(void)irc;
+	if (!client._raspberry)
+	{
+		//client.sendmsg(ft::Message(":127.0.0.1 462 :Unauthorized command (already registered)")); //ERR_ALREADYREGISTRED
+		return ;
+	}
+	if (msg.parameters.size() != 1)
+	{
+		client.sendmsg(ft::Message(":127.0.0.1 431 :No nickname given")); //ERR_NONICKNAMEGIVEN
+		return ;
+	}
+	if (msg.parameters.at(0).empty() || !checkNick(msg.parameters.at(0)))
+	{
+		client.sendmsg(ft::Message(":127.0.0.1 432 :Erroneus nickname")); //ERR_ERRONEUSNICKNAME
+		return ;
+	}
+	if (client.getNick().empty() == false)//CHECK
+	{
+		client.sendmsg(ft::Message(":127.0.0.1 433 :Nickname is already in use")); //ERR_NICKNAMEINUSE
+		return ;
+	}
+	// ERR_NICKCOLLISION 
 	client.setNick(msg.parameters.at(0));
+	client._pi = true;
 	if (client.getUser().empty())
 		return;
 	for(ft::IRC::connection_map::iterator it = irc._connections.begin(); it != irc._connections.end(); it++) {
