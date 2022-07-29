@@ -16,6 +16,7 @@ namespace ft {
 			std::string _nickname;
 			std::string _username;
 			std::string _fullname;
+			std::string _ip;
 
 		public:
 			Client();
@@ -28,11 +29,12 @@ namespace ft {
 			std::string getUser(void) const;
 			std::string getFull(void) const;
 			int getSocket(void) const;
+			std::string getIp(void) const;
 			void setNick(const std::string& nick);
 			void setUser(const std::string& user);
 			void setFull(const std::string& full);
 			void setSocket(const int& socket);
-
+			void setIp(const struct sockaddr *restrict addr);
 			void sendmsg(const ft::Message& msg);
 	};
 }
