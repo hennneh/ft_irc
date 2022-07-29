@@ -12,6 +12,12 @@ int	main(int argc, char **argv)
 		return (ft::error("port needs to be between 0 and 65535"));
 
 	ft::IRC irc(ft::stoi(port), passwd);
+	irc.reg_cmd("USER", cmd::user);
+	irc.reg_cmd("NICK", cmd::nick);
+	irc.reg_cmd("PING", cmd::ping);
+	irc.reg_cmd("PRIVMSG", cmd::privmsg);
+	irc.reg_cmd("QUIT", cmd::quit);
+	irc.reg_cmd("PASS", cmd::pass);
 	irc.run();
 }
 

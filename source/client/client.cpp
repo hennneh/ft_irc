@@ -1,9 +1,8 @@
 #include "client.hpp"
-#include <string>
 
 //Constructors
-ft::Client::Client() {};
-ft::Client::Client(const int& socket, const std::string& nick, const std::string& user, const std::string& full)
+ft::Client::Client(): _pi(false), _raspberry(false) {};
+ft::Client::Client(const int& socket, const std::string& nick, const std::string& user, const std::string& full): _pi(false), _raspberry(false)
 {
 	this->_socket = socket;
 	this->_nickname = nick;
@@ -12,7 +11,7 @@ ft::Client::Client(const int& socket, const std::string& nick, const std::string
 	this->_operator = false;
 }
 
-ft::Client::Client(const Client& client)
+ft::Client::Client(const Client& client): _pi(client._pi), _raspberry(client._raspberry)
 {
 	*this = client;
 }
@@ -20,6 +19,10 @@ ft::Client::Client(const Client& client)
 //Assignment Operator
 ft::Client& ft::Client::operator=(const ft::Client& client)
 {
+	this->setSocket(client.getSocket());
+	this->setFull(client.getFull());
+	this->setNick(client.getNick());
+	this->setUser(client.getUser());
 	this->_socket = client.getSocket();
 	this->_fullname = client.getFull();
 	this->_nickname = client.getNick();
@@ -52,9 +55,14 @@ int	ft::Client::getSocket(void) const
 	return this->_socket;
 }
 
+std::string ft::Client::getIp(void) const
+{
+	return this->_ip;
+}
 bool ft::Client::getOperator(void) const
 {
 	return this->_operator;
+>>>>>>> 12-storage-for-channels:source/client.cpp
 }
 
 //Setters
@@ -76,6 +84,18 @@ void	ft::Client::setFull(const std::string& full)
 void	ft::Client::setSocket(const int& socket)
 {
 	this->_socket = socket;
+}
+
+void ft::Client::setIp(const struct sockaddr  *addr)
+{
+	this->_ip = addr->sa_data;
+}
+
+void ft::Client::sendmsg(const ft::Message& msg)
+{
+	std::string msgstr(msg.serialize());
+	send(this->getSocket(), (msgstr + "\r\n").c_str(), msgstr.length() + 2, 0);
+	std::cout << "Client " << this->getNick() << " sending: '" << msgstr << "\\r\\n'" << std::endl;
 }
 
 void ft::Client::setOperator(const bool & op)

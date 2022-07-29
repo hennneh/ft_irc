@@ -1,7 +1,12 @@
 #ifndef CLIENT_HPP
 #define CLIENT_HPP
 
-#include "irc.hpp"
+#include <string>
+#include <iostream>
+
+#include <sys/socket.h>
+
+#include "../message/message.hpp"
 
 namespace ft {
 	class Client
@@ -12,6 +17,7 @@ namespace ft {
 			std::string _nickname;
 			std::string _username;
 			std::string _fullname;
+			std::string _ip;
 
 		public:
 			Client();
@@ -24,10 +30,16 @@ namespace ft {
 			std::string getUser(void) const;
 			std::string getFull(void) const;
 			int getSocket(void) const;
+			std::string getIp(void) const;
 			void setNick(const std::string& nick);
 			void setUser(const std::string& user);
 			void setFull(const std::string& full);
 			void setSocket(const int& socket);
+			void setIp(const struct sockaddr *addr);
+			void sendmsg(const ft::Message& msg);
+
+			bool _pi; // autheticated, Good Nick
+			bool _raspberry; // authorised, Good Pass
 	};
 }
 
