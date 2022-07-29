@@ -15,6 +15,15 @@ SRCFILES:=\
 		  main.cpp\
 		  utils.cpp\
 		  irc.cpp\
+		  client/client.cpp\
+		  message/message.cpp\
+		  commands/user.cpp\
+		  commands/nick.cpp\
+		  commands/motd.cpp\
+		  commands/quit.cpp\
+		  commands/privmsg.cpp\
+		  commands/ping.cpp\
+		  commands/welcome.cpp\
 
 # ------------------------------------------
 # Do not change anything beyond this point!
@@ -64,10 +73,10 @@ endif
 #Run the executable
 run: re
 	@echo "--------------------------------"
-ifeq ($(UNAME),Linux)
-	@valgrind -q --leak-check=full --errors-for-leak-kinds=all $(NAME) 6669 ""
-else ifeq ($(UNAME),Darwin)
-	@leaks -q --atExit -- $(NAME) 6669 ""
+ifeq ($(OS),Linux)
+	valgrind -q --leak-check=full --errors-for-leak-kinds=all $(NAME) 6669 ""
+else ifeq ($(OS),Darwin)
+	leaks -q --atExit -- $(NAME) 6669 ""
 else
 	$(NAME) 6669 ""
 endif

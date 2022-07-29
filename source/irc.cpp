@@ -2,12 +2,6 @@
 #include <string>
 #include <sstream>
 
-void ft_sendmsg(int socketfd, std::string msg) {
-	msg = ":127.0.0.1 " + msg;
-	send(socketfd, (msg + "\r\n").c_str(), msg.length() + 2, 0);
-	std::cout << "Sending: '" << msg << "\\r\\n'" << std::endl;
-}
-
 // Constructor
 ft::IRC::IRC(const int& port, const std::string& password): _port(port), _password(password) {
 	struct protoent		*prtdb;
@@ -36,91 +30,97 @@ ft::IRC::IRC(const int& port, const std::string& password): _port(port), _passwo
 // Destructor
 ft::IRC::~IRC() {
 	std::cout << TXT_FAT << "Shutting down server" << TXT_NUL << std::endl;
-	for(size_t j = 0;j < this->_connections.size(); j++) {
-		send(this->_connections[j], "bye!\n", 5, 0);
-		close(this->_connections[j]);
-		std::cout << TXT_FAT << "Client " << j << " disconnected!" << TXT_NUL << std::endl;
+	for(connection_map::iterator it = this->_connections.begin(); it != this->_connections.end(); it++)
+	{
+		close(it->second.getSocket());
+		std::cout << TXT_FAT << "Client " << it->second.getNick() << " disconnected!" << TXT_NUL << std::endl;
 	}
 	this->_connections.clear();
 	shutdown(this->_server, SHUT_RDWR);
 }
 
 void	ft::IRC::run() {
-	char	buffer[this->_buffersize];
 	bool	done = false;
 
 	while(!done) {
 		int	addrlen = sizeof(this->_address);
-		int socket = accept(this->_server, (struct sockaddr*)&(this->_address), (socklen_t*)&addrlen);
-		if (socket != -1) {
-			this->_connections.push_back(socket);
-			std::cout << TXT_FAT << "Client " << this->_connections.size() - 1 << " connected" << TXT_NUL << std::endl;
+		while (true)
+		{
+			int socket = accept(this->_server, (struct sockaddr*)&(this->_address), (socklen_t*)&addrlen);
+			if (socket == -1)
+				break;
+			std::pair<connection_map::iterator, bool> status = this->_connections.insert(std::make_pair("uniqueid", ft::Client(socket, "", "", "")));
+			if (status.second == false)
+				std::cout << TXT_RED << "Duplicate Key" << TXT_NUL << std::endl;
+			else
+				std::cout << TXT_FAT << "Client " << this->_connections.size() - 1 << " connected" << TXT_NUL << std::endl;
 		}
-		size_t connlen = this->_connections.size();
-		struct pollfd fds[connlen];
-		for(size_t i = 0; i < connlen; i++) {
-			fds[i].fd = this->_connections[i];
+		struct pollfd fds[this->_connections.size()];
+		size_t i = 0;
+		for(connection_map::iterator it = this->_connections.begin(); it != this->_connections.end(); it++, i++)
+		{
+			fds[i].fd = it->second.getSocket();
 			fds[i].events = POLLRDNORM;
 		}
-		int pollreturn = poll(fds, connlen, 0);
+		int pollreturn = poll(fds, this->_connections.size(), 0);
 		if (pollreturn == -1)
 			throw std::runtime_error("Poll failed");
-		if (pollreturn > 0) {
-			for(size_t i = 0; i < connlen; i++) {
-				if ((fds[i].revents & POLLRDNORM) > 1) {
-					std::cout << TXT_FAT << "Client " << i << " has pending data"<< TXT_NUL << std::endl;
-					int readval = recv(this->_connections[i], buffer, this->_buffersize, 0);
-					if (readval == -1)
-						throw std::runtime_error("Reading message failed");
-					std::string buf(buffer, readval);
-					if (buf.length() == 0) {
-						std::cout << TXT_FAT << "Client " << i << " connection lost!" << TXT_NUL << std::endl;
-						this->_connections.erase(this->_connections.begin() + i);
-						continue;
-					}
-					buf.replace(std::remove(buf.begin(), buf.end(), '\r'), buf.end(), "\n");
-					std::string msg;
-					std::stringstream bufstream(buf);
-					while(std::getline(bufstream, msg, '\n')) {
-						msg.erase(std::remove(msg.begin(), msg.end(), '\n'), msg.end());
-						if (msg.length() == 0)
-							continue;
-						std::cout << TXT_FAT << "Client " << i << ": " << TXT_NUL << msg << std::endl;
-						if (msg.compare(0, 4, "NICK") == 0) {
-							std::string username(msg.substr(5, msg.length() - 5));
-							ft_sendmsg(this->_connections[i], "001 " + username + " :Welcome to the Internet Relay Network " + username + "!*@127.0.0.1");
-							ft_sendmsg(this->_connections[i], "002 " + username + " :Your host is 127.0.0.1, running version ft_irc0.1");
-							ft_sendmsg(this->_connections[i], "003 " + username + " :This server was created 2022-07-25");
-							ft_sendmsg(this->_connections[i], "004 " + username + " 127.0.0.1 ft_irc0.1 iswo opsitnmlbvk");
-							ft_sendmsg(this->_connections[i], "375 " + username + " :-- Message of the day --");
-							ft_sendmsg(this->_connections[i], "372 " + username + " :-    Hello People!     -");
-							ft_sendmsg(this->_connections[i], "376 " + username + " :-- Message of the day --");
-							continue;
-						}
-						if (msg.compare(0, 4, "USER") == 0)
-							continue;
-						if (msg.compare(0, 4, "PING") == 0) {
-							std::string token(msg.substr(5, msg.length() - 5));
-							ft_sendmsg(this->_connections[i], "PONG " + token);
-							continue;
-						}
-						if (msg.compare(0, 4, "PONG") == 0)
-							continue;
-						if (msg.compare(0, 4, "QUIT") == 0) {
-							send(this->_connections[i], "bye!\n", 5, 0);
-							close(this->_connections[i]);
-							std::cout << TXT_FAT << "Client " << i << " disconnected!" << TXT_NUL << std::endl;
-							this->_connections.erase(this->_connections.begin() + i);
-							break;
-						}
-						if (msg.compare(0, 8, "SHUTDOWN") == 0) {
-							done = true;
-							break;
-						}
-						ft_sendmsg(this->_connections[i], msg);
-					}
-				}
+		if (pollreturn == 0) // No ready files
+			continue;
+		i = 0;
+		this->_breakloop = false;
+		for(connection_map::iterator it = this->_connections.begin(); it != this->_connections.end(); it++, i++)
+		{
+			if ((fds[i].revents & POLLRDNORM) == 0)
+				continue;
+			int status = this->__check_client(it->second);
+			if (status == 1) {
+				this->_connections.erase(it);
+				break;
 			}
+			if (status == 2) {
+				done = true;
+				break;
+			}
+			if (this->_breakloop)
+				break;
 		}
 	}
+}
+
+void	ft::IRC::reg_cmd(const std::string& cmd, cmd_func f) {
+	this->_commands.insert(std::make_pair(cmd, f));
+}
+
+int	ft::IRC::__check_client(ft::Client& client)
+{
+	char	buffer[this->_buffersize];
+
+	std::cout << TXT_FAT << "Client " << client.getNick() << " has pending data"<< TXT_NUL << std::endl;
+	int readval = recv(client.getSocket(), buffer, this->_buffersize, 0);
+	if (readval == -1)
+		throw std::runtime_error("Reading message failed");
+	std::string buf(buffer, readval);
+	if (buf.length() == 0) {
+		std::cout << TXT_FAT << "Client " << client.getNick() << " connection lost!" << TXT_NUL << std::endl;
+		return 1;
+	}
+	std::vector<ft::Message> all_msg = ft::parse(buf);
+	for(std::vector<ft::Message>::iterator msg = all_msg.begin(); msg != all_msg.end(); msg++) {
+		std::map<std::string, cmd_func>::iterator cmd_itr = this->_commands.find(msg->command);
+		std::cout << TXT_FAT << "Client " << client.getNick() << ": " << TXT_NUL << msg->serialize() << std::endl;
+		if (client.getNick().empty() || client.getUser().empty()) {
+			if (msg->command != "NICK" && msg->command != "USER" && msg->command != "PASS")
+				return 4;
+		}
+		if (msg->command == "DIE") {
+			return 2;
+		}
+		if (cmd_itr == this->_commands.end()) {
+			std::cout << TXT_FAT << "Invalid message" << TXT_NUL << std::endl;
+			return 3;
+		}
+		cmd_itr->second(*msg, client, *this);
+	}
+	return 0;
 }

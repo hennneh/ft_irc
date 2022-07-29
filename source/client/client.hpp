@@ -1,7 +1,12 @@
 #ifndef CLIENT_HPP
 #define CLIENT_HPP
 
-#include "irc.hpp"
+#include <string>
+#include <iostream>
+
+#include <sys/socket.h>
+
+#include "../message/message.hpp"
 
 namespace ft {
 	class Client
@@ -30,6 +35,7 @@ namespace ft {
 			void setFull(const std::string& full);
 			void setSocket(const int& socket);
 			void setIp(const struct sockaddr *restrict addr);
+			void sendmsg(const ft::Message& msg);
 	};
 }
 
