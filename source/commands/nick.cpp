@@ -2,8 +2,11 @@
 
 bool checkNick(std::string nick)
 {
-	if (!((nick[0] >= 'a' && nick[0] <= 'z') || (nick[0] >= 'A' && nick[0] <= 'Z')))
+	for (size_t x = 0; x < nick.length(); x ++)
+	{
+	if (!((nick[x] >= 'a' && nick[x] <= 'z') || (nick[x] >= 'A' && nick[x] <= 'Z')))
 		return (false);
+	}
 	return (true);
 }
 
