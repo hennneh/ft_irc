@@ -20,7 +20,12 @@ k - set a channel key (password).
 
 void modeChannel(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {
-
+	bool sign = false;
+	if (irc._connections.find(msg.parameters.at(0)) != irc._connections.end())
+	{
+		client.sendmsg(ft::Message(":127.0.0.1 433 :Nickname is already in use")); //ERR_NICKNAMEINUSE
+		return ;
+	}
 }
 
 void mode(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
@@ -30,17 +35,17 @@ void mode(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 		client.sendmsg(ft::Message(":127.0.0.1 461 :Not enough parameters")); //ERR_NEEDMOREPARAMS
 		return ;
 	}
-	if (msg.parameters[0][0] == '#' || msg.parameters[0][0] == '&')
+	if (msg.parameters.at(0)[0] == '#' || msg.parameters.at(0)[0] == '&')
 		modeChannel(msg, client, irc);
 	else
-		modeUsr(msg, client, irc);
+		cmd::modeUsr(msg, client, irc);
 }
 
 /*
 ERR_NEEDMOREPARAMS		DONE
 RPL_CHANNELMODEIS
 ERR_CHANOPRIVSNEEDED
-ERR_NOSUCHNICK
+ERR_NOSUCHNICK			USR
 ERR_NOTONCHANNEL
 ERR_KEYSET
 RPL_BANLIST
