@@ -45,8 +45,9 @@ void cmd::user(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 		return ;
 	client.setUser(msg.parameters.at(0));
 	client.setFull(msg.parameters.at(3));
-	if (!client._pi)
+	if (client.getNick().empty())
 		return;
+	client._pi = true;
 	for(ft::IRC::connection_map::iterator it = irc._connections.begin(); it != irc._connections.end(); it++) {
 		if (it->second.getSocket() == client.getSocket()) {
 			cmd::welcome(msg, client, irc);
