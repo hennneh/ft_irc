@@ -25,12 +25,12 @@ void cmd::nick(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 		client.sendmsg(ft::Message(":127.0.0.1 432 :Erroneus nickname")); //ERR_ERRONEUSNICKNAME
 		return ;
 	}
-	if (client.getNick().empty() == false)//CHECK
+	if (irc._connections.find(msg.parameters.at(0)) != irc._connections.end())
 	{
+		// replacement for network-wide ERR_NICKCOLLISION 
 		client.sendmsg(ft::Message(":127.0.0.1 433 :Nickname is already in use")); //ERR_NICKNAMEINUSE
 		return ;
 	}
-	// ERR_NICKCOLLISION 
 	client.setNick(msg.parameters.at(0));
 	client._pi = true;
 	if (client.getUser().empty())
