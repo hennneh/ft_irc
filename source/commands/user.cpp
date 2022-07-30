@@ -36,7 +36,7 @@ void cmd::user(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 		client.sendmsg(ft::Message(":127.0.0.1 461 :Not enough parameters")); //ERR_NEEDMOREPARAMS
 		return ;
 	}
-	if (client.getUser().empty() == false || !client._raspberry)
+	if (client.getUser().empty() == false)
 	{
 		client.sendmsg(ft::Message(":127.0.0.1 462 :Unauthorized command (already registered)")); //ERR_ALREADYREGISTRED
 		return ;
