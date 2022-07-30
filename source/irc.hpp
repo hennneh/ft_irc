@@ -23,6 +23,7 @@
 #include "message/message.hpp"
 #include "client/client.hpp"
 #include "commands/commands.hpp"
+#include "error.hpp"
 
 #define TXT_FAT		"\e[1m"
 #define TXT_RED		"\e[31m"
@@ -60,10 +61,10 @@ namespace ft
 	bool isStringNumber(const std::string & s);
 	int error(const std::string & s);
 	int stoi(const std::string & s);
-	bool ft::isAlpha(char c);
-	bool ft::isNumeric(char c);
-	bool ft::isAlphaNumeric(char c);
-	bool ft::isNonWhite(char c);
+	bool isAlpha(char c);
+	bool isNumeric(char c);
+	bool isAlphaNumeric(char c);
+	bool isNonWhite(char c);
 };
 
 #endif

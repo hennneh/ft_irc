@@ -92,3 +92,9 @@ void ft::Client::sendmsg(const ft::Message& msg)
 	send(this->getSocket(), (msgstr + "\r\n").c_str(), msgstr.length() + 2, 0);
 	std::cout << "Client " << this->getNick() << " sending: '" << msgstr << "\\r\\n'" << std::endl;
 }
+
+void ft::Client::sendErrMsg(std::string err)
+{
+	std::string msg = ":127.0.0.1" + err;
+	this->sendmsg(msg);
+}

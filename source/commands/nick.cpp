@@ -15,6 +15,7 @@ void cmd::nick(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 	(void)irc;
 	if (!client._raspberry)
 	{
+		client.sendErrMsg(ERR_NOSUCHNICK);
 		return ;//ERR_ALREADYREGISTRED
 	}
 	if (msg.parameters.size() != 1)
