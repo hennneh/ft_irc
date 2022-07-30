@@ -1,6 +1,6 @@
 #include "irc.hpp"
 
-bool ft::isStringNumber(const std::string & s)
+bool ft::isStringNumber(const std::string & s) //negatives excluded?
 {
 	std::string::const_iterator it = s.begin();
     while (it != s.end() && std::isdigit(*it)) ++it;
