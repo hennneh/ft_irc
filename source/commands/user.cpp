@@ -41,7 +41,7 @@ void cmd::user(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 		client.sendmsg(ft::Message(":127.0.0.1 462 :Unauthorized command (already registered)")); //ERR_ALREADYREGISTRED
 		return ;
 	}
-	if (!checkUser(msg.parameters.at(0))) //No error num?
+	if (!checkUser(msg.parameters.at(0)))
 		return ;
 	client.setUser(msg.parameters.at(0));
 	client.setFull(msg.parameters.at(3));
