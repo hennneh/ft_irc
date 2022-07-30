@@ -23,3 +23,42 @@ int ft::stoi(const std::string & s)
 	stream >> i;
 	return (i);
 }
+
+bool ft::isAlpha(char c)
+{
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+		return (true);
+	return (false);
+}
+
+bool ft::isNumeric(char c)
+{
+	if (c >= '0' && c <= '9')
+		return (true);
+	return (false);
+}
+
+bool ft::isAlphaNumeric(char c)
+{
+	if (ft::isAlpha(c) || ft::isNumeric(c))
+		return (true);
+	return (false);
+}
+
+#define SPACE ' '
+#define NUL '\0'
+#define CR '\r'
+#define LF '\n'
+
+bool ft::isNonWhite(char c)
+{
+	if (c == SPACE)
+		return (false);
+	if (c == NUL)
+		return (false);
+	if (c == CR)
+		return (false);
+	if (c == LF)
+		return (false);
+	return (true);
+}

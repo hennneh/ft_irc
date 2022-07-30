@@ -60,6 +60,10 @@ namespace ft
 	bool isStringNumber(const std::string & s);
 	int error(const std::string & s);
 	int stoi(const std::string & s);
+	bool ft::isAlpha(char c);
+	bool ft::isNumeric(char c);
+	bool ft::isAlphaNumeric(char c);
+	bool ft::isNonWhite(char c);
 };
 
 #endif

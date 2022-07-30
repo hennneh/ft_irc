@@ -4,8 +4,8 @@ bool checkNick(std::string nick)
 {
 	for (size_t x = 0; x < nick.length(); x ++)
 	{
-	if (!((nick[x] >= 'a' && nick[x] <= 'z') || (nick[x] >= 'A' && nick[x] <= 'Z')))
-		return (false);
+		if (!ft::isAlpha(nick[x]))
+			return (false);
 	}
 	return (true);
 }
@@ -15,8 +15,7 @@ void cmd::nick(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 	(void)irc;
 	if (!client._raspberry)
 	{
-//ERR_ALREADYREGISTRED
-		return ;
+		return ;//ERR_ALREADYREGISTRED
 	}
 	if (msg.parameters.size() != 1)
 	{

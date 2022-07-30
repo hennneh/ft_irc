@@ -5,24 +5,11 @@
 #define CR '\r'
 #define LF '\n'
 
-bool nonwhite(char c)
-{
-	if (c == SPACE)
-		return (false);
-	if (c == NUL)
-		return (false);
-	if (c == CR)
-		return (false);
-	if (c == LF)
-		return (false);
-	return (true);
-}
-
 bool checkUser(std::string usr)
 {
 	for (size_t x = 0; x < usr.length(); x ++)
 	{
-		if (nonwhite(usr[x]))
+		if (!ft::isNonWhite(usr[x]))
 			return (false);
 	}
 	return (true);
