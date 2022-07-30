@@ -18,6 +18,8 @@ namespace cmd {
 	void quit(const ft::Message& msg, ft::Client& client, ft::IRC& irc);
 	void welcome(const ft::Message& msg, ft::Client& client, ft::IRC& irc);
 	void pass(const ft::Message& msg, ft::Client& client, ft::IRC& irc);
+	void mode(const ft::Message& msg, ft::Client& client, ft::IRC& irc);
+	void modeUsr(const ft::Message& msg, ft::Client& client, ft::IRC& irc);
 }
 
 #endif
