@@ -15,7 +15,7 @@ void cmd::nick(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 	(void)irc;
 	if (!client._raspberry)
 	{
-		//client.sendmsg(ft::Message(":127.0.0.1 462 :Unauthorized command (already registered)")); //ERR_ALREADYREGISTRED
+//ERR_ALREADYREGISTRED
 		return ;
 	}
 	if (msg.parameters.size() != 1)
