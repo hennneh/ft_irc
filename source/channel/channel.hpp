@@ -1,7 +1,7 @@
 #ifndef CHANNEL_HPP
 #define CHANNEL_HPP
 
-#include "irc.hpp"
+#include "../irc.hpp"
 namespace ft
 {
 	class Channel
@@ -18,6 +18,6 @@ namespace ft
 			std::string getName(void) const;
 			std::string getPassword() const;
 	}
-}
+};
 
 #endif

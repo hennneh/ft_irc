@@ -23,6 +23,7 @@
 #include "message/message.hpp"
 #include "client/client.hpp"
 #include "commands/commands.hpp"
+#include "channel/channel.hpp"
 
 #define TXT_FAT		"\e[1m"
 #define TXT_RED		"\e[31m"
