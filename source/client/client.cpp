@@ -93,8 +93,11 @@ void ft::Client::sendmsg(const ft::Message& msg)
 	std::cout << "Client " << this->getNick() << " sending: '" << msgstr << "\\r\\n'" << std::endl;
 }
 
-void ft::Client::sendErrMsg(std::string err)
+void ft::Client::sendErrMsg(const std::string& hostname, const std::string& err)
 {
-	std::string msg = ":127.0.0.1" + err;
+	std::string msg = ":" + hostname;
+	if (err.at(0) != ' ')
+		msg += " ";
+	msg += err;
 	this->sendmsg(msg);
 }

@@ -7,7 +7,6 @@ l - set the user limit to channel;
 k - set a channel key (password).
 */
 
-
 /**
  * @brief o - give/take channel operator privileges;
  */
@@ -168,7 +167,7 @@ void modeChannel(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 	}
 	std::vector<std::string> args (msg.parameters.begin() + 1, msg.parameters.end());
 	cmd_itr->second(client, irc, iter->second, sign, args);
-}
+  }
 
 void mode(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {

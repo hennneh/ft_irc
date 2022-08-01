@@ -36,7 +36,7 @@ namespace ft {
 			void setSocket(const int& socket);
 			void setIp(const struct sockaddr *addr);
 			void sendmsg(const ft::Message& msg);
-			void sendErrMsg(std::string err);
+			void sendErrMsg(const std::string& hostname, const std::string& err);
 
 			bool _pi; // autheticated, Good Nick
 			bool _raspberry; // authorised, Good Pass
