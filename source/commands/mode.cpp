@@ -2,26 +2,172 @@
 #include "commands.hpp"
 /* CHANNEL FLAGS
 [+|-] - Not 100% sure what the differance is
-o - give/take channel operator privileges;
-p - private channel flag;
-s - secret channel flag;
-i - invite-only channel flag;
-t - topic settable by channel operator only flag;
-n - no messages to channel from clients on the outside;
-b - set a ban mask to keep users out;
-v - give/take the ability to speak on a moderated channel;
-
-NOT DOING?
 m - moderated channel;
 l - set the user limit to channel;
 k - set a channel key (password).
 */
 
+/**
+ * @brief o - give/take channel operator privileges;
+ */
+void m_channel::op_priv(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
+{
+	(void)irc;
+	client.sendmsg(ft::Message(":Option op_priv:"));
+	(void)channel;
+	(void)sign;
+	(void)args;
+	return ;
+}
+
+/**
+ * @brief p - private channel flag;
+*/
+void m_channel::prvt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
+{
+	(void)irc;
+	client.sendmsg(ft::Message(":Option prvt:"));
+	if (!args.empty())
+	{
+		client.sendErrMsg(ERR_NEEDMOREPARAMS);
+		return ;
+	}
+	if (sign)
+		channel._private == true;
+	else
+		channel._private == false;
+	return ;
+}
+
+/**
+ * @brief s - secret channel flag;
+*/
+void m_channel::scrt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
+{
+	(void)irc;
+	client.sendmsg(ft::Message(":Option scrt:"));
+	if (!args.empty())
+	{
+		client.sendErrMsg(ERR_NEEDMOREPARAMS);
+		return ;
+	}
+	if (sign)
+		channel._secret == true;
+	else
+		channel._secret == false;
+	return ;
+}
+
+/**
+ * @brief i - invite-only channel flag;
+*/
+void m_channel::invt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
+{
+	(void)irc;
+	client.sendmsg(ft::Message(":Option invt:"));
+	if (!args.empty())
+	{
+		client.sendErrMsg(ERR_NEEDMOREPARAMS);
+		return ;
+	}
+	if (sign)
+		channel._invite_only == true;
+	else
+		channel._invite_only == false;
+	return ;
+}
+
+/**
+ * @brief t - topic settable by channel operator only flag;
+*/
+void m_channel::topic(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
+{
+	(void)irc;
+	client.sendmsg(ft::Message(":Option topic:"));
+	if (!args.empty())
+	{
+		client.sendErrMsg(ERR_NEEDMOREPARAMS);
+		return ;
+	}
+	if (sign)
+		channel.__topic == true;
+	else
+		channel.__topic == false;
+	return ;
+}
+
+/**
+ * @brief n - no messages to channel from clients on the outside;
+*/
+void m_channel::clsd(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
+{
+	(void)irc;
+	client.sendmsg(ft::Message(":Option clsd:"));
+	if (!args.empty())
+	{
+		client.sendErrMsg(ERR_NEEDMOREPARAMS);
+		return ;
+	}
+	if (sign)
+		channel._clsd == true;
+	else
+		channel._clsd == false;
+	return ;
+}
+
+/**
+ * @brief b - set a ban mask to keep users out;
+*/
+void m_channel::ban_msk(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
+{
+	(void)irc;
+	client.sendmsg(ft::Message(":Option ban_msk:"));
+	(void)channel;
+	(void)sign;
+	(void)args;
+	return ;
+}
+
+/**
+ * @brief v - give/take the ability to speak on a moderated channel;
+*/
+void m_channel::speak(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
+{
+	(void)irc;
+	client.sendmsg(ft::Message(":Option speak:"));
+	(void)channel;
+	(void)sign;
+	(void)args;
+	return ;
+}
+
 
 void modeChannel(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {
-
-}
+	bool sign = false;
+	ft::IRC::_channel_map::iterator iter = irc._channels.find(msg.parameters.at(0));
+	if (iter == irc._channels.end())
+	{
+		client.sendErrMsg(ERR_NOSUCHCHANNEL);
+		return ;
+	}
+	//check usr/channel permissions  ERR_CHANOPRIVSNEEDED
+	if (msg.parameters.at(1)[0] == '+')
+		sign = true;
+	else if (msg.parameters.at(1)[0] != '-')
+	{
+		client.sendErrMsg(ERR_UMODEUNKNOWNFLAG);
+		return ;
+	}
+	ft::IRC::m_channel_map::iterator cmd_itr = irc._c_ft.find(msg.parameters.at(1)[1]);
+	if (cmd_itr == irc._c_ft.end())
+	{
+		client.sendErrMsg(ERR_UNKNOWNMODE);
+		return ;
+	}
+	std::vector<std::string> args (msg.parameters.begin() + 1, msg.parameters.end());
+	cmd_itr->second(client, irc, iter->second, sign, args);
+  }
 
 void mode(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {
@@ -30,23 +176,23 @@ void mode(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 		client.sendmsg(ft::Message(":127.0.0.1 461 :Not enough parameters")); //ERR_NEEDMOREPARAMS
 		return ;
 	}
-	if (msg.parameters[0][0] == '#' || msg.parameters[0][0] == '&')
+	if (msg.parameters.at(0)[0] == '#' || msg.parameters.at(0)[0] == '&')
 		modeChannel(msg, client, irc);
 	else
-		modeUsr(msg, client, irc);
+		cmd::modeUsr(msg, client, irc);
 }
 
 /*
 ERR_NEEDMOREPARAMS		DONE
 RPL_CHANNELMODEIS
 ERR_CHANOPRIVSNEEDED
-ERR_NOSUCHNICK
-ERR_NOTONCHANNEL
+ERR_NOSUCHNICK			USR
+ERR_NOTONCHANNEL		USR
 ERR_KEYSET
 RPL_BANLIST
 RPL_ENDOFBANLIST
 ERR_UNKNOWNMODE
-ERR_NOSUCHCHANNEL
+ERR_NOSUCHCHANNEL		DONE
 ERR_USERSDONTMATCH
 RPL_UMODEIS
 ERR_UMODEUNKNOWNFLAG
