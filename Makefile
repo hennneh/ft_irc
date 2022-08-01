@@ -26,7 +26,8 @@ SRCFILES:=\
 		  commands/ping.cpp\
 		  commands/welcome.cpp\
 		  commands/pass.cpp\
-		  commands/join.cpp\
+		  commands/mode.cpp\
+		  commands/modeusr.cpp\
 
 # ------------------------------------------
 # Do not change anything beyond this point!
