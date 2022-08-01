@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include <sys/socket.h>
+#include <arpa/inet.h>
 
 #include "../message/message.hpp"
 
@@ -28,13 +29,14 @@ namespace ft {
 			std::string getNick(void) const;
 			std::string getUser(void) const;
 			std::string getFull(void) const;
+			std::string getFullId(void) const;
 			int getSocket(void) const;
 			std::string getIp(void) const;
 			void setNick(const std::string& nick);
 			void setUser(const std::string& user);
 			void setFull(const std::string& full);
 			void setSocket(const int& socket);
-			void setIp(const struct sockaddr *addr);
+			void setIp(struct sockaddr_in *addr);
 			void sendmsg(const ft::Message& msg);
 			void sendErrMsg(const std::string& hostname, const std::string& err);
 

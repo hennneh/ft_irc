@@ -12,6 +12,6 @@ void cmd::privmsg(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 	std::vector<std::string> params;
 	params.push_back(target.getNick());
 	params.insert(params.end(), msg.parameters.begin() + 1, msg.parameters.end());
-	ft::Message answer(client.getNick() + "!" + client.getUser() + "@127.0.0.1", "PRIVMSG", params);
+	ft::Message answer(client.getFullId(), "PRIVMSG", params);
 	target.sendmsg(answer);
 }
