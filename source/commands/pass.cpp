@@ -6,12 +6,12 @@ void cmd::pass(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {
 	if (msg.parameters.size() != 1)
 	{
-		client.sendmsg(ft::Message(":" + irc._hostname + " 461 :Not enough parameters")); //ERR_NEEDMOREPARAMS
+		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS);
 		return ;
 	}
 	if (client._raspberry)
 	{
-		client.sendmsg(ft::Message(":" + irc._hostname + " 462 :Unauthorized command (already registered)")); //ERR_ALREADYREGISTRED
+		client.sendErrMsg(irc._hostname, ERR_ALREADYREGISTRED);
 		return ;
 	}
 	if (msg.parameters.at(0) == irc.getPass())

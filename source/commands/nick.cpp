@@ -17,22 +17,22 @@ void cmd::nick(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 	if (!client._raspberry)
 	{
 		client.sendErrMsg(irc._hostname, ERR_NOSUCHNICK);
-		return ;//ERR_ALREADYREGISTRED
+		return ;
 	}
 	if (msg.parameters.size() != 1)
 	{
-		client.sendmsg(ft::Message(":" + irc._hostname + " 431 :No nickname given")); //ERR_NONICKNAMEGIVEN
+		client.sendErrMsg(irc._hostname, ERR_NONICKNAMEGIVEN);
 		return ;
 	}
 	if (msg.parameters.at(0).empty() || !checkNick(msg.parameters.at(0)))
 	{
-		client.sendmsg(ft::Message(":" + irc._hostname + " 432 :Erroneus nickname")); //ERR_ERRONEUSNICKNAME
+		client.sendErrMsg(irc._hostname, ERR_ERRONEUSNICKNAME);
 		return ;
 	}
 	if (irc._connections.find(msg.parameters.at(0)) != irc._connections.end())
 	{
 		// replacement for network-wide ERR_NICKCOLLISION
-		client.sendmsg(ft::Message(":" + irc._hostname + " 433 :Nickname is already in use")); //ERR_NICKNAMEINUSE
+		client.sendErrMsg(irc._hostname, ERR_NICKNAMEINUSE);
 		return ;
 	}
 	client.setNick(msg.parameters.at(0));

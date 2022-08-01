@@ -174,7 +174,7 @@ void cmd::mode(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {
 	if (msg.parameters.size() <= 2)
 	{
-		client.sendmsg(ft::Message(":127.0.0.1 461 :Not enough parameters")); //ERR_NEEDMOREPARAMS
+		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS);
 		return ;
 	}
 	if (msg.parameters.at(0)[0] == '#' || msg.parameters.at(0)[0] == '&')
