@@ -1,4 +1,5 @@
 #include "commands.hpp"
+#include "../irc.hpp"
 #include <unistd.h>
 
 void cmd::quit(const ft::Message& msg, ft::Client& client, ft::IRC& irc)

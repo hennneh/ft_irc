@@ -26,9 +26,9 @@ SRCFILES:=\
 		  commands/ping.cpp\
 		  commands/welcome.cpp\
 		  commands/pass.cpp\
-		  commands/mode.cpp\
 		  commands/join.cpp\
 		  commands/modeusr.cpp\
+		  commands/mode.cpp\
 
 # ------------------------------------------
 # Do not change anything beyond this point!
@@ -45,7 +45,8 @@ OS:=		$(shell uname -s)
 .PHONY: all clean fclean re test run
 
 # Catch Rules
-all: $(NAME)
+all:
+	make -j $(nproc) $(NAME)
 
 # Compile .cpp files to .o Files
 $(OBJS): $(BUILD)%.o : $(SOURCE)%.cpp

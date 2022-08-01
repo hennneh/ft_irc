@@ -58,11 +58,13 @@ void	ft::IRC::run() {
 			int socket = accept(this->_server, (struct sockaddr*)&(this->_address), (socklen_t*)&addrlen);
 			if (socket == -1)
 				break;
-			std::pair<connection_map::iterator, bool> status = this->_connections.insert(std::make_pair("uniqueid", ft::Client(socket, "", "", "")));
+			ft::Client client(socket, "", "", "");
+			client.setIp(&(this->_address));
+			std::pair<connection_map::iterator, bool> status = this->_connections.insert(std::make_pair(client.getIp() + "_connecting", client));
 			if (status.second == false)
 				std::cout << TXT_RED << "Duplicate Key" << TXT_NUL << std::endl;
 			else
-				std::cout << TXT_FAT << "Client " << this->_connections.size() - 1 << " connected" << TXT_NUL << std::endl;
+				std::cout << TXT_FAT << "Client " << this->_connections.size() - 1 << " connected from " << client.getIp() << TXT_NUL << std::endl;
 		}
 		struct pollfd fds[this->_connections.size()];
 		size_t i = 0;
