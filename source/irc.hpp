@@ -24,6 +24,7 @@
 #include "client/client.hpp"
 #include "commands/commands.hpp"
 #include "error.hpp"
+#include "channel.hpp"
 
 #define TXT_FAT		"\e[1m"
 #define TXT_RED		"\e[31m"

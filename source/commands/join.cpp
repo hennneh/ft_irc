@@ -1,6 +1,6 @@
 #include "commands.hpp"
 
-void cmd::join(const ft::Message & msg, ft::Client& client, ft::IRC & irc);
+void cmd::join(const ft::Message & msg, ft::Client& client, ft::IRC & irc)
 {
 	if (msg.parameters.empty() || msg.parameters.size() > 2)
 	{
@@ -8,7 +8,7 @@ void cmd::join(const ft::Message & msg, ft::Client& client, ft::IRC & irc);
 		return ;
 	}
 	std::vector<std::string> channels = ft::split(msg.parameters.at(0), ',');
-	std::vector<std::strings> passwords = 0;
+	std::vector<std::string> passwords;
 	if (msg.parameters.size() == 2)
 		passwords = ft::split(msg.parameters.at(1), ',');
 	for (size_t i = 0; i < channels.size(); i++)
@@ -20,24 +20,24 @@ void cmd::join(const ft::Message & msg, ft::Client& client, ft::IRC & irc);
 		}
 		for (size_t x = 0; x < irc._channels.size(); x ++)
 		{
-			if (channel.at(i) == irc.channels.at(x)._name)
+			if (channels.at(i) == irc._channels.at(x)._name)
 			{
 				if (i < passwords.size())
 				{
-					if (password.at(i) != irc.channels.at(x)._password)
+					if (passwords.at(i) != irc._channels.at(x)._password)
 					{
 						client.sendErrMsg(ERR_BADCHANNELKEY);
 						return ;
 					}
 				}
-				irc.channels.at(x)._clients.pushback(client);
+				irc._channels.at(x)._clients.push_back(client);
 			}
 			if (x == irc._channels.size() - 1)
 			{
 				std::string pass = "";
 				if (i < passwords.size())
 					pass = passwords.at(i);
-				irc._channels.pushback(ft::Channel(channels.at(i), pass));
+				irc._channels.push_back(ft::Channel(channels.at(i), pass));
 			}
 		}
 	}

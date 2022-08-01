@@ -25,6 +25,8 @@ SRCFILES:=\
 		  commands/ping.cpp\
 		  commands/welcome.cpp\
 		  commands/pass.cpp\
+		  channel.cpp\
+		  commands/join.cpp\
 
 # ------------------------------------------
 # Do not change anything beyond this point!
