@@ -26,6 +26,7 @@ SRCFILES:=\
 		  commands/welcome.cpp\
 		  commands/pass.cpp\
 		  commands/mode.cpp\
+		  commands/modeusr.cpp\
 
 # ------------------------------------------
 # Do not change anything beyond this point!
