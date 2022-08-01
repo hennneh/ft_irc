@@ -14,8 +14,8 @@ void cmd::modeUsr(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {
 	if (irc._connections.find(msg.parameters.at(0)) != irc._connections.end())
 	{
-		// replacement for network-wide ERR_NICKCOLLISION 
-		client.sendmsg(ft::Message(":127.0.0.1 401 :No such nick/channel")); //ERR_NOSUCHNICK
+		// replacement for network-wide ERR_NICKCOLLISION
+		client.sendErrMsg(irc._hostname, ERR_NOSUCHNICK);
 		return ;
 	}
 	return ;
