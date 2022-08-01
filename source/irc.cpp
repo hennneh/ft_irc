@@ -1,4 +1,5 @@
 #include "irc.hpp"
+#include "error.hpp"
 #include <string>
 #include <sstream>
 
@@ -127,18 +128,35 @@ int	ft::IRC::__check_client(ft::Client& client)
 		std::map<std::string, cmd_func>::iterator cmd_itr = this->_commands.find(msg->command);
 		std::cout << TXT_FAT << "Client " << client.getNick() << ": " << TXT_NUL << msg->serialize() << std::endl;
 		// TODO maybe implement the correct client return values
-		if (!client._raspberry)
-			if (msg->command != "PASS")
-				return 4;
-		if (!client._pi) {
-			if (msg->command != "NICK" && msg->command != "USER")
-				return 4;
+		if (msg->command == "QUIT")
+		{
+			// Client can always Quit
+			cmd::quit(*msg, client, *this);
+			return 4;
 		}
-		if (msg->command == "DIE") {
+		if ((!client._raspberry) && msg->command != "PASS")
+		{
+			// Until Client has correct password, can't do anything else
+			std::cout << "CMD is not PASS" << std::endl;
+			client.sendErrMsg(this->_hostname, ERR_NOTREGISTERED);
+			return 4;
+		}
+		if (client._raspberry && (!client._pi) && msg->command != "NICK" && msg->command != "USER")
+		{
+			// Until Client has sent NICK/USER, can't do anything else
+			std::cout << "CMD is not NICK/USER" << std::endl;
+			client.sendErrMsg(this->_hostname, ERR_NOTREGISTERED);
+			return 4;
+		}
+		if (msg->command == "DIE")
+		{
+			//Kill the server
 			return 2;
 		}
-		if (cmd_itr == this->_commands.end()) {
-			std::cout << TXT_FAT << "Invalid message" << TXT_NUL << std::endl;
+		if (cmd_itr == this->_commands.end())
+		{
+			// Haven't found command
+			client.sendErrMsg(this->_hostname, ERR_UNKNOWNCOMMAND);
 			return 3;
 		}
 		cmd_itr->second(*msg, client, *this);
