@@ -1,4 +1,5 @@
 #include "irc.hpp"
+#include "error.hpp"
 #include <string>
 #include <sstream>
 
@@ -60,6 +61,7 @@ void	ft::IRC::run() {
 				break;
 			ft::Client client(socket, "", "", "");
 			client.setIp(&(this->_address));
+			client._raspberry = this->_password.empty(); // If no password for server, clients don't need to send PASS
 			std::pair<connection_map::iterator, bool> status = this->_connections.insert(std::make_pair(client.getIp() + "_connecting", client));
 			if (status.second == false)
 				std::cout << TXT_RED << "Duplicate Key" << TXT_NUL << std::endl;
@@ -125,15 +127,36 @@ int	ft::IRC::__check_client(ft::Client& client)
 	for(std::vector<ft::Message>::iterator msg = all_msg.begin(); msg != all_msg.end(); msg++) {
 		std::map<std::string, cmd_func>::iterator cmd_itr = this->_commands.find(msg->command);
 		std::cout << TXT_FAT << "Client " << client.getNick() << ": " << TXT_NUL << msg->serialize() << std::endl;
-		if (client.getNick().empty() || client.getUser().empty()) {
-			if (msg->command != "NICK" && msg->command != "USER" && msg->command != "PASS")
-				return 4;
+		// TODO maybe implement the correct client return values
+		if (msg->command == "QUIT")
+		{
+			// Client can always Quit
+			cmd::quit(*msg, client, *this);
+			return 4;
 		}
-		if (msg->command == "DIE") {
+		if ((!client._raspberry) && msg->command != "PASS")
+		{
+			// Until Client has correct password, can't do anything else
+			std::cout << "CMD is not PASS" << std::endl;
+			client.sendErrMsg(this->_hostname, ERR_NOTREGISTERED);
+			return 4;
+		}
+		if (client._raspberry && (!client._pi) && msg->command != "NICK" && msg->command != "USER")
+		{
+			// Until Client has sent NICK/USER, can't do anything else
+			std::cout << "CMD is not NICK/USER" << std::endl;
+			client.sendErrMsg(this->_hostname, ERR_NOTREGISTERED);
+			return 4;
+		}
+		if (msg->command == "DIE")
+		{
+			//Kill the server
 			return 2;
 		}
-		if (cmd_itr == this->_commands.end()) {
-			std::cout << TXT_FAT << "Invalid message" << TXT_NUL << std::endl;
+		if (cmd_itr == this->_commands.end())
+		{
+			// Haven't found command
+			client.sendErrMsg(this->_hostname, ERR_UNKNOWNCOMMAND);
 			return 3;
 		}
 		cmd_itr->second(*msg, client, *this);

@@ -69,6 +69,12 @@ void cmd::modeUsr(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 	// }
 	// std::vector<std::string> args (msg.parameters.begin() + 1, msg.parameters.end());
 	// cmd_itr->second(client, irc, iter->second, sign, args);
+	if (irc._connections.find(msg.parameters.at(0)) != irc._connections.end())
+	{
+		// replacement for network-wide ERR_NICKCOLLISION
+		client.sendErrMsg(irc._hostname, ERR_NOSUCHNICK);
+		return ;
+	}
 	return ;
 }
 
