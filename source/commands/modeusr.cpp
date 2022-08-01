@@ -46,12 +46,29 @@ void m_user::operant(ft::Client& client, ft::Channel& channel, bool sign, std::v
 
 void cmd::modeUsr(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {
-	if (irc._connections.find(msg.parameters.at(0)) != irc._connections.end())
-	{
-		// replacement for network-wide ERR_NICKCOLLISION 
-		client.sendmsg(ft::Message(":127.0.0.1 401 :No such nick/channel")); //ERR_NOSUCHNICK
-		return ;
-	}
+	bool sign = false;
+	// ft::IRC::_user_map::iterator iter = irc._users.find(msg.parameters.at(0));
+	// if (iter == irc._users.end())
+	// {
+	// 	client.sendErrMsg(irc._hostname, ERR_NOSUCHuser);
+	// 	return ;
+	// }
+	// //check usr/user permissions  ERR_CHANOPRIVSNEEDED
+	// if (msg.parameters.at(1)[0] == '+')
+	// 	sign = true;
+	// else if (msg.parameters.at(1)[0] != '-')
+	// {
+	// 	client.sendErrMsg(irc._hostname, ERR_UMODEUNKNOWNFLAG);
+	// 	return ;
+	// }
+	// cmd::m_user_map::iterator cmd_itr = irc._c_ft.find(msg.parameters.at(1)[1]);
+	// if (cmd_itr == irc._c_ft.end())
+	// {
+	// 	client.sendErrMsg(irc._hostname, ERR_UNKNOWNMODE);
+	// 	return ;
+	// }
+	// std::vector<std::string> args (msg.parameters.begin() + 1, msg.parameters.end());
+	// cmd_itr->second(client, irc, iter->second, sign, args);
 	return ;
 }
 
@@ -70,7 +87,6 @@ void cmd::mk_map(m_user_map & _u_ft)
 
 /*
 ERR_NEEDMOREPARAMS		DONE
-RPL_CHANNELMODEIS
 ERR_CHANOPRIVSNEEDED
 ERR_NOSUCHNICK			DONE
 ERR_NOTONCHANNEL

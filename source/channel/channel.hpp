@@ -10,20 +10,26 @@ namespace ft
 {
 	class Channel
 	{
-		typedef std::map<ft::Client, bool> _rights;
+		typedef std::map<std::string, bool> _rights;
 		private:
 
 		public:
-			std::string _name;
-			std::string _password;
-			bool _private;
-			bool _secret;
-			bool _invite_only;
-			unsigned int _user_limit;
-			bool _moderated;
-			bool __topic;
-			bool _clsd;
-			std::vector<ft::Client> _clients;
+			std::string				_name;
+			std::string				_password;
+			bool					_private;
+			bool					_secret;
+			bool					_invite_only;
+			unsigned int			_user_limit;
+			bool					_moderated;
+			bool					__topic;
+			bool					_clsd;
+			std::vector<ft::Client>	_clients;
+			_rights					op_priv;	//standart false
+			_rights					bannd;	//standart false
+			_rights					speak;	//standart true
+			_rights					invis;	//standart false
+			_rights					wall;	//standart true
+			_rights					snote;	//standart true
 
 			Channel(const std::string & name, const std::string & password);
 			~Channel();
