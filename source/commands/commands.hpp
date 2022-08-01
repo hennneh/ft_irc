@@ -20,7 +20,20 @@ namespace m_channel {
 	void speak(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args);
 }
 
+namespace m_user {
+	void invis(ft::Client& client, ft::Channel& channel, bool sign, std::vector<std::string> args);
+	void servnote(ft::Client& client, ft::Channel& channel, bool sign, std::vector<std::string> args);
+	void w_all_op(ft::Client& client, ft::Channel& channel, bool sign, std::vector<std::string> args);
+	void operant(ft::Client& client, ft::Channel& channel, bool sign, std::vector<std::string> args);
+}
+
 namespace cmd {
+
+	typedef void (*m_channel_ft)(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args);
+	typedef std::map<char, m_channel_ft>		m_channel_map;
+
+	typedef void (*m_user_ft)(ft::Client& client, ft::Channel& channel, bool sign, std::vector<std::string> args);
+	typedef std::map<char, m_user_ft>		m_user_map;
 
 	void user(const ft::Message& msg, ft::Client& client, ft::IRC& irc);
 	void motd(const ft::Message& msg, ft::Client& client, ft::IRC& irc);
@@ -34,22 +47,11 @@ namespace cmd {
 	void modeUsr(const ft::Message& msg, ft::Client& client, ft::IRC& irc);
 	void join(const ft::Message & msg, ft::Client& client, ft::IRC & irc);
 
-	void reg_ft(ft::IRC & irc, const char opt, ft::IRC::m_channel_ft f)
-	{
-		irc._c_ft.insert(std::make_pair(opt, f));
-	}
-	void mk_map(ft::IRC& irc)
-	{
-		reg_ft(irc, 'o', m_channel::op_priv);
-		reg_ft(irc, 'p', m_channel::prvt);
-		reg_ft(irc, 's', m_channel::scrt);
-		reg_ft(irc, 'i', m_channel::invt);
-		reg_ft(irc, 't', m_channel::topic);
-		reg_ft(irc, 'n', m_channel::clsd);
-		reg_ft(irc, 'b', m_channel::ban_msk);
-		reg_ft(irc, 'v', m_channel::speak);
-	}
-	
+	void reg_ft(m_channel_map & _c_ft , const char opt, m_channel_ft f);
+	void mk_map(m_channel_map & _c_ft);
+
+	void reg_ft(m_user_map & _u_ft , const char opt, m_user_ft f);
+	void mk_map(m_user_map & _u_ft);
 }
 
 #endif

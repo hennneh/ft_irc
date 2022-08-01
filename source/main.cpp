@@ -20,7 +20,8 @@ int	main(int argc, char **argv)
 	irc.reg_cmd("PASS", cmd::pass);
 	irc.reg_cmd("MODE", cmd::mode);
 	irc.reg_cmd("JOIN", cmd::join);
-	cmd::mk_map(irc);
+	cmd::mk_map(irc._c_ft);
+	cmd::mk_map(irc._u_ft);
 	irc.run();
 }
 
