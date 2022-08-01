@@ -45,7 +45,8 @@ OS:=		$(shell uname -s)
 .PHONY: all clean fclean re test run
 
 # Catch Rules
-all: $(NAME)
+all:
+	make -j $(nproc) $(NAME)
 
 # Compile .cpp files to .o Files
 $(OBJS): $(BUILD)%.o : $(SOURCE)%.cpp
