@@ -25,6 +25,15 @@ ft::IRC::IRC(const int& port, const std::string& password): _port(port), _passwo
 	if (listenreturn < 0)
 		throw std::runtime_error("Could not listen");
 	fcntl(this->_server, F_SETFL, O_NONBLOCK);
+
+	char hstnme[256]; // 255 is maxlen for hostname according to manpages
+	gethostname(hstnme, 256);
+	this->_hostname = std::string(hstnme);
+	std::cout << "IRC Server running on " << this->_hostname;
+	std::cout << " on port " << this->_port;
+	if (!this->_password.empty())
+		std::cout << " with password authentication enabled";
+	std::cout << std::endl;
 }
 
 // Destructor

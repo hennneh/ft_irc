@@ -52,6 +52,7 @@ namespace ft
 			connection_map		_connections;
 			bool				_breakloop;
 			_channelVector		_channels;
+			std::string			_hostname;
 
 			IRC(const int& port, const std::string& password);
 			~IRC();
