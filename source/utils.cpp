@@ -62,3 +62,22 @@ bool ft::isNonWhite(char c)
 		return (false);
 	return (true);
 }
+
+std::vector<std::string> ft::split(const std::string & s, char delimiter)
+{
+	std::vector<std::string> substrings;
+	std::string original = s;
+
+	size_t x = 0;
+	x = original.find(delimiter);
+	substrings.pushback(original.substr(0, x));
+	original.erase(0, x + 1);
+	while (original.length() != 0 && x != std::string::npos)
+	{
+		x = original.find(delimiter);
+		substrings.push_back(original.substr(0, x));
+		original.erase(0, x + 1);
+	}
+	return (substrings);
+
+}

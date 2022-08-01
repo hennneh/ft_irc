@@ -17,6 +17,7 @@ namespace ft
 			void setPassword(const std::string & password);
 			std::string getName(void) const;
 			std::string getPassword() const;
+			std::vector<ft::Client> _clients;
 	}
 }
 
