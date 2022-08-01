@@ -17,6 +17,7 @@ SRCFILES:=\
 		  irc.cpp\
 		  client/client.cpp\
 		  message/message.cpp\
+		  channel/channel.cpp\
 		  commands/user.cpp\
 		  commands/nick.cpp\
 		  commands/motd.cpp\
@@ -26,6 +27,7 @@ SRCFILES:=\
 		  commands/welcome.cpp\
 		  commands/pass.cpp\
 		  commands/mode.cpp\
+		  commands/join.cpp\
 
 # ------------------------------------------
 # Do not change anything beyond this point!

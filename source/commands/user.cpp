@@ -1,10 +1,5 @@
 #include "commands.hpp"
 
-#define SPACE ' '
-#define NUL '\0'
-#define CR '\r'
-#define LF '\n'
-
 bool checkUser(std::string usr)
 {
 	for (size_t x = 0; x < usr.length(); x ++)

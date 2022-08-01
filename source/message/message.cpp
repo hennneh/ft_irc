@@ -89,4 +89,3 @@ std::string ft::Message::serialize(void) const
 	}
 	return msg;
 }
-

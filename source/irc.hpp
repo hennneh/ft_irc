@@ -23,7 +23,9 @@
 #include "message/message.hpp"
 #include "client/client.hpp"
 #include "commands/commands.hpp"
+#include "channel/channel.hpp"
 #include "error.hpp"
+#include "channel/channel.hpp"
 
 #define TXT_FAT		"\e[1m"
 #define TXT_RED		"\e[31m"
@@ -36,6 +38,7 @@ namespace ft
 			typedef void (*cmd_func)(const ft::Message& msg, ft::Client& client, ft::IRC& irc);
 			typedef std::map<std::string, ft::Client>	connection_map;
 			typedef std::map<std::string, cmd_func>		commands_map;
+			typedef std::vector<ft::Channel> _channelVector;
 
 		protected:
 			const int			_port;
@@ -48,6 +51,7 @@ namespace ft
 		public:
 			connection_map		_connections;
 			bool				_breakloop;
+			_channelVector		_channels;
 
 			IRC(const int& port, const std::string& password);
 			~IRC();
@@ -65,6 +69,7 @@ namespace ft
 	bool isNumeric(char c);
 	bool isAlphaNumeric(char c);
 	bool isNonWhite(char c);
+	std::vector<std::string> split(const std::string & s, char);
 };
 
 #endif

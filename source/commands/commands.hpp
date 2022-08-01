@@ -34,7 +34,8 @@ namespace cmd {
 	void pass(const ft::Message& msg, ft::Client& client, ft::IRC& irc);
 	void mode(const ft::Message& msg, ft::Client& client, ft::IRC& irc);
 	void modeUsr(const ft::Message& msg, ft::Client& client, ft::IRC& irc);
-
+	void join(const ft::Message & msg, ft::Client& client, ft::IRC & irc);
+	
 	m_channel_map	_c_ft;
 	
 	void reg_ft(const char opt, m_channel_ft f)
@@ -52,6 +53,7 @@ namespace cmd {
 		reg_ft('b', m_channel::ban_msk);
 		reg_ft('v', m_channel::speak);
 	}
+	
 }
 
 #endif

@@ -6,10 +6,30 @@ ft::Channel::Channel(const std::string & name, const std::string & password)
 	this->_password = password;
 	this->_private = false;
 	this->_secret = false;
-	this->_invite-only = false;
-	this->_user-limit = 0;
+	this->_invite_only = false;
+	this->_user_limit = 0;
 	this->_moderated = false;
 }
 
 ft::Channel::~Channel()
 {}
+
+void ft::Channel::setName(const std::string & name)
+{
+	this->_name = name;
+}
+
+void ft::Channel::setPassword(const std::string & password)
+{
+	this->_password = password;
+}
+
+std::string ft::Channel::getName(void) const
+{
+	return (this->_name);
+}
+
+std::string ft::Channel::getPassword(void) const
+{
+	return (this->_password);
+}
