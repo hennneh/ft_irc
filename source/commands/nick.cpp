@@ -1,4 +1,5 @@
 #include "commands.hpp"
+#include "../irc.hpp"
 
 bool checkNick(std::string nick)
 {

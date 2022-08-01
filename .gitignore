@@ -2,5 +2,5 @@
 *.a
 ircserv
 *.dSYM
-./build/
+build/
 .vscode/
