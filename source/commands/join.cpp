@@ -18,27 +18,25 @@ void cmd::join(const ft::Message & msg, ft::Client& client, ft::IRC & irc)
 			client.sendErrMsg(ERR_NOSUCHCHANNEL);
 			return ;
 		}
-		for (size_t x = 0; x < irc._channels.size(); x ++)
+		ft::IRC::_channel_map::iterator iter = irc._channels.find(channels.at(i));
+		if (iter == irc._channels.end())
 		{
-			if (channels.at(i) == irc._channels.at(x)._name)
+			std::string pass = "";
+			if (i < passwords.size())
+				pass = passwords.at(i);
+			irc._channels.insert(std::make_pair(channels.at(i), ft::Channel(channels.at(i), pass)));
+		}
+		else
+		{
+			if (i < passwords.size())
 			{
-				if (i < passwords.size())
+				if (passwords.at(i) != iter->second._password)
 				{
-					if (passwords.at(i) != irc._channels.at(x)._password)
-					{
-						client.sendErrMsg(ERR_BADCHANNELKEY);
-						return ;
-					}
+					client.sendErrMsg(ERR_BADCHANNELKEY);
+					return ;
 				}
-				irc._channels.at(x)._clients.push_back(client);
 			}
-			if (x == irc._channels.size() - 1)
-			{
-				std::string pass = "";
-				if (i < passwords.size())
-					pass = passwords.at(i);
-				irc._channels.push_back(ft::Channel(channels.at(i), pass));
-			}
+			iter->second._clients.push_back(client);
 		}
 	}
 }

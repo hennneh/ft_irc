@@ -21,6 +21,8 @@ namespace ft
 			bool _invite_only;
 			unsigned int _user_limit;
 			bool _moderated;
+			bool __topic;
+			bool _clsd;
 			std::vector<ft::Client&> _clients;
 
 			Channel(const std::string & name, const std::string & password);

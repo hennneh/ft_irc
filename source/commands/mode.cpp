@@ -26,14 +26,17 @@ void m_channel::op_priv(ft::Client& client, ft::IRC& irc, ft::Channel& channel, 
 */
 void m_channel::prvt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
+	(void)irc;
 	client.sendmsg(ft::Message(":Option prvt:"));
 	if (!args.empty())
 	{
-		
+		client.sendErrMsg(ERR_NEEDMOREPARAMS);
+		return ;
 	}
-	(void)channel;
-	(void)sign;
-	(void)args;
+	if (sign)
+		channel._private == true;
+	else
+		channel._private == false;
 	return ;
 }
 
@@ -44,9 +47,15 @@ void m_channel::scrt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, boo
 {
 	(void)irc;
 	client.sendmsg(ft::Message(":Option scrt:"));
-	(void)channel;
-	(void)sign;
-	(void)args;
+	if (!args.empty())
+	{
+		client.sendErrMsg(ERR_NEEDMOREPARAMS);
+		return ;
+	}
+	if (sign)
+		channel._secret == true;
+	else
+		channel._secret == false;
 	return ;
 }
 
@@ -57,9 +66,15 @@ void m_channel::invt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, boo
 {
 	(void)irc;
 	client.sendmsg(ft::Message(":Option invt:"));
-	(void)channel;
-	(void)sign;
-	(void)args;
+	if (!args.empty())
+	{
+		client.sendErrMsg(ERR_NEEDMOREPARAMS);
+		return ;
+	}
+	if (sign)
+		channel._invite_only == true;
+	else
+		channel._invite_only == false;
 	return ;
 }
 
@@ -70,9 +85,15 @@ void m_channel::topic(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bo
 {
 	(void)irc;
 	client.sendmsg(ft::Message(":Option topic:"));
-	(void)channel;
-	(void)sign;
-	(void)args;
+	if (!args.empty())
+	{
+		client.sendErrMsg(ERR_NEEDMOREPARAMS);
+		return ;
+	}
+	if (sign)
+		channel.__topic == true;
+	else
+		channel.__topic == false;
 	return ;
 }
 
@@ -83,9 +104,15 @@ void m_channel::clsd(ft::Client& client, ft::IRC& irc, ft::Channel& channel, boo
 {
 	(void)irc;
 	client.sendmsg(ft::Message(":Option clsd:"));
-	(void)channel;
-	(void)sign;
-	(void)args;
+	if (!args.empty())
+	{
+		client.sendErrMsg(ERR_NEEDMOREPARAMS);
+		return ;
+	}
+	if (sign)
+		channel._clsd == true;
+	else
+		channel._clsd == false;
 	return ;
 }
 
@@ -119,21 +146,28 @@ void m_channel::speak(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bo
 void modeChannel(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {
 	bool sign = false;
-	std::string _client = msg.parameters.at(0).substr(1, msg.parameters.at(0).length() - 1);
-	if (irc._connections.find(_client) != irc._connections.end()) // change to search channel names
+	ft::IRC::_channel_map::iterator iter = irc._channels.find(msg.parameters.at(0));
+	if (iter == irc._channels.end())
 	{
 		client.sendErrMsg(ERR_NOSUCHCHANNEL);
 		return ;
 	}
-	//check usr/channel permissions
+	//check usr/channel permissions  ERR_CHANOPRIVSNEEDED
 	if (msg.parameters.at(1)[0] == '+')
 		sign = true;
 	else if (msg.parameters.at(1)[0] != '-')
 	{
-		client.sendErrMsg(IDontKow);
+		client.sendErrMsg(ERR_UMODEUNKNOWNFLAG);
 		return ;
 	}
-	
+	ft::IRC::m_channel_map::iterator cmd_itr = irc._c_ft.find(msg.parameters.at(1)[1]);
+	if (cmd_itr == irc._c_ft.end())
+	{
+		client.sendErrMsg(ERR_UNKNOWNMODE);
+		return ;
+	}
+	std::vector<std::string> args (msg.parameters.begin() + 1, msg.parameters.end());
+	cmd_itr->second(client, irc, iter->second, sign, args);
 }
 
 void mode(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
