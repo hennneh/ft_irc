@@ -2,22 +2,16 @@
 #include "commands.hpp"
 /* CHANNEL FLAGS
 [+|-] - Not 100% sure what the differance is
-o - give/take channel operator privileges;
-p - private channel flag;
-s - secret channel flag;
-i - invite-only channel flag;
-t - topic settable by channel operator only flag;
-n - no messages to channel from clients on the outside;
-b - set a ban mask to keep users out;
-v - give/take the ability to speak on a moderated channel;
-
-NOT DOING?
 m - moderated channel;
 l - set the user limit to channel;
 k - set a channel key (password).
 */
 
-void m_channel::op_priv(ft::Client& client, ft::IRC& irc, const std::string channel, bool sign, std::vector<std::string> args)
+
+/**
+ * @brief o - give/take channel operator privileges;
+ */
+void m_channel::op_priv(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
 	(void)irc;
 	client.sendmsg(ft::Message(":Option op_priv:"));
@@ -26,16 +20,27 @@ void m_channel::op_priv(ft::Client& client, ft::IRC& irc, const std::string chan
 	(void)args;
 	return ;
 }
-void m_channel::prvt(ft::Client& client, ft::IRC& irc, const std::string channel, bool sign, std::vector<std::string> args)
+
+/**
+ * @brief p - private channel flag;
+*/
+void m_channel::prvt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
-	(void)irc;
 	client.sendmsg(ft::Message(":Option prvt:"));
+	if (!args.empty())
+	{
+		
+	}
 	(void)channel;
 	(void)sign;
 	(void)args;
 	return ;
 }
-void m_channel::scrt(ft::Client& client, ft::IRC& irc, const std::string channel, bool sign, std::vector<std::string> args)
+
+/**
+ * @brief s - secret channel flag;
+*/
+void m_channel::scrt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
 	(void)irc;
 	client.sendmsg(ft::Message(":Option scrt:"));
@@ -44,7 +49,11 @@ void m_channel::scrt(ft::Client& client, ft::IRC& irc, const std::string channel
 	(void)args;
 	return ;
 }
-void m_channel::invt(ft::Client& client, ft::IRC& irc, const std::string channel, bool sign, std::vector<std::string> args)
+
+/**
+ * @brief i - invite-only channel flag;
+*/
+void m_channel::invt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
 	(void)irc;
 	client.sendmsg(ft::Message(":Option invt:"));
@@ -53,7 +62,11 @@ void m_channel::invt(ft::Client& client, ft::IRC& irc, const std::string channel
 	(void)args;
 	return ;
 }
-void m_channel::topic(ft::Client& client, ft::IRC& irc, const std::string channel, bool sign, std::vector<std::string> args)
+
+/**
+ * @brief t - topic settable by channel operator only flag;
+*/
+void m_channel::topic(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
 	(void)irc;
 	client.sendmsg(ft::Message(":Option topic:"));
@@ -62,7 +75,11 @@ void m_channel::topic(ft::Client& client, ft::IRC& irc, const std::string channe
 	(void)args;
 	return ;
 }
-void m_channel::clsd(ft::Client& client, ft::IRC& irc, const std::string channel, bool sign, std::vector<std::string> args)
+
+/**
+ * @brief n - no messages to channel from clients on the outside;
+*/
+void m_channel::clsd(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
 	(void)irc;
 	client.sendmsg(ft::Message(":Option clsd:"));
@@ -71,7 +88,11 @@ void m_channel::clsd(ft::Client& client, ft::IRC& irc, const std::string channel
 	(void)args;
 	return ;
 }
-void m_channel::ban_msk(ft::Client& client, ft::IRC& irc, const std::string channel, bool sign, std::vector<std::string> args)
+
+/**
+ * @brief b - set a ban mask to keep users out;
+*/
+void m_channel::ban_msk(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
 	(void)irc;
 	client.sendmsg(ft::Message(":Option ban_msk:"));
@@ -80,7 +101,11 @@ void m_channel::ban_msk(ft::Client& client, ft::IRC& irc, const std::string chan
 	(void)args;
 	return ;
 }
-void m_channel::speak(ft::Client& client, ft::IRC& irc, const std::string channel, bool sign, std::vector<std::string> args)
+
+/**
+ * @brief v - give/take the ability to speak on a moderated channel;
+*/
+void m_channel::speak(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
 	(void)irc;
 	client.sendmsg(ft::Message(":Option speak:"));
@@ -101,6 +126,13 @@ void modeChannel(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 		return ;
 	}
 	//check usr/channel permissions
+	if (msg.parameters.at(1)[0] == '+')
+		sign = true;
+	else if (msg.parameters.at(1)[0] != '-')
+	{
+		client.sendErrMsg(IDontKow);
+		return ;
+	}
 	
 }
 

@@ -4,23 +4,24 @@
 # include "../message/message.hpp"
 # include "../client/client.hpp"
 # include "../irc.hpp"
+# include "../channel/channel.hpp"
 
 namespace ft {
 	class IRC;
 }
 namespace m_channel {
-	void op_priv(ft::Client& client, ft::IRC& irc, const std::string channel, bool sign, std::vector<std::string> args);
-	void prvt(ft::Client& client, ft::IRC& irc, const std::string channel, bool sign, std::vector<std::string> args);
-	void scrt(ft::Client& client, ft::IRC& irc, const std::string channel, bool sign, std::vector<std::string> args);
-	void invt(ft::Client& client, ft::IRC& irc, const std::string channel, bool sign, std::vector<std::string> args);
-	void topic(ft::Client& client, ft::IRC& irc, const std::string channel, bool sign, std::vector<std::string> args);
-	void clsd(ft::Client& client, ft::IRC& irc, const std::string channel, bool sign, std::vector<std::string> args);
-	void ban_msk(ft::Client& client, ft::IRC& irc, const std::string channel, bool sign, std::vector<std::string> args);
-	void speak(ft::Client& client, ft::IRC& irc, const std::string channel, bool sign, std::vector<std::string> args);
+	void op_priv(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args);
+	void prvt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args);
+	void scrt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args);
+	void invt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args);
+	void topic(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args);
+	void clsd(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args);
+	void ban_msk(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args);
+	void speak(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args);
 }
 
 namespace cmd {
-	typedef void (*m_channel_ft)(ft::Client& client, ft::IRC& irc, const std::string channel, bool sign, std::vector<std::string> args);
+	typedef void (*m_channel_ft)(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args);
 	typedef std::map<char, m_channel_ft>		m_channel_map;
 
 	void user(const ft::Message& msg, ft::Client& client, ft::IRC& irc);

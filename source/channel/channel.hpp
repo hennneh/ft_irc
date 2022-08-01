@@ -19,10 +19,10 @@ namespace ft
 			std::string _password;
 			bool _private;
 			bool _secret;
-			bool _invite-only;
-			unsigned int _user-limit;
+			bool _invite_only;
+			unsigned int _user_limit;
 			bool _moderated;
-			std::vector<ft::client&> _clients;
+			std::vector<ft::Client&> _clients;
 	}
 }
 
