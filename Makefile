@@ -17,6 +17,7 @@ SRCFILES:=\
 		  irc.cpp\
 		  client/client.cpp\
 		  message/message.cpp\
+		  channel/channel.cpp\
 		  commands/user.cpp\
 		  commands/nick.cpp\
 		  commands/motd.cpp\
