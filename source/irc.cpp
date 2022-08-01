@@ -60,6 +60,7 @@ void	ft::IRC::run() {
 				break;
 			ft::Client client(socket, "", "", "");
 			client.setIp(&(this->_address));
+			client._raspberry = this->_password.empty(); // If no password for server, clients don't need to send PASS
 			std::pair<connection_map::iterator, bool> status = this->_connections.insert(std::make_pair(client.getIp() + "_connecting", client));
 			if (status.second == false)
 				std::cout << TXT_RED << "Duplicate Key" << TXT_NUL << std::endl;
@@ -125,8 +126,12 @@ int	ft::IRC::__check_client(ft::Client& client)
 	for(std::vector<ft::Message>::iterator msg = all_msg.begin(); msg != all_msg.end(); msg++) {
 		std::map<std::string, cmd_func>::iterator cmd_itr = this->_commands.find(msg->command);
 		std::cout << TXT_FAT << "Client " << client.getNick() << ": " << TXT_NUL << msg->serialize() << std::endl;
-		if (client.getNick().empty() || client.getUser().empty()) {
-			if (msg->command != "NICK" && msg->command != "USER" && msg->command != "PASS")
+		// TODO maybe implement the correct client return values
+		if (!client._raspberry)
+			if (msg->command != "PASS")
+				return 4;
+		if (!client._pi) {
+			if (msg->command != "NICK" && msg->command != "USER")
 				return 4;
 		}
 		if (msg->command == "DIE") {
