@@ -33,9 +33,9 @@ void m_channel::prvt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, boo
 		return ;
 	}
 	if (sign)
-		channel._private == true;
+		channel._private = true;
 	else
-		channel._private == false;
+		channel._private = false;
 	return ;
 }
 
@@ -52,9 +52,9 @@ void m_channel::scrt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, boo
 		return ;
 	}
 	if (sign)
-		channel._secret == true;
+		channel._secret = true;
 	else
-		channel._secret == false;
+		channel._secret = false;
 	return ;
 }
 
@@ -71,9 +71,9 @@ void m_channel::invt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, boo
 		return ;
 	}
 	if (sign)
-		channel._invite_only == true;
+		channel._invite_only = true;
 	else
-		channel._invite_only == false;
+		channel._invite_only = false;
 	return ;
 }
 
@@ -90,9 +90,9 @@ void m_channel::topic(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bo
 		return ;
 	}
 	if (sign)
-		channel.__topic == true;
+		channel.__topic = true;
 	else
-		channel.__topic == false;
+		channel.__topic = false;
 	return ;
 }
 
@@ -109,9 +109,9 @@ void m_channel::clsd(ft::Client& client, ft::IRC& irc, ft::Channel& channel, boo
 		return ;
 	}
 	if (sign)
-		channel._clsd == true;
+		channel._clsd = true;
 	else
-		channel._clsd == false;
+		channel._clsd = false;
 	return ;
 }
 
