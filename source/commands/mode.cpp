@@ -1,5 +1,6 @@
 
 #include "commands.hpp"
+#include "../irc.hpp"
 /* CHANNEL FLAGS
 [+|-] - Not 100% sure what the differance is
 m - moderated channel;
@@ -29,7 +30,7 @@ void m_channel::prvt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, boo
 	client.sendmsg(ft::Message(":Option prvt:"));
 	if (!args.empty())
 	{
-		client.sendErrMsg(ERR_NEEDMOREPARAMS);
+		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS);
 		return ;
 	}
 	if (sign)
@@ -48,7 +49,7 @@ void m_channel::scrt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, boo
 	client.sendmsg(ft::Message(":Option scrt:"));
 	if (!args.empty())
 	{
-		client.sendErrMsg(ERR_NEEDMOREPARAMS);
+		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS);
 		return ;
 	}
 	if (sign)
@@ -67,7 +68,7 @@ void m_channel::invt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, boo
 	client.sendmsg(ft::Message(":Option invt:"));
 	if (!args.empty())
 	{
-		client.sendErrMsg(ERR_NEEDMOREPARAMS);
+		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS);
 		return ;
 	}
 	if (sign)
@@ -86,7 +87,7 @@ void m_channel::topic(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bo
 	client.sendmsg(ft::Message(":Option topic:"));
 	if (!args.empty())
 	{
-		client.sendErrMsg(ERR_NEEDMOREPARAMS);
+		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS);
 		return ;
 	}
 	if (sign)
@@ -105,7 +106,7 @@ void m_channel::clsd(ft::Client& client, ft::IRC& irc, ft::Channel& channel, boo
 	client.sendmsg(ft::Message(":Option clsd:"));
 	if (!args.empty())
 	{
-		client.sendErrMsg(ERR_NEEDMOREPARAMS);
+		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS);
 		return ;
 	}
 	if (sign)
@@ -148,7 +149,7 @@ void modeChannel(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 	ft::IRC::_channel_map::iterator iter = irc._channels.find(msg.parameters.at(0));
 	if (iter == irc._channels.end())
 	{
-		client.sendErrMsg(ERR_NOSUCHCHANNEL);
+		client.sendErrMsg(irc._hostname, ERR_NOSUCHCHANNEL);
 		return ;
 	}
 	//check usr/channel permissions  ERR_CHANOPRIVSNEEDED
@@ -156,20 +157,20 @@ void modeChannel(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 		sign = true;
 	else if (msg.parameters.at(1)[0] != '-')
 	{
-		client.sendErrMsg(ERR_UMODEUNKNOWNFLAG);
+		client.sendErrMsg(irc._hostname, ERR_UMODEUNKNOWNFLAG);
 		return ;
 	}
-	ft::IRC::m_channel_map::iterator cmd_itr = irc._c_ft.find(msg.parameters.at(1)[1]);
+	cmd::m_channel_map::iterator cmd_itr = irc._c_ft.find(msg.parameters.at(1)[1]);
 	if (cmd_itr == irc._c_ft.end())
 	{
-		client.sendErrMsg(ERR_UNKNOWNMODE);
+		client.sendErrMsg(irc._hostname, ERR_UNKNOWNMODE);
 		return ;
 	}
 	std::vector<std::string> args (msg.parameters.begin() + 1, msg.parameters.end());
 	cmd_itr->second(client, irc, iter->second, sign, args);
   }
 
-void mode(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
+void cmd::mode(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {
 	if (msg.parameters.size() <= 2)
 	{
@@ -180,6 +181,23 @@ void mode(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 		modeChannel(msg, client, irc);
 	else
 		cmd::modeUsr(msg, client, irc);
+}
+
+void cmd::reg_ft(m_channel_map & _c_ft , const char opt, m_channel_ft f)
+{
+	_c_ft.insert(std::make_pair(opt, f));
+}
+
+void cmd::mk_map(m_channel_map & _c_ft)
+{
+	cmd::reg_ft(_c_ft, 'o', m_channel::op_priv);
+	cmd::reg_ft(_c_ft, 'p', m_channel::prvt);
+	cmd::reg_ft(_c_ft, 's', m_channel::scrt);
+	cmd::reg_ft(_c_ft, 'i', m_channel::invt);
+	cmd::reg_ft(_c_ft, 't', m_channel::topic);
+	cmd::reg_ft(_c_ft, 'n', m_channel::clsd);
+	cmd::reg_ft(_c_ft, 'b', m_channel::ban_msk);
+	cmd::reg_ft(_c_ft, 'v', m_channel::speak);
 }
 
 /*
