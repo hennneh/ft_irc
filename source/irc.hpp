@@ -38,7 +38,7 @@ namespace ft
 			typedef void (*cmd_func)(const ft::Message& msg, ft::Client& client, ft::IRC& irc);
 			typedef std::map<std::string, ft::Client>	connection_map;
 			typedef std::map<std::string, cmd_func>		commands_map;
-			typedef std::map<std::string, ft::Channel> _channel_map;
+			typedef std::map<std::string, ft::Channel>	_channel_map;
 
 		protected:
 			const int			_port;
@@ -52,7 +52,8 @@ namespace ft
 			connection_map		_connections;
 			bool				_breakloop;
 			_channel_map		_channels;
-			cmd::m_channel_map		_c_ft;
+			cmd::m_channel_map	_c_ft;
+			cmd::m_user_map		_u_ft;
 			std::string			_hostname;
 
 			IRC(const int& port, const std::string& password);

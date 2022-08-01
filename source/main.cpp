@@ -23,4 +23,3 @@ int	main(int argc, char **argv)
 	cmd::mk_map(irc._c_ft);
 	irc.run();
 }
-
