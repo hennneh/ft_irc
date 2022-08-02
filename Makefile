@@ -82,7 +82,7 @@ run: re
 ifeq ($(OS),Linux)
 	valgrind -q --leak-check=full --errors-for-leak-kinds=all $(NAME) 6669 ""
 else ifeq ($(OS),Darwin)
-	leaks -q --atExit -- $(NAME) 6669 "Henne Suxs"
+	leaks -q --atExit -- $(NAME) 6669 "h"
 else
 	$(NAME) 6669 ""
 endif

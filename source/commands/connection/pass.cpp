@@ -16,6 +16,6 @@ void cmd::pass(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 	}
 	if (msg.parameters.at(0) == irc.getPass())
 		client._raspberry = true;
-	std::cout << "Client._raspberry = " << client._raspberry << std::endl;
+	//SEND NOTICE
 	return ;
 }
