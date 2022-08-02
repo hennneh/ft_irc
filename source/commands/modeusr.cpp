@@ -47,6 +47,7 @@ void m_user::operant(ft::Client& client, ft::Channel& channel, bool sign, std::v
 void cmd::modeUsr(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {
 	bool sign = false;
+	(void) sign;
 	// ft::IRC::_user_map::iterator iter = irc._users.find(msg.parameters.at(0));
 	// if (iter == irc._users.end())
 	// {
