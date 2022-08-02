@@ -39,6 +39,6 @@ void cmd::join(const ft::Message & msg, ft::Client& client, ft::IRC & irc)
 			}
 		}
 		iter->second._clients.push_back(client);
-		client.sendmsg(std::string("NOTICE :You connected to channel"));
+		client.sendmsg(std::string(":" + client.getFullId() + " " + msg.command + " " + channels.at(i)));
 	}
 }
