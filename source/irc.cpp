@@ -156,7 +156,7 @@ int	ft::IRC::__check_client(ft::Client& client)
 		if (cmd_itr == this->_commands.end())
 		{
 			// Haven't found command
-			client.sendErrMsg(this->_hostname, ERR_UNKNOWNCOMMAND);
+			client.sendErrMsg(this->_hostname, ERR_UNKNOWNCOMMAND, msg->command);
 			return 3;
 		}
 		cmd_itr->second(*msg, client, *this);

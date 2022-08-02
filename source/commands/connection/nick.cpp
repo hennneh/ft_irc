@@ -14,11 +14,6 @@ bool checkNick(std::string nick)
 void cmd::nick(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {
 	(void)irc;
-	if (!client._raspberry)
-	{
-		client.sendErrMsg(irc._hostname, ERR_NOSUCHNICK);
-		return ;
-	}
 	if (msg.parameters.size() != 1)
 	{
 		client.sendErrMsg(irc._hostname, ERR_NONICKNAMEGIVEN);
@@ -26,13 +21,13 @@ void cmd::nick(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 	}
 	if (msg.parameters.at(0).empty() || !checkNick(msg.parameters.at(0)))
 	{
-		client.sendErrMsg(irc._hostname, ERR_ERRONEUSNICKNAME);
+		client.sendErrMsg(irc._hostname, ERR_ERRONEUSNICKNAME, msg.parameters.at(0));
 		return ;
 	}
 	if (irc._connections.find(msg.parameters.at(0)) != irc._connections.end())
 	{
 		// replacement for network-wide ERR_NICKCOLLISION
-		client.sendErrMsg(irc._hostname, ERR_NICKNAMEINUSE);
+		client.sendErrMsg(irc._hostname, ERR_NICKNAMEINUSE, msg.parameters.at(0));
 		return ;
 	}
 	client.setNick(msg.parameters.at(0));
