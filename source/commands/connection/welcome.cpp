@@ -1,4 +1,4 @@
-#include "commands.hpp"
+#include "../commands.hpp"
 #include "../irc.hpp"
 
 void cmd::welcome(const ft::Message& msg, ft::Client& client, ft::IRC& irc)

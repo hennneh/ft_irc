@@ -1,5 +1,5 @@
 
-#include "commands.hpp"
+#include "../commands.hpp"
 #include "../irc.hpp"
 /* CHANNEL FLAGS
 [+|-] - Not 100% sure what the differance is

@@ -1,5 +1,5 @@
 
-#include "commands.hpp"
+#include "../commands.hpp"
 #include "../irc.hpp"
 
 /*USER FLAGS

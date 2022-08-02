@@ -18,17 +18,18 @@ SRCFILES:=\
 		  client/client.cpp\
 		  message/message.cpp\
 		  channel/channel.cpp\
-		  commands/user.cpp\
-		  commands/nick.cpp\
+		  commands/channel/join.cpp\
+		  commands/channel/mode.cpp\
+		  commands/channel/modeusr.cpp\
+		  commands/connection/nick.cpp\
+		  commands/connection/pass.cpp\
+		  commands/connection/quit.cpp\
+		  commands/connection/user.cpp\
+		  commands/connection/welcome.cpp\
+		  commands/message/ping.cpp\
+		  commands/message/privmsg.cpp\
+		  commands/server/welcome.cpp\
 		  commands/motd.cpp\
-		  commands/quit.cpp\
-		  commands/privmsg.cpp\
-		  commands/ping.cpp\
-		  commands/welcome.cpp\
-		  commands/pass.cpp\
-		  commands/join.cpp\
-		  commands/modeusr.cpp\
-		  commands/mode.cpp\
 
 # ------------------------------------------
 # Do not change anything beyond this point!
