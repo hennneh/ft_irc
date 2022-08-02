@@ -26,6 +26,7 @@ SRCFILES:=\
 		  commands/connection/quit.cpp\
 		  commands/connection/user.cpp\
 		  commands/connection/welcome.cpp\
+		  commands/message/notice.cpp\
 		  commands/message/ping.cpp\
 		  commands/message/privmsg.cpp\
 		  commands/motd.cpp\

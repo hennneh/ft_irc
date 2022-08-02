@@ -47,6 +47,7 @@ namespace cmd {
 	void modeUsr(const ft::Message& msg, ft::Client& client, ft::IRC& irc);
 	void join(const ft::Message & msg, ft::Client& client, ft::IRC & irc);
 	void who(const ft::Message& msg, ft::Client& client, ft::IRC& irc);
+	void notice(const ft::Message& msg, ft::Client& client, ft::IRC& irc);
 
 	void reg_ft(m_channel_map & _c_ft , const char opt, m_channel_ft f);
 	void mk_map(m_channel_map & _c_ft);
