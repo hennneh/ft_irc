@@ -1,5 +1,5 @@
 #include "../commands.hpp"
-#include "../..irc.hpp"
+#include "../../irc.hpp"
 #include <iostream>
 
 void cmd::pass(const ft::Message& msg, ft::Client& client, ft::IRC& irc)

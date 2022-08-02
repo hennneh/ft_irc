@@ -1,6 +1,6 @@
 
 #include "../commands.hpp"
-#include "../..irc.hpp"
+#include "../../irc.hpp"
 
 /*USER FLAGS
 [+|-] - Not 100% sure what the differance is

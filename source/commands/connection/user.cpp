@@ -1,5 +1,5 @@
 #include "../commands.hpp"
-#include "../..irc.hpp"
+#include "../../irc.hpp"
 
 bool checkUser(std::string usr)
 {
