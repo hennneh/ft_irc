@@ -25,7 +25,7 @@ void cmd::join(const ft::Message & msg, ft::Client& client, ft::IRC & irc)
 			std::string pass = "";
 			if (i < passwords.size())
 				pass = passwords.at(i);
-			irc._channels.insert(std::make_pair(channels.at(i), ft::Channel(channels.at(i), pass)));
+			iter = irc._channels.insert(std::make_pair(channels.at(i), ft::Channel(channels.at(i), pass))).first;
 		}
 		else
 		{
@@ -37,7 +37,8 @@ void cmd::join(const ft::Message & msg, ft::Client& client, ft::IRC & irc)
 						return ;
 				}
 			}
-			iter->second._clients.push_back(client);
 		}
+		iter->second._clients.push_back(client);
+		client.sendmsg(std::string("NOTICE :You connected to channel"));
 	}
 }
