@@ -28,7 +28,6 @@ SRCFILES:=\
 		  commands/connection/welcome.cpp\
 		  commands/message/ping.cpp\
 		  commands/message/privmsg.cpp\
-		  commands/server/welcome.cpp\
 		  commands/motd.cpp\
 
 # ------------------------------------------
