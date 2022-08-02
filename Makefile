@@ -29,6 +29,7 @@ SRCFILES:=\
 		  commands/message/ping.cpp\
 		  commands/message/privmsg.cpp\
 		  commands/motd.cpp\
+		  commands/queries/who.cpp\
 
 # ------------------------------------------
 # Do not change anything beyond this point!
