@@ -16,6 +16,6 @@ void cmd::pass(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 	}
 	if (msg.parameters.at(0) == irc.getPass())
 		client._raspberry = true;
-	//SEND NOTICE
+	client.sendmsg(std::string(":" +  irc._hostname + " NOTICE " + client.getNick() + " :GoodPass"));
 	return ;
 }
