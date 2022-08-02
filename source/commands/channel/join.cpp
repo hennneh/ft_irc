@@ -5,7 +5,7 @@ void cmd::join(const ft::Message & msg, ft::Client& client, ft::IRC & irc)
 {
 	if (msg.parameters.empty() || msg.parameters.size() > 2)
 	{
-		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS);
+		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS, msg.command);
 		return ;
 	}
 	std::vector<std::string> channels = ft::split(msg.parameters.at(0), ',');
@@ -16,7 +16,7 @@ void cmd::join(const ft::Message & msg, ft::Client& client, ft::IRC & irc)
 	{
 		if (channels.at(i)[0] != '#' && channels.at(i)[0] != '&')
 		{
-			client.sendErrMsg(irc._hostname, ERR_NOSUCHCHANNEL);
+			client.sendErrMsg(irc._hostname, ERR_NOSUCHCHANNEL, channels.at(i));
 			return ;
 		}
 		ft::IRC::_channel_map::iterator iter = irc._channels.find(channels.at(i));
@@ -33,7 +33,7 @@ void cmd::join(const ft::Message & msg, ft::Client& client, ft::IRC & irc)
 			{
 				if (passwords.at(i) != iter->second._password)
 				{
-						client.sendErrMsg(irc._hostname, ERR_BADCHANNELKEY);
+						client.sendErrMsg(irc._hostname, ERR_BADCHANNELKEY, channels.at(i));
 						return ;
 				}
 			}

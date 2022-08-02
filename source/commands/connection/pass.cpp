@@ -6,7 +6,7 @@ void cmd::pass(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {
 	if (msg.parameters.size() != 1)
 	{
-		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS);
+		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS, msg.command);
 		return ;
 	}
 	if (client._raspberry)

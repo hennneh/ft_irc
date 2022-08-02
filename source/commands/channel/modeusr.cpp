@@ -51,7 +51,7 @@ void cmd::modeUsr(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 	// ft::IRC::_user_map::iterator iter = irc._users.find(msg.parameters.at(0));
 	// if (iter == irc._users.end())
 	// {
-	// 	client.sendErrMsg(irc._hostname, ERR_NOSUCHuser);
+	// 	client.sendErrMsg(irc._hostname, ERR_NOSUCHUSER); //maybe add args
 	// 	return ;
 	// }
 	// //check usr/user permissions  ERR_CHANOPRIVSNEEDED
@@ -59,13 +59,13 @@ void cmd::modeUsr(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 	// 	sign = true;
 	// else if (msg.parameters.at(1)[0] != '-')
 	// {
-	// 	client.sendErrMsg(irc._hostname, ERR_UMODEUNKNOWNFLAG);
+	// 	client.sendErrMsg(irc._hostname, ERR_UMODEUNKNOWNFLAG); //maybe add args
 	// 	return ;
 	// }
 	// cmd::m_user_map::iterator cmd_itr = irc._c_ft.find(msg.parameters.at(1)[1]);
 	// if (cmd_itr == irc._c_ft.end())
 	// {
-	// 	client.sendErrMsg(irc._hostname, ERR_UNKNOWNMODE);
+	// 	client.sendErrMsg(irc._hostname, ERR_UNKNOWNMODE); //maybe add args
 	// 	return ;
 	// }
 	// std::vector<std::string> args (msg.parameters.begin() + 1, msg.parameters.end());
@@ -73,7 +73,7 @@ void cmd::modeUsr(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 	if (irc._connections.find(msg.parameters.at(0)) != irc._connections.end())
 	{
 		// replacement for network-wide ERR_NICKCOLLISION
-		client.sendErrMsg(irc._hostname, ERR_NOSUCHNICK);
+		client.sendErrMsg(irc._hostname, ERR_NOSUCHNICK, msg.parameters.at(0));
 		return ;
 	}
 	return ;
