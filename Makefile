@@ -21,6 +21,7 @@ SRCFILES:=\
 		  commands/channel/join.cpp\
 		  commands/channel/mode.cpp\
 		  commands/channel/modeusr.cpp\
+		  commands/channel/topic.cpp\
 		  commands/connection/nick.cpp\
 		  commands/connection/pass.cpp\
 		  commands/connection/quit.cpp\

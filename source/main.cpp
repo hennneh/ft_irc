@@ -22,6 +22,7 @@ int	main(int argc, char **argv)
 	irc.reg_cmd("JOIN", cmd::join);
 	irc.reg_cmd("WHO", cmd::who);
 	irc.reg_cmd("NOTICE", cmd::notice);
+	irc.reg_cmd("TOPIC", cmd::topic);
 
 	cmd::mk_map(irc._c_ft);
 	irc.run();
