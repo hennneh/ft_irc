@@ -24,6 +24,7 @@ int	main(int argc, char **argv)
 	irc.reg_cmd("NOTICE", cmd::notice);
 	irc.reg_cmd("TOPIC", cmd::topic);
 	irc.reg_cmd("NAMES", cmd::names);
+	irc.reg_cmd("PART", cmd::part);
 
 	cmd::mk_map(irc._c_ft);
 	cmd::mk_map(irc._u_ft);
