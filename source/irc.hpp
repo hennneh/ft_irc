@@ -25,6 +25,7 @@
 #include "commands/commands.hpp"
 #include "channel/channel.hpp"
 #include "error.hpp"
+#include "reply.hpp"
 #include "channel/channel.hpp"
 
 #define TXT_FAT		"\e[1m"
