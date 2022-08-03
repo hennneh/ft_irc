@@ -25,5 +25,5 @@ void cmd::notice(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 	params.push_back(target.getNick());
 	params.insert(params.end(), msg.parameters.begin() + 1, msg.parameters.end());
 	ft::Message answer(client.getFullId(), msg.command, params);
-	target.sendmsg(answer);
+	target.sendMsg(answer);
 }

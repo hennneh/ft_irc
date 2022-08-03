@@ -73,6 +73,7 @@ namespace ft
 	bool isAlphaNumeric(char c);
 	bool isNonWhite(char c);
 	std::vector<std::string> split(const std::string & s, char);
+	bool isChannel(const std::string& s);
 };
 
 #endif

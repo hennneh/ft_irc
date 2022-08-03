@@ -37,7 +37,7 @@ namespace ft {
 			void setFull(const std::string& full);
 			void setSocket(const int& socket);
 			void setIp(struct sockaddr_in *addr);
-			void sendmsg(const ft::Message& msg);
+			void sendMsg(const ft::Message& msg);
 			void sendErrMsg(const std::string& hostname, const std::string& err);
 			void sendErrMsg(const std::string& hostname, const std::string& err, const std::string& s);
 			void sendErrMsg(const std::string& hostname, const std::string& err, const std::string& s, const std::string& c);

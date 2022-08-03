@@ -40,6 +40,8 @@ void ft::Channel::sendMsg(const ft::Message & msg)
 {
 	for (std::vector<ft::Client>::iterator nbr = this->_clients.begin(); nbr != this->_clients.end(); ++nbr)
 	{
-		nbr->sendmsg(msg);
+		if (nbr->getFullId() == msg.prefix)
+			continue;
+		nbr->sendMsg(msg);
 	}
 }

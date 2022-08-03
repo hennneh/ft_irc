@@ -2,8 +2,8 @@
 #ifndef ERROR_HPP
 # define ERROR_HPP
 
-/**" 401 <nickname> :No such nick/channel"*/
-#define ERR_NOSUCHNICK " 401 :No such nick/channel"
+/** " 401 <nickname> :No such nick/channel"*/
+#define ERR_NOSUCHNICK " 401 <nickname> :No such nick/channel"
 
 /** " 402 <server name> :No such server"*/
 #define ERR_NOSUCHSERVER " 402 <server name> :No such server"

@@ -79,5 +79,11 @@ std::vector<std::string> ft::split(const std::string & s, char delimiter)
 		original.erase(0, x + 1);
 	}
 	return (substrings);
+}
 
+bool ft::isChannel(const std::string& s)
+{
+	if (s[0] == '#' || s[0] == '&')
+		return true;
+	return false;
 }

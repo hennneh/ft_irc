@@ -91,7 +91,7 @@ void ft::Client::setIp(struct sockaddr_in *addr)
 	this->_ip = inet_ntoa((struct in_addr)addr->sin_addr);
 }
 
-void ft::Client::sendmsg(const ft::Message& msg)
+void ft::Client::sendMsg(const ft::Message& msg)
 {
 	std::string msgstr(msg.serialize());
 	send(this->getSocket(), (msgstr + "\r\n").c_str(), msgstr.length() + 2, 0);
@@ -110,7 +110,7 @@ void ft::Client::sendErrMsg(const std::string& hostname, const std::string& err)
 	if (err.at(0) != ' ')
 		msg += " ";
 	msg += err;
-	this->sendmsg(msg);
+	this->sendMsg(msg);
 }
 
 /**
@@ -129,7 +129,7 @@ void ft::Client::sendErrMsg(const std::string& hostname, const std::string& err,
 	if (err.at(0) != ' ')
 		msg = " " + msg;
 	msg = ":" + hostname + msg;
-	this->sendmsg(msg);
+	this->sendMsg(msg);
 }
 
 /**
@@ -151,5 +151,5 @@ void ft::Client::sendErrMsg(const std::string& hostname, const std::string& err,
 	if (err.at(0) != ' ')
 		msg = " " + msg;
 	msg = ":" + hostname + msg;
-	this->sendmsg(msg);
+	this->sendMsg(msg);
 }
