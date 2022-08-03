@@ -1,12 +1,12 @@
-#include "commands.hpp"
-#include "../irc.hpp"
+#include "../commands.hpp"
+#include "../../irc.hpp"
 #include <iostream>
 
 void cmd::pass(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {
 	if (msg.parameters.size() != 1)
 	{
-		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS);
+		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS, msg.command);
 		return ;
 	}
 	if (client._raspberry)
@@ -16,6 +16,6 @@ void cmd::pass(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 	}
 	if (msg.parameters.at(0) == irc.getPass())
 		client._raspberry = true;
-	std::cout << "Client._raspberry = " << client._raspberry << std::endl;
+	client.sendmsg(std::string(":" +  irc._hostname + " NOTICE " + client.getNick() + " :GoodPass"));
 	return ;
 }

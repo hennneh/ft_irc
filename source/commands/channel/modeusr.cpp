@@ -1,6 +1,6 @@
 
-#include "commands.hpp"
-#include "../irc.hpp"
+#include "../commands.hpp"
+#include "../../irc.hpp"
 
 /*USER FLAGS
 [+|-] add remove status bool

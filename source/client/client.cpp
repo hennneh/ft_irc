@@ -105,11 +105,58 @@ void ft::Client::sendmsg(const ft::Message& msg)
 	std::cout << "Client " << this->getNick() << " sending: '" << msgstr << "\\r\\n'" << std::endl;
 }
 
+/**
+ * @brief To send Error Message with no additional arguments
+ * 
+ * @param hostname IP
+ * @param err Error macro
+ */
 void ft::Client::sendErrMsg(const std::string& hostname, const std::string& err)
 {
 	std::string msg = ":" + hostname;
 	if (err.at(0) != ' ')
 		msg += " ";
 	msg += err;
+	this->sendmsg(msg);
+}
+
+/**
+ * @brief To send Error Message with one additional argument
+ * 
+ * @param hostname IP
+ * @param err Error macro
+ * @param s <channel> / <nickname> / ...
+ */
+void ft::Client::sendErrMsg(const std::string& hostname, const std::string& err, const std::string& s)
+{
+	std::string msg = err;
+
+	msg.insert(msg.find('<'), s);
+	msg.erase(msg.find('<'), msg.find('>') - msg.find('<') + 1);
+	if (err.at(0) != ' ')
+		msg = " " + msg;
+	msg = ":" + hostname + msg;
+	this->sendmsg(msg);
+}
+
+/**
+ * @brief To send Error Message with two additional argument
+ * 
+ * @param hostname IP
+ * @param err Error macro
+ * @param s <channel> / <nickname> / ...
+ * @param c <channel> / <nickname> / ...
+ */
+void ft::Client::sendErrMsg(const std::string& hostname, const std::string& err, const std::string& s, const std::string& c)
+{
+	std::string msg = err;
+
+	msg.insert(msg.find('<'), s);
+	msg.erase(msg.find('<'), msg.find('>') - msg.find('<') + 1);
+	msg.insert(msg.find('<'), c);
+	msg.erase(msg.find('<'), msg.find('>') - msg.find('<') + 1);
+	if (err.at(0) != ' ')
+		msg = " " + msg;
+	msg = ":" + hostname + msg;
 	this->sendmsg(msg);
 }

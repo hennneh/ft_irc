@@ -37,6 +37,7 @@ namespace ft
 			void setPassword(const std::string & password);
 			std::string getName(void) const;
 			std::string getPassword() const;
+			void sendMsg(const ft::Message & msg);
 	};
 }
 
