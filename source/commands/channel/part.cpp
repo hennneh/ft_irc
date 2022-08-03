@@ -18,10 +18,9 @@ void cmd::part(const ft::Message & msg, ft::Client & client, ft::IRC & irc)
 			client.sendErrMsg(irc._hostname, ERR_NOSUCHCHANNEL, c.at(i));
 			continue ;
 		}
-		std::vector<ft::Client>::iterator it_client = it->second._clients.begin();
-		for (; it_client < it->second._clients.end(); ++it_client)
+		for (ft::Channel::clients_map::iterator it_client = it->second._clients.begin(); it_client != it->second._clients.end(); ++it_client)
 		{
-			if (it_client->getNick() == client.getNick())
+			if (it_client->second.client.getNick() == client.getNick())
 			{
 				it->second._clients.erase(it_client);
 				client.sendMsg(std::string(":" + client.getFullId() + " " + msg.command + " " + c.at(i)));
