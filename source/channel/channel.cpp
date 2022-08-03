@@ -38,10 +38,10 @@ std::string ft::Channel::getPassword(void) const
 
 void ft::Channel::sendMsg(const ft::Message & msg)
 {
-	for (std::vector<ft::Client>::iterator nbr = this->_clients.begin(); nbr != this->_clients.end(); ++nbr)
+	for (clients_map::iterator nbr = this->_clients.begin(); nbr != this->_clients.end(); ++nbr)
 	{
-		if (nbr->getFullId() == msg.prefix)
+		if (nbr->second.client.getFullId() == msg.prefix)
 			continue;
-		nbr->sendMsg(msg);
+		nbr->second.client.sendMsg(msg);
 	}
 }

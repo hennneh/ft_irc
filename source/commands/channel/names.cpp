@@ -3,7 +3,7 @@
 
 void list_names(ft::Channel& chan, ft::Client& client, ft::IRC& irc)
 {
-	for(std::vector<ft::Client>::iterator itr = chan._clients.begin(); itr != chan._clients.end(); itr++)
+	for(ft::Channel::clients_map::iterator itr = chan._clients.begin(); itr != chan._clients.end(); itr++)
 	{
 		std::vector<std::string> params;
 		if (chan._private)
@@ -14,15 +14,13 @@ void list_names(ft::Channel& chan, ft::Client& client, ft::IRC& irc)
 			params.push_back("=");
 		params.push_back(chan._name); // Channel name
 		// Has the Client voice rights
-		ft::Channel::_rights::iterator v_it = chan.speak.find(itr->getNick());
-		ft::Channel::_rights::iterator op_it = chan.op_priv.find(itr->getNick());
-		 if (op_it != chan.op_priv.end() && op_it->second == true)
-			params.push_back("+" + itr->getNick() + " ");
+		if (itr->second.speak == true)
+			params.push_back("+" + itr->second.client.getNick() + " ");
 		// Has the Client Operator privileges
-		 else if (v_it != chan.speak.end() && v_it->second == true)
-			params.push_back("@" + itr->getNick() + " ");
+		else if (itr->second.op_priv == true)
+			params.push_back("@" + itr->second.client.getNick() + " ");
 		else
-			params.push_back(itr->getNick() + " ");
+			params.push_back(itr->second.client.getNick() + " ");
 		client.sendErrMsg(irc._hostname, RPL_NAMREPLY, params);
 	}
 }
