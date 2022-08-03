@@ -15,12 +15,13 @@ namespace ft
 
 			std::string				_name;
 			std::string				_password;
+			std::string				_topic;
 			bool					_private;
 			bool					_secret;
 			bool					_invite_only;
 			unsigned int			_user_limit;
 			bool					_moderated;
-			bool					__topic;
+			bool					__topic_op; //std = false, true means only op can
 			bool					_clsd;
 			std::vector<ft::Client>	_clients;
 			_rights					op_priv;	//standart false
