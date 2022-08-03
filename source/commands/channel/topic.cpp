@@ -9,6 +9,7 @@ void cmd::topic(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS);
 		return;
 	}
+	
 	// Check privileges
 	// Check if on channel
 	// Check if Topic
