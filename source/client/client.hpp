@@ -41,6 +41,7 @@ namespace ft {
 			void sendErrMsg(const std::string& hostname, const std::string& err);
 			void sendErrMsg(const std::string& hostname, const std::string& err, const std::string& s);
 			void sendErrMsg(const std::string& hostname, const std::string& err, const std::string& s, const std::string& c);
+			void sendErrMsg(const std::string& hostname, const std::string& err, std::vector<std::string> args);
 
 			bool	_pi; //autheticated, Good Nick
 			bool	_raspberry; //authorised, Good Pass

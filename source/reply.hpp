@@ -100,8 +100,8 @@
 /** "315 RPL_ENDOFWHO <name> :End of WHO list" */
 #define RPL_ENDOFWHO "315 <name> :End of WHO list"
 
-/** "353 RPL_NAMREPLY <channeltype> <channel> :<userflag> <nick>" */
-#define RPL_NAMREPLY "353 <channeltype> <channel> :<userflag> <nick>"
+/** "353 RPL_NAMREPLY <channeltype> <channel> :<nickwithflag>" */
+#define RPL_NAMREPLY "353 <channeltype> <channel> :<nickwithflag>"
 
 /** "366 RPL_ENDOFNAMES <channel> :End of NAMES list" */
 #define RPL_ENDOFNAMES "366 <channel> :End of NAMES list"

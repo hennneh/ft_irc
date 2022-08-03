@@ -56,6 +56,8 @@ namespace ft
 			cmd::m_channel_map	_c_ft;
 			cmd::m_user_map		_u_ft;
 			std::string			_hostname;
+			std::string			_version;
+			std::string			_motd;
 
 			IRC(const int& port, const std::string& password);
 			~IRC();
