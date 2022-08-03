@@ -3,83 +3,91 @@
 #include "../../irc.hpp"
 
 /*USER FLAGS
-[+|-] - Not 100% sure what the differance is
+[+|-] add remove status bool
 i - marks a users as invisible;
 s - marks a user for receipt of server notices;
 w - user receives wallops;
 o - operator flag.
 */
 
-
-void m_user::invis(ft::Client& client, ft::Channel& channel, bool sign, std::vector<std::string> args)
+void m_user::invis(ft::Client& client, ft::IRC& irc, bool sign, std::vector<std::string> args)
 {
-	(void) client;
-	(void) channel;
-	(void) sign;
+	(void) irc;
 	(void) args;
+	if (sign)
+		client._invis = true;
+	else
+		client._invis = false;
 }
 
-void m_user::servnote(ft::Client& client, ft::Channel& channel, bool sign, std::vector<std::string> args)
+void m_user::servnote(ft::Client& client, ft::IRC& irc, bool sign, std::vector<std::string> args)
 {
-	(void) client;
-	(void) channel;
-	(void) sign;
+	(void) irc;
 	(void) args;
+	if (sign)
+		client._snote = true;
+	else
+		client._snote = false;
 }
 
-void m_user::w_all_op(ft::Client& client, ft::Channel& channel, bool sign, std::vector<std::string> args)
+void m_user::w_all_op(ft::Client& client, ft::IRC& irc, bool sign, std::vector<std::string> args)
 {
-	(void) client;
-	(void) channel;
-	(void) sign;
+	(void) irc;
 	(void) args;
+	if (sign)
+		client._wall = true;
+	else
+		client._wall = false;
 }
 
-void m_user::operant(ft::Client& client, ft::Channel& channel, bool sign, std::vector<std::string> args)
+void m_user::operant(ft::Client& client, ft::IRC& irc, bool sign, std::vector<std::string> args)
 {
-	(void) client;
-	(void) channel;
-	(void) sign;
+	(void) irc;
 	(void) args;
+	if (!sign)
+		client._operator = false;
 }
 
 
 void cmd::modeUsr(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {
-	bool sign = false;
-	(void) sign;
-	// ft::IRC::_user_map::iterator iter = irc._users.find(msg.parameters.at(0));
-	// if (iter == irc._users.end())
-	// {
-	// 	client.sendErrMsg(irc._hostname, ERR_NOSUCHUSER); //maybe add args
-	// 	return ;
-	// }
-	// //check usr/user permissions  ERR_CHANOPRIVSNEEDED
-	// if (msg.parameters.at(1)[0] == '+')
-	// 	sign = true;
-	// else if (msg.parameters.at(1)[0] != '-')
-	// {
-	// 	client.sendErrMsg(irc._hostname, ERR_UMODEUNKNOWNFLAG); //maybe add args
-	// 	return ;
-	// }
-	// cmd::m_user_map::iterator cmd_itr = irc._c_ft.find(msg.parameters.at(1)[1]);
-	// if (cmd_itr == irc._c_ft.end())
-	// {
-	// 	client.sendErrMsg(irc._hostname, ERR_UNKNOWNMODE); //maybe add args
-	// 	return ;
-	// }
-	// std::vector<std::string> args (msg.parameters.begin() + 1, msg.parameters.end());
-	// cmd_itr->second(client, irc, iter->second, sign, args);
-	if (irc._connections.find(msg.parameters.at(0)) != irc._connections.end())
+	ft::IRC::connection_map::iterator iter = irc._connections.find(msg.parameters.at(0));
+	if (iter == irc._connections.end())
 	{
-		// replacement for network-wide ERR_NICKCOLLISION
-		client.sendErrMsg(irc._hostname, ERR_NOSUCHNICK, msg.parameters.at(0));
+		client.sendErrMsg(irc._hostname, ERR_NOSUCHNICK);
 		return ;
 	}
+	if (msg.parameters.at(0) != client.getNick())
+	{
+		client.sendErrMsg(irc._hostname, ERR_USERSDONTMATCH);
+		return ;
+	}
+	unsigned int	i = 1;
+	bool sign;
+	cmd::m_user_map::iterator cmd_itr;
+	do
+	{
+		sign = false;
+		if (msg.parameters.at(i)[0] == '+')
+			sign = true;
+		else if (msg.parameters.at(i)[0] != '-')
+		{
+			client.sendErrMsg(irc._hostname, ERR_UMODEUNKNOWNFLAG);
+			return ;
+		}
+		cmd_itr = irc._u_ft.find((msg.parameters.at(i))[1]);
+		if (cmd_itr == irc._u_ft.end())
+		{
+			client.sendErrMsg(irc._hostname, ERR_UNKNOWNMODE);
+			return ;
+		}
+		std::vector<std::string> args (msg.parameters.begin() + i, msg.parameters.end());
+		cmd_itr->second(client, irc, sign, args);
+	}while ((msg.parameters.size()) - 1 > i++);
 	return ;
 }
 
-void cmd::reg_ft(m_user_map & _u_ft , const char opt, m_user_ft f)
+void cmd::reg_ft(m_user_map & _u_ft, const char opt, m_user_ft f)
 {
 	_u_ft.insert(std::make_pair(opt, f));
 }
