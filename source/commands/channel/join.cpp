@@ -29,12 +29,16 @@ void cmd::join(const ft::Message & msg, ft::Client& client, ft::IRC & irc)
 		}
 		else
 		{
-			if (i < passwords.size())
+			if (iter->second._password.empty() == false) //If channel password is not empty
 			{
-				if (passwords.at(i) != iter->second._password)
+				if (i < passwords.size() && passwords.at(i) == iter->second._password)
 				{
-						client.sendErrMsg(irc._hostname, ERR_BADCHANNELKEY, channels.at(i));
-						return ;
+					client.sendMsg(":" + irc._hostname + " NOTICE " + client.getNick() + " :Channel Key correct");
+				}
+				else
+				{
+					client.sendErrMsg(irc._hostname, ERR_BADCHANNELKEY, channels.at(i));
+					return ;
 				}
 			}
 		}
