@@ -12,40 +12,45 @@ o - operator flag.
 
 void m_user::invis(ft::Client& client, ft::IRC& irc, bool sign, std::vector<std::string> args)
 {
-	(void) client;
 	(void) irc;
-	(void) sign;
 	(void) args;
+	if (sign)
+		client._invis = true;
+	else
+		client._invis = false;
 }
 
 void m_user::servnote(ft::Client& client, ft::IRC& irc, bool sign, std::vector<std::string> args)
 {
-	(void) client;
 	(void) irc;
-	(void) sign;
 	(void) args;
+	if (sign)
+		client._snote = true;
+	else
+		client._snote = false;
 }
 
 void m_user::w_all_op(ft::Client& client, ft::IRC& irc, bool sign, std::vector<std::string> args)
 {
-	(void) client;
 	(void) irc;
-	(void) sign;
 	(void) args;
+	if (sign)
+		client._wall = true;
+	else
+		client._wall = false;
 }
 
 void m_user::operant(ft::Client& client, ft::IRC& irc, bool sign, std::vector<std::string> args)
 {
-	(void) client;
 	(void) irc;
-	(void) sign;
 	(void) args;
+	if (!sign)
+		client._operator = false;
 }
 
 
 void cmd::modeUsr(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {
-	bool sign = false;
 	ft::IRC::connection_map::iterator iter = irc._connections.find(msg.parameters.at(0));
 	if (iter == irc._connections.end())
 	{
@@ -57,22 +62,28 @@ void cmd::modeUsr(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 		client.sendErrMsg(irc._hostname, ERR_USERSDONTMATCH);
 		return ;
 	}
-	//check usr/user permissions  ERR_CHANOPRIVSNEEDED
-	if (msg.parameters.at(1)[0] == '+')
-		sign = true;
-	else if (msg.parameters.at(1)[0] != '-')
+	unsigned int	i = 1;
+	bool sign;
+	cmd::m_user_map::iterator cmd_itr;
+	do
 	{
-		client.sendErrMsg(irc._hostname, ERR_UMODEUNKNOWNFLAG);
-		return ;
-	}
-	cmd::m_user_map::iterator cmd_itr = irc._u_ft.find(msg.parameters.at(1)[1]);
-	if (cmd_itr == irc._u_ft.end())
-	{
-		client.sendErrMsg(irc._hostname, ERR_UNKNOWNMODE);
-		return ;
-	}
-	std::vector<std::string> args (msg.parameters.begin() + 1, msg.parameters.end());
-	cmd_itr->second(client, irc, sign, args);
+		sign = false;
+		if (msg.parameters.at(i)[0] == '+')
+			sign = true;
+		else if (msg.parameters.at(i)[0] != '-')
+		{
+			client.sendErrMsg(irc._hostname, ERR_UMODEUNKNOWNFLAG);
+			return ;
+		}
+		cmd_itr = irc._u_ft.find((msg.parameters.at(i))[1]);
+		if (cmd_itr == irc._u_ft.end())
+		{
+			client.sendErrMsg(irc._hostname, ERR_UNKNOWNMODE);
+			return ;
+		}
+		std::vector<std::string> args (msg.parameters.begin() + i, msg.parameters.end());
+		cmd_itr->second(client, irc, sign, args);
+	}while ((msg.parameters.size()) - 1 > i++);
 	return ;
 }
 

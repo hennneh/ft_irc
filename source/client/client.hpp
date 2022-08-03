@@ -46,6 +46,7 @@ namespace ft {
 			bool	_invis;	//standart false
 			bool	_wall;	//standart true
 			bool	_snote;	//standart false
+			bool	_here;	//standart true
 	};
 }
 

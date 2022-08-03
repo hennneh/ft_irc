@@ -25,6 +25,7 @@ namespace m_user {
 	void servnote(ft::Client& client, ft::IRC& irc, bool sign, std::vector<std::string> args);
 	void w_all_op(ft::Client& client, ft::IRC& irc, bool sign, std::vector<std::string> args);
 	void operant(ft::Client& client, ft::IRC& irc, bool sign, std::vector<std::string> args);
+	void away(ft::Client& client, ft::IRC& irc, bool sign, std::vector<std::string> args);
 }
 
 namespace cmd {

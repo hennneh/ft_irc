@@ -10,7 +10,7 @@ namespace ft
 {
 	class Channel
 	{
-		typedef std::map<std::string, bool> _rights;
+		typedef std::map<std::string, bool> _rights; // map of (nick <-> flag)
 		private:
 
 		public:
