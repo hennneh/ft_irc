@@ -38,6 +38,13 @@ ft::Message::Message (const std::string& prefix, const std::string& command, con
 	this->parameters = parameters;
 }
 
+ft::Message::Message (const std::string& prefix, const std::string& command, const std::string& param)
+{
+	this->prefix = prefix;
+	this->command = command;
+	this->parameters = std::vector<std::string>(1, param);
+}
+
 ft::Message::Message (const std::string& s)
 {
 	this->deserialize(s);

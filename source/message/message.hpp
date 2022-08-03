@@ -15,6 +15,7 @@ namespace ft {
 			// Constructors
 			Message (void);
 			Message (const std::string& prefix, const std::string& command, const std::vector<std::string>& parameters);
+			Message (const std::string& prefix, const std::string& command, const std::string& param);
 			Message (const std::string& s);
 
 			void		deserialize(const std::string& s);
