@@ -6,7 +6,6 @@ void list_names(ft::Channel& chan, ft::Client& client, ft::IRC& irc)
 	for(std::vector<ft::Client>::iterator itr = chan._clients.begin(); itr != chan._clients.end(); itr++)
 	{
 		std::vector<std::string> params;
-		params.push_back(client.getNick());
 		if (chan._private)
 			params.push_back("*");
 		else if (chan._secret)
@@ -24,7 +23,7 @@ void list_names(ft::Channel& chan, ft::Client& client, ft::IRC& irc)
 			params.push_back("@" + itr->getNick() + " ");
 		else
 			params.push_back(itr->getNick() + " ");
-		client.sendMsg(ft::Message(irc._hostname, "353", params));
+		client.sendErrMsg(irc._hostname, RPL_NAMREPLY, params);
 	}
 }
 
@@ -51,9 +50,8 @@ void cmd::names(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 		}
 		list_names(chan->second, client, irc);
 		std::vector<std::string> params;
-		params.push_back(client.getNick());
 		params.push_back(*itr);
 		params.push_back("End of /NAMES list.");
-		client.sendMsg(ft::Message(irc._hostname, "366", params));
+		client.sendErrMsg(irc._hostname, RPL_ENDOFNAMES, params);
 	}
 }

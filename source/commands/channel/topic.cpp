@@ -1,7 +1,6 @@
 #include "../commands.hpp"
 #include "../../irc.hpp"
 
-//TODO
 void cmd::topic(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {
 	if (msg.parameters.size() < 1 || msg.parameters.size() > 2)
@@ -23,27 +22,17 @@ void cmd::topic(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 	}
 	// Check if on channel
 	//ERR_NOTONCHANNEL
-	bool t = true;
 	ft::Channel channel = iter->second;
-	// if (msg.parameters.size() == 1)
-	// {
-	// 		if(NO TOPIC)
-	if (t)
+	if (msg.parameters.size() == 1)
 	{
-	//	RPL_NOTOPIC
-	//	return ;
-		std::vector<std::string> params;
-		params.push_back(client.getNick());
-		params.push_back(msg.parameters.at(0));
-		params.push_back("No topic is set");
-		client.sendMsg(ft::Message(irc._hostname, "331", params));
+		if(channel._topic.empty())
+		{
+			client.sendErrMsg(irc._hostname, RPL_NOTOPIC, msg.parameters.at(0));
+			return ;
+		}
+		client.sendErrMsg(irc._hostname, RPL_TOPIC, msg.parameters.at(0), channel._topic);
 		return ;
 	}
-	// 	}
-	// 	RPL_TOPIC
-	// 	return ;
-	// }
-	
 	if (channel.__topic_op) // && !channel.client.op_priv) Check privileges
 	{
 		client.sendErrMsg(irc._hostname, ERR_CHANOPRIVSNEEDED, msg.parameters.at(0));
