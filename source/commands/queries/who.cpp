@@ -31,9 +31,9 @@ void cmd::who(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 	if (it != irc._channels.end())
 	{
 		// Send Stuff about channel
-		for(std::vector<ft::Client>::iterator clnt = it->second._clients.begin(); clnt != it->second._clients.end(); clnt++)
+		for(ft::Channel::clients_map::iterator clnt = it->second._clients.begin(); clnt != it->second._clients.end(); clnt++)
 		{
-			send_client_who(client, it->second._name, *clnt, irc._hostname);
+			send_client_who(client, it->second._name, clnt->second.client, irc._hostname);
 		}
 		client.sendErrMsg(irc._hostname, RPL_ENDOFWHO, msg.parameters.at(0));
 		return;
