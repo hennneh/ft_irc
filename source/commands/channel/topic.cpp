@@ -12,9 +12,5 @@ void cmd::topic(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 	// Check privileges
 	// Check if on channel
 	// Check if Topic
-	std::vector<std::string> params;
-	params.push_back(client.getNick());
-	params.push_back(msg.parameters.at(0));
-	params.push_back("No topic is set");
-	client.sendMsg(ft::Message(irc._hostname, "331", params));
+	client.sendErrMsg(irc._hostname, RPL_TOPIC, msg.parameters.at(0), "No topic is set");
 }
