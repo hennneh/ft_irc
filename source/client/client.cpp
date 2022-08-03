@@ -10,6 +10,10 @@ ft::Client::Client(const int& socket, const std::string& nick, const std::string
 	this->_username = user;
 	this->_fullname = full;
 	this->_operator = false;
+	this->_invis = false;
+	this->_wall = true;
+	this->_snote = false;
+	this->_here = true;
 }
 
 ft::Client::Client(const Client& client): _pi(client._pi), _raspberry(client._raspberry)
@@ -26,6 +30,9 @@ ft::Client& ft::Client::operator=(const ft::Client& client)
 	this->_username = client.getUser();
 	this->_ip = client.getIp();
 	this->_operator = client._operator;
+	this->_invis = client._invis;
+	this->_wall = client._wall;
+	this->_snote = client._snote;
 	this->_pi = client._pi;
 	this->_raspberry = client._raspberry;
 	return *this;

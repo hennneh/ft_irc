@@ -11,7 +11,7 @@ namespace ft
 	class Channel
 	{
 		public:
-			typedef std::map<std::string, bool> _rights;
+      typedef std::map<std::string, bool> _rights; // map of (nick <-> flag)
 
 			std::string				_name;
 			std::string				_password;
