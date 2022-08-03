@@ -16,5 +16,5 @@ void cmd::topic(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 	params.push_back(client.getNick());
 	params.push_back(msg.parameters.at(0));
 	params.push_back("No topic is set");
-	client.sendmsg(ft::Message(irc._hostname, "331", params));
+	client.sendMsg(ft::Message(irc._hostname, "331", params));
 }
