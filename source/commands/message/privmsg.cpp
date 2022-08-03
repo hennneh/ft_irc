@@ -1,24 +1,6 @@
 #include "../commands.hpp"
 #include "../../irc.hpp"
 
-template<typename T>
-bool sendToTarget(typename std::map<std::string, T> container, const std::string& identifier, const ft::Message& msg, ft::Client& client, ft::IRC& irc)
-{
-	(void)irc;
-	typename std::map<std::string, T>::iterator itr = container.find(identifier);
-	if (itr == container.end())
-	{
-		return false;
-	}
-	T target(itr->second);
-	std::vector<std::string> params;
-	params.push_back(identifier);
-	params.insert(params.end(), msg.parameters.begin() + 1, msg.parameters.end());
-	ft::Message answer(client.getFullId(), msg.command , params);
-	target.sendMsg(answer);
-	return true;
-}
-
 void cmd::privmsg(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {
 	if (msg.parameters.empty())
@@ -31,34 +13,46 @@ void cmd::privmsg(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 		client.sendErrMsg(irc._hostname, ERR_NOTEXTTOSEND);
 		return ;
 	}
-	std::vector<std::string> _targets = ft::split(msg.parameters.at(0), ',');
-	for (size_t x = 0; x < _targets.size(); x ++)
+	std::vector<std::string> targets = ft::split(msg.parameters.at(0), ',');
+	for (size_t x = 0; x < targets.size(); x ++)
 	{
-
-		ft::Client target;
-		if (ft::isChannel(_targets.at(x)))
+		if (ft::isChannel(targets.at(x)))
 		{
-			if (!sendToTarget<ft::Channel>(irc._channels, _targets.at(x), msg, client, irc))
+			ft::IRC::_channel_map::iterator itr = irc._channels.find(targets.at(0));
+			if (itr == irc._channels.end())
 			{
-				client.sendErrMsg(irc._hostname, ERR_CANNOTSENDTOCHAN, _targets.at(x));
-				return ;
+				client.sendErrMsg(irc._hostname, ERR_CANNOTSENDTOCHAN, targets.at(x));
+				continue;
 			}
+			if (itr->second._clients.find(client.getNick()) == itr->second._clients.end())
+			{
+				client.sendErrMsg(irc._hostname, ERR_NOTONCHANNEL, targets.at(x));
+				continue;
+			}
+			std::vector<std::string> params;
+			params.push_back(targets.at(x));
+			params.insert(params.end(), msg.parameters.begin() + 1, msg.parameters.end());
+			ft::Message answer(client.getFullId(), msg.command , params);
+			itr->second.sendMsg(answer);
 		}
 		else
 		{
-			if (!sendToTarget<ft::Client>(irc._connections, _targets.at(x), msg, client, irc))
+			ft::IRC::connection_map::iterator itr = irc._connections.find(targets.at(0));
+			if (itr == irc._connections.end())
 			{
-				client.sendErrMsg(irc._hostname, ERR_NOSUCHNICK, _targets.at(x));
-				return ;
+				client.sendErrMsg(irc._hostname, ERR_NOSUCHNICK, targets.at(x));
+				continue;
 			}
+			if (itr->second._here == false)
+			{
+				client.sendErrMsg(irc._hostname, RPL_AWAY, "Away"); //TODO add away message
+				continue;
+			}
+			std::vector<std::string> params;
+			params.push_back(targets.at(x));
+			params.insert(params.end(), msg.parameters.begin() + 1, msg.parameters.end());
+			ft::Message answer(client.getFullId(), msg.command , params);
+			itr->second.sendMsg(answer);
 		}
 	}
 }
-
-
-
-// if (msg.parameters.size() > 2)
-	// {
-	// 	client.sendErrMsg(irc._hostname, ERR_TOOMANYTARGETS, msg.parameters.at(1));
-	// 	return ;
-	// }
