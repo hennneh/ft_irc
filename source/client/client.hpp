@@ -14,10 +14,10 @@ namespace ft {
 	{
 		private:
 			int			_socket;
-			std::string _nickname;
-			std::string _username;
-			std::string _fullname;
-			std::string _ip;
+			std::string	_nickname;
+			std::string	_username;
+			std::string	_fullname;
+			std::string	_ip;
 
 		public:
 			Client();
@@ -42,9 +42,13 @@ namespace ft {
 			void sendErrMsg(const std::string& hostname, const std::string& err, const std::string& s);
 			void sendErrMsg(const std::string& hostname, const std::string& err, const std::string& s, const std::string& c);
 
-			bool _pi; // autheticated, Good Nick
-			bool _raspberry; // authorised, Good Pass
-			bool _operator;
+			bool	_pi; //autheticated, Good Nick
+			bool	_raspberry; //authorised, Good Pass
+			bool	_operator; //standart false should this go here of into channel hpp?
+			bool	_invis;	//standart false
+			bool	_wall;	//standart true
+			bool	_snote;	//standart false
+			bool	_here;	//standart true
 	};
 }
 

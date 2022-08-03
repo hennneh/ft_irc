@@ -40,5 +40,7 @@ void cmd::join(const ft::Message & msg, ft::Client& client, ft::IRC & irc)
 		}
 		iter->second._clients.push_back(client);
 		client.sendMsg(std::string(":" + client.getFullId() + " " + msg.command + " " + channels.at(i)));
+		cmd::topic(ft::Message(msg.prefix, "TOPIC", channels.at(i)), client, irc);
+		cmd::names(ft::Message(msg.prefix, "NAMES", channels.at(i)), client, irc);
 	}
 }

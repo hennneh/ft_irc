@@ -34,7 +34,7 @@ void cmd::privmsg(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 	std::vector<std::string> _targets = ft::split(msg.parameters.at(0), ',');
 	for (size_t x = 0; x < _targets.size(); x ++)
 	{
-		
+
 		ft::Client target;
 		if (ft::isChannel(_targets.at(x)))
 		{

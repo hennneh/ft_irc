@@ -168,11 +168,11 @@ void modeChannel(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 	}
 	std::vector<std::string> args (msg.parameters.begin() + 1, msg.parameters.end());
 	cmd_itr->second(client, irc, iter->second, sign, args);
-  }
+}
 
 void cmd::mode(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {
-	if (msg.parameters.size() <= 2)
+	if (msg.parameters.size() < 2)
 	{
 		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS, "MODE");
 		return ;

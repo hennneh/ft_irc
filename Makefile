@@ -21,6 +21,8 @@ SRCFILES:=\
 		  commands/channel/join.cpp\
 		  commands/channel/mode.cpp\
 		  commands/channel/modeusr.cpp\
+		  commands/channel/topic.cpp\
+		  commands/channel/names.cpp\
 		  commands/connection/nick.cpp\
 		  commands/connection/pass.cpp\
 		  commands/connection/quit.cpp\
@@ -30,6 +32,7 @@ SRCFILES:=\
 		  commands/message/ping.cpp\
 		  commands/message/privmsg.cpp\
 		  commands/motd.cpp\
+		  commands/queries/who.cpp\
 
 # ------------------------------------------
 # Do not change anything beyond this point!
