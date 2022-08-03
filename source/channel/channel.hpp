@@ -37,12 +37,13 @@ namespace ft
 
 			std::string		_name;
 			std::string		_password;
+			std::string		_topic;
 			bool			_private;
 			bool			_secret;
 			bool			_invite_only;
 			unsigned int	_user_limit;
 			bool			_moderated;
-			bool			__topic;
+			bool			__topic_op;
 			bool			_clsd;
 			clients_map		_clients;
 
@@ -53,6 +54,10 @@ namespace ft
 			std::string getName(void) const;
 			std::string getPassword() const;
 			void sendMsg(const ft::Message & msg);
+			void sendErrMsg(const std::string& hostname, const std::string& err);
+			void sendErrMsg(const std::string& hostname, const std::string& err, const std::string& s);
+			void sendErrMsg(const std::string& hostname, const std::string& err, const std::string& s, const std::string& c);
+			void sendErrMsg(const std::string& hostname, const std::string& err, std::vector<std::string> args);
 	};
 }
 
