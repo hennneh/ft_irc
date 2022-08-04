@@ -202,7 +202,7 @@ void m_channel::key(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool
 		}
 		channel.setPassword(args.at(1));
 	}
-	channel.sendMsg(ft::Message("NOTICE :Key is now " + channel.getPassword())); // doesnt send to everyone
+	channel.sendErrMsg(irc._hostname, RPL_INFO, "Key is now " + channel.getPassword()); // doesnt send to everyone
 	return ;
 }
 
