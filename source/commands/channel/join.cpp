@@ -26,9 +26,17 @@ void cmd::join(const ft::Message & msg, ft::Client& client, ft::IRC & irc)
 			if (i < passwords.size())
 				pass = passwords.at(i);
 			iter = irc._channels.insert(std::make_pair(channels.at(i), ft::Channel(channels.at(i), pass))).first;
+			iter->second._clients.insert(std::make_pair(client.getNick(), ft::ChannelUser(client)));
+			ft::Channel::clients_map::iterator citer = iter->second._clients.begin();
+			citer->second.op_priv = true;
 		}
 		else
 		{
+			if (iter->second._invite_only)
+			{
+				client.sendErrMsg(irc._hostname, ERR_INVITEONLYCHAN, channels.at(i));
+				return ;
+			}
 			if (iter->second._password.empty() == false) //If channel password is not empty
 			{
 				if (i < passwords.size() && passwords.at(i) == iter->second._password)
@@ -41,8 +49,8 @@ void cmd::join(const ft::Message & msg, ft::Client& client, ft::IRC & irc)
 					return ;
 				}
 			}
+			iter->second._clients.insert(std::make_pair(client.getNick(), ft::ChannelUser(client)));
 		}
-		iter->second._clients.insert(std::make_pair(client.getNick(), ft::ChannelUser(client)));
 		client.sendMsg(std::string(":" + client.getFullId() + " " + msg.command + " " + channels.at(i)));
 		iter->second.sendMsg(std::string(":" + client.getFullId() + " " + msg.command + " " + channels.at(i)));
 		cmd::topic(ft::Message(msg.prefix, "TOPIC", channels.at(i)), client, irc);
