@@ -5,7 +5,7 @@ void cmd::topic(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {
 	if (msg.parameters.size() < 1 || msg.parameters.size() > 2)
 	{
-		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS);
+		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS, msg.command);
 		return;
 	}
 	ft::IRC::_channel_map::iterator iter = irc._channels.find(msg.parameters.at(0));
