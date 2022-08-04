@@ -8,10 +8,11 @@ ft::Channel::Channel(const std::string & name, const std::string & password)
 	this->_private = false;
 	this->_secret = false;
 	this->_invite_only = false;
-	this->_user_limit = 0;
+	this->_user_limit = NOT;
 	this->_moderated = false;
 	this->__topic_op = false;
 	this->_clsd = false;
+	this->_ban_list.push_back("");
 }
 
 ft::Channel::~Channel()

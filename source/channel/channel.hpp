@@ -6,6 +6,8 @@
 #include <vector>
 #include <map>
 
+#define NOT -1
+
 namespace ft
 {
 	struct ChannelUser
@@ -41,11 +43,12 @@ namespace ft
 			bool			_private;
 			bool			_secret;
 			bool			_invite_only;
-			unsigned int	_user_limit;
+			int				_user_limit;
 			bool			_moderated;
 			bool			__topic_op;
 			bool			_clsd;
 			clients_map		_clients;
+			std::vector<std::string>	_ban_list;
 
 			Channel(const std::string & name, const std::string & password);
 			~Channel();
