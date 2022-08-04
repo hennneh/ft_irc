@@ -21,6 +21,7 @@ namespace m_channel {
 }
 
 namespace m_user {
+	void reply(ft::Client& client, ft::IRC& irc, bool sign, std::vector<std::string> args);
 	void invis(ft::Client& client, ft::IRC& irc, bool sign, std::vector<std::string> args);
 	void servnote(ft::Client& client, ft::IRC& irc, bool sign, std::vector<std::string> args);
 	void w_all_op(ft::Client& client, ft::IRC& irc, bool sign, std::vector<std::string> args);

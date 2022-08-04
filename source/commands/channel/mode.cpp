@@ -172,7 +172,7 @@ void modeChannel(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 
 void cmd::mode(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {
-	if (msg.parameters.size() < 2)
+	if (msg.parameters.size() < 1) // pretty sure that if no params are given a reply is expected; usrMode is now built for at least 1 param(Nick), channelmode is not built for that yet
 	{
 		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS, "MODE");
 		return ;

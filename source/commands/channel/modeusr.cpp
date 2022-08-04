@@ -10,6 +10,24 @@ w - user receives wallops;
 o - operator flag.
 */
 
+void m_user::reply(ft::Client& client, ft::IRC& irc, bool sign, std::vector<std::string> args)
+{
+	
+	(void)irc;
+	(void)sign;
+	(void)args;
+	std::string flags = "221 RPL_UMODEIS ";
+	if (client._invis)
+		flags += "+i";
+	if (client._operator)
+		flags += "+o";
+	if (client._snote)
+		flags += "+s";
+	if (client._wall)
+		flags += "+w";
+	client.sendMsg(ft::Message("", flags, ""));
+}
+
 void m_user::invis(ft::Client& client, ft::IRC& irc, bool sign, std::vector<std::string> args)
 {
 	(void) irc;
@@ -48,13 +66,12 @@ void m_user::operant(ft::Client& client, ft::IRC& irc, bool sign, std::vector<st
 		client._operator = false;
 }
 
-
 void cmd::modeUsr(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {
 	ft::IRC::connection_map::iterator iter = irc._connections.find(msg.parameters.at(0));
 	if (iter == irc._connections.end())
 	{
-		client.sendErrMsg(irc._hostname, ERR_NOSUCHNICK);
+		client.sendErrMsg(irc._hostname, ERR_NOSUCHNICK, msg.parameters.at(0));
 		return ;
 	}
 	if (msg.parameters.at(0) != client.getNick())
@@ -63,7 +80,12 @@ void cmd::modeUsr(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 		return ;
 	}
 	unsigned int	i = 1;
-	bool sign;
+	bool sign = false;
+	if (msg.parameters.size() == 1)
+	{
+		m_user::reply(client, irc, sign, std::vector<std::string> (msg.parameters.begin() + i, msg.parameters.end()));
+		return ;
+	}
 	cmd::m_user_map::iterator cmd_itr;
 	do
 	{
@@ -78,7 +100,7 @@ void cmd::modeUsr(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 		cmd_itr = irc._u_ft.find((msg.parameters.at(i))[1]);
 		if (cmd_itr == irc._u_ft.end())
 		{
-			client.sendErrMsg(irc._hostname, ERR_UNKNOWNMODE);
+			client.sendErrMsg(irc._hostname, ERR_UNKNOWNMODE); //ERR_UMODEUNKNOWNFLAG
 			return ;
 		}
 		std::vector<std::string> args (msg.parameters.begin() + i, msg.parameters.end());
@@ -100,17 +122,17 @@ void cmd::mk_map(m_user_map & _u_ft)
 	cmd::reg_ft(_u_ft, 'o', m_user::operant);
 }
 
-/*
-ERR_NEEDMOREPARAMS		DONE
-ERR_CHANOPRIVSNEEDED
-ERR_NOSUCHNICK			DONE
-ERR_NOTONCHANNEL
-ERR_KEYSET
-RPL_BANLIST
-RPL_ENDOFBANLIST
-ERR_UNKNOWNMODE
-ERR_NOSUCHCHANNEL
-ERR_USERSDONTMATCH
-RPL_UMODEIS
-ERR_UMODEUNKNOWNFLAG
+/* 	ERR_NEEDMOREPARAMS 		Done
+	ERR_UMODEUNKNOWNFLAG	Done
+	ERR_UNKNOWNMODE
+	ERR_NOSUCHNICK			Done
+	ERR_CHANOPRIVSNEEDED
+	ERR_NOTONCHANNEL
+	ERR_KEYSET
+	RPL_BANLIST
+	RPL_ENDOFBANLIST
+	ERR_NOSUCHCHANNEL
+	ERR_USERSDONTMATCH
+	RPL_UMODEIS
+	RPL_CHANNELMODEIS		
 */
