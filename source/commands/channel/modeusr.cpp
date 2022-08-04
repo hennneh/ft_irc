@@ -16,7 +16,7 @@ void m_user::reply(ft::Client& client, ft::IRC& irc, bool sign, std::vector<std:
 	(void)irc;
 	(void)sign;
 	(void)args;
-	std::string flags = "221 RPL_UMODEIS ";
+	std::string flags;
 	if (client._invis)
 		flags += "+i";
 	if (client._operator)
@@ -25,7 +25,7 @@ void m_user::reply(ft::Client& client, ft::IRC& irc, bool sign, std::vector<std:
 		flags += "+s";
 	if (client._wall)
 		flags += "+w";
-	client.sendMsg(ft::Message("", flags, ""));
+	client.sendErrMsg(irc._hostname, RPL_UMODEIS, flags);
 }
 
 void m_user::invis(ft::Client& client, ft::IRC& irc, bool sign, std::vector<std::string> args)
