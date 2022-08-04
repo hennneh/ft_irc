@@ -91,9 +91,9 @@ void m_channel::topic(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bo
 		return ;
 	}
 	if (sign)
-		channel.__topic = true;
+		channel.__topic_op = true;
 	else
-		channel.__topic = false;
+		channel.__topic_op = false;
 	return ;
 }
 
