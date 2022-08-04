@@ -29,17 +29,22 @@ void cmd::join(const ft::Message & msg, ft::Client& client, ft::IRC & irc)
 		}
 		else
 		{
-			if (i < passwords.size())
+			if (iter->second._password.empty() == false) //If channel password is not empty
 			{
-				if (passwords.at(i) != iter->second._password)
+				if (i < passwords.size() && passwords.at(i) == iter->second._password)
 				{
-						client.sendErrMsg(irc._hostname, ERR_BADCHANNELKEY, channels.at(i));
-						return ;
+					client.sendMsg(":" + irc._hostname + " NOTICE " + client.getNick() + " :Channel Key correct");
+				}
+				else
+				{
+					client.sendErrMsg(irc._hostname, ERR_BADCHANNELKEY, channels.at(i));
+					return ;
 				}
 			}
 		}
-		iter->second._clients.push_back(client);
-		client.sendmsg(std::string(":" + client.getFullId() + " " + msg.command + " " + channels.at(i)));
+		iter->second._clients.insert(std::make_pair(client.getNick(), ft::ChannelUser(client)));
+		client.sendMsg(std::string(":" + client.getFullId() + " " + msg.command + " " + channels.at(i)));
+		iter->second.sendMsg(std::string(":" + client.getFullId() + " " + msg.command + " " + channels.at(i)));
 		cmd::topic(ft::Message(msg.prefix, "TOPIC", channels.at(i)), client, irc);
 		cmd::names(ft::Message(msg.prefix, "NAMES", channels.at(i)), client, irc);
 	}

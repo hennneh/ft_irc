@@ -8,6 +8,9 @@ ft::IRC::IRC(const int& port, const std::string& password): _port(port), _passwo
 	struct protoent		*prtdb;
 	int					opt = 1;
 
+	this->_version = "ft_irc0.1";
+	this->_motd = "Hello People!";
+
 	prtdb = getprotobyname("TCP");
 	this->_server = socket(PF_INET, SOCK_STREAM, prtdb->p_proto);
 	if (this->_server == 0)

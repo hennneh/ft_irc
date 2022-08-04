@@ -8,28 +8,44 @@
 
 namespace ft
 {
+	struct ChannelUser
+	{
+		public:
+			bool		op_priv;
+			bool		banned;
+			bool		speak;
+			bool		invis;
+			bool		wall;
+			bool		snote;
+			ft::Client& client;
+
+			ChannelUser(ft::Client& clnt): client(clnt)
+			{
+				this->op_priv = false;
+				this->banned = false;
+				this->speak = true;
+				this->invis = false;
+				this->wall = true;
+				this->snote = true;
+			}
+	};
+
 	class Channel
 	{
-		typedef std::map<std::string, bool> _rights; // map of (nick <-> flag)
-		private:
-
 		public:
-			std::string				_name;
-			std::string				_password;
-			bool					_private;
-			bool					_secret;
-			bool					_invite_only;
-			unsigned int			_user_limit;
-			bool					_moderated;
-			bool					__topic;
-			bool					_clsd;
-			std::vector<ft::Client>	_clients;
-			_rights					op_priv;	//standart false
-			_rights					bannd;	//standart false
-			_rights					speak;	//standart true
-			_rights					invis;	//standart false
-			_rights					wall;	//standart true
-			_rights					snote;	//standart true
+			typedef std::map<std::string, ft::ChannelUser>	clients_map;
+
+			std::string		_name;
+			std::string		_password;
+			std::string		_topic;
+			bool			_private;
+			bool			_secret;
+			bool			_invite_only;
+			unsigned int	_user_limit;
+			bool			_moderated;
+			bool			__topic_op;
+			bool			_clsd;
+			clients_map		_clients;
 
 			Channel(const std::string & name, const std::string & password);
 			~Channel();
@@ -38,6 +54,10 @@ namespace ft
 			std::string getName(void) const;
 			std::string getPassword() const;
 			void sendMsg(const ft::Message & msg);
+			void sendErrMsg(const std::string& hostname, const std::string& err);
+			void sendErrMsg(const std::string& hostname, const std::string& err, const std::string& s);
+			void sendErrMsg(const std::string& hostname, const std::string& err, const std::string& s, const std::string& c);
+			void sendErrMsg(const std::string& hostname, const std::string& err, std::vector<std::string> args);
 	};
 }
 

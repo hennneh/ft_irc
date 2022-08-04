@@ -14,7 +14,7 @@ k - set a channel key (password).
 void m_channel::op_priv(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
 	(void)irc;
-	client.sendmsg(ft::Message(":Option op_priv:"));
+	client.sendMsg(ft::Message(":Option op_priv:"));
 	(void)channel;
 	(void)sign;
 	(void)args;
@@ -27,7 +27,7 @@ void m_channel::op_priv(ft::Client& client, ft::IRC& irc, ft::Channel& channel, 
 void m_channel::prvt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
 	(void)irc;
-	client.sendmsg(ft::Message(":Option prvt:"));
+	client.sendMsg(ft::Message(":Option prvt:"));
 	if (!args.empty())
 	{
 		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS, "MODE");
@@ -46,7 +46,7 @@ void m_channel::prvt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, boo
 void m_channel::scrt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
 	(void)irc;
-	client.sendmsg(ft::Message(":Option scrt:"));
+	client.sendMsg(ft::Message(":Option scrt:"));
 	if (!args.empty())
 	{
 		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS, "MODE");
@@ -65,7 +65,7 @@ void m_channel::scrt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, boo
 void m_channel::invt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
 	(void)irc;
-	client.sendmsg(ft::Message(":Option invt:"));
+	client.sendMsg(ft::Message(":Option invt:"));
 	if (!args.empty())
 	{
 		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS, "MODE");
@@ -84,16 +84,16 @@ void m_channel::invt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, boo
 void m_channel::topic(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
 	(void)irc;
-	client.sendmsg(ft::Message(":Option topic:"));
+	client.sendMsg(ft::Message(":Option topic:"));
 	if (!args.empty())
 	{
 		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS, "MODE");
 		return ;
 	}
 	if (sign)
-		channel.__topic = true;
+		channel.__topic_op = true;
 	else
-		channel.__topic = false;
+		channel.__topic_op = false;
 	return ;
 }
 
@@ -103,7 +103,7 @@ void m_channel::topic(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bo
 void m_channel::clsd(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
 	(void)irc;
-	client.sendmsg(ft::Message(":Option clsd:"));
+	client.sendMsg(ft::Message(":Option clsd:"));
 	if (!args.empty())
 	{
 		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS, "MODE");
@@ -122,7 +122,7 @@ void m_channel::clsd(ft::Client& client, ft::IRC& irc, ft::Channel& channel, boo
 void m_channel::ban_msk(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
 	(void)irc;
-	client.sendmsg(ft::Message(":Option ban_msk:"));
+	client.sendMsg(ft::Message(":Option ban_msk:"));
 	(void)channel;
 	(void)sign;
 	(void)args;
@@ -135,7 +135,7 @@ void m_channel::ban_msk(ft::Client& client, ft::IRC& irc, ft::Channel& channel, 
 void m_channel::speak(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
 	(void)irc;
-	client.sendmsg(ft::Message(":Option speak:"));
+	client.sendMsg(ft::Message(":Option speak:"));
 	(void)channel;
 	(void)sign;
 	(void)args;

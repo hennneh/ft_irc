@@ -25,6 +25,7 @@
 #include "commands/commands.hpp"
 #include "channel/channel.hpp"
 #include "error.hpp"
+#include "reply.hpp"
 #include "channel/channel.hpp"
 
 #define TXT_FAT		"\e[1m"
@@ -55,6 +56,8 @@ namespace ft
 			cmd::m_channel_map	_c_ft;
 			cmd::m_user_map		_u_ft;
 			std::string			_hostname;
+			std::string			_version;
+			std::string			_motd;
 
 			IRC(const int& port, const std::string& password);
 			~IRC();
@@ -73,6 +76,7 @@ namespace ft
 	bool isAlphaNumeric(char c);
 	bool isNonWhite(char c);
 	std::vector<std::string> split(const std::string & s, char);
+	bool isChannel(const std::string& s);
 };
 
 #endif
