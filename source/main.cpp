@@ -12,25 +12,33 @@ int	main(int argc, char **argv)
 		return (ft::error("port needs to be between 0 and 65535"));
 
 	ft::IRC irc(ft::stoi(port), passwd);
-	irc.reg_cmd("USER", cmd::user);
-	irc.reg_cmd("NICK", cmd::nick);
-	irc.reg_cmd("PING", cmd::ping);
-	irc.reg_cmd("PRIVMSG", cmd::privmsg);
-	irc.reg_cmd("QUIT", cmd::quit);
-	irc.reg_cmd("PASS", cmd::pass);
-	irc.reg_cmd("MODE", cmd::mode);
+	irc.reg_cmd("INVITE", cmd::invite);
 	irc.reg_cmd("JOIN", cmd::join);
-	irc.reg_cmd("WHO", cmd::who);
-	irc.reg_cmd("NOTICE", cmd::notice);
-	irc.reg_cmd("TOPIC", cmd::topic);
+	irc.reg_cmd("MODE", cmd::mode);
 	irc.reg_cmd("NAMES", cmd::names);
 	irc.reg_cmd("PART", cmd::part);
-	irc.reg_cmd("INVITE", cmd::invite);
+	irc.reg_cmd("TOPIC", cmd::topic);
+
+	irc.reg_cmd("AWAY", cmd::away);
+	irc.reg_cmd("NICK", cmd::nick);
+	irc.reg_cmd("PASS", cmd::pass);
+	irc.reg_cmd("QUIT", cmd::quit);
+	irc.reg_cmd("USER", cmd::user);
+
+	irc.reg_cmd("NOTICE", cmd::notice);
+	irc.reg_cmd("PING", cmd::ping);
+	irc.reg_cmd("PRIVMSG", cmd::privmsg);
+
+	irc.reg_cmd("WHO", cmd::who);
+
 	irc.reg_cmd("TIME", cmd::timer);
 	irc.reg_cmd("OPER", cmd::oper);
 	irc.reg_cmd("VERSION", cmd::version);
-	irc.reg_cmd("ISON", cmd::ison);
+
 	irc.reg_cmd("ADMIN", cmd::admin);
+
+	irc.reg_cmd("ISON", cmd::ison);
+	irc.reg_cmd("DIE", cmd::dummy);
 
 	cmd::mk_map(irc._c_ft);
 	cmd::mk_map(irc._u_ft);

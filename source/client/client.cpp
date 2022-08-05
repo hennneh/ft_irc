@@ -24,7 +24,7 @@ void ft::Client::__init(void)
 	this->_fullname = "";
 	this->_ip = "";
 	this->_pi = false;
-	this->_here = true;
+	this->_awayMsg = "";
 	this->_raspberry = false;
 	this->_operator = false;
 	this->_invis = false;

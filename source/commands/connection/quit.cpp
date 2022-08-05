@@ -4,7 +4,18 @@
 
 void cmd::quit(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {
-	(void)msg;
+	ft::Message quitmsg(client.getFullId(), "QUIT", msg.parameters);
+	if (msg.parameters.empty())
+		quitmsg.parameters.push_back("Leaving.");
+	for (ft::IRC::_channel_map::iterator chan_itr = irc._channels.begin(); chan_itr != irc._channels.end(); chan_itr++)
+	{
+		ft::Channel::clients_map::iterator usr_itr = chan_itr->second._clients.find(client.getNick());
+		if (usr_itr == chan_itr->second._clients.end())
+			continue;
+		chan_itr->second.sendMsg(quitmsg);
+		chan_itr->second._clients.erase(usr_itr);
+	}
+	client.sendMsg(quitmsg);
 	close(client.getSocket());
 	std::cout << "Client " << client.getNick() << " disconnected!" << std::endl;
 	if (irc._connections.erase(client.getNick()) < 1)
