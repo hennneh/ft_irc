@@ -18,7 +18,7 @@ void cmd::privmsg(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 	{
 		if (ft::isChannel(targets.at(x)))
 		{
-			ft::IRC::_channel_map::iterator itr = irc._channels.find(targets.at(0));
+			ft::IRC::_channel_map::iterator itr = irc._channels.find(targets.at(x));
 			if (itr == irc._channels.end())
 			{
 				client.sendErrMsg(irc._hostname, ERR_CANNOTSENDTOCHAN, targets.at(x));
@@ -37,7 +37,7 @@ void cmd::privmsg(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 		}
 		else
 		{
-			ft::IRC::connection_map::iterator itr = irc._connections.find(targets.at(0));
+			ft::IRC::connection_map::iterator itr = irc._connections.find(targets.at(x));
 			if (itr == irc._connections.end())
 			{
 				client.sendErrMsg(irc._hostname, ERR_NOSUCHNICK, targets.at(x));
@@ -45,7 +45,7 @@ void cmd::privmsg(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 			}
 			if (!itr->second._awayMsg.empty())
 			{
-				client.sendErrMsg(itr->second.getFullId(), RPL_AWAY, itr->second.getNick(), itr->second._awayMsg); 
+				client.sendErrMsg(itr->second.getFullId(), RPL_AWAY, itr->second.getNick(), itr->second._awayMsg);
 				continue;
 			}
 			std::vector<std::string> params;

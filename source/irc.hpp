@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <memory.h>
+#include <ctime>
 
 //US INCLUDE
 #include "message/message.hpp"
@@ -58,6 +59,7 @@ namespace ft
 			std::string			_hostname;
 			std::string			_version;
 			std::string			_motd;
+			std::string			_op_password;
 
 			IRC(const int& port, const std::string& password);
 			~IRC();

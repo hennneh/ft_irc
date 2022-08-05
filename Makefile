@@ -18,12 +18,16 @@ SRCFILES:=\
 		  client/client.cpp\
 		  message/message.cpp\
 		  channel/channel.cpp\
+		  commands/channel/invite.cpp\
 		  commands/channel/join.cpp\
 		  commands/channel/mode.cpp\
 		  commands/channel/modeusr.cpp\
+		  commands/channel/names.cpp\
+		  commands/channel/part.cpp\
 		  commands/channel/topic.cpp\
 		  commands/connection/away.cpp\
 		  commands/connection/nick.cpp\
+		  commands/connection/oper.cpp\
 		  commands/connection/pass.cpp\
 		  commands/connection/quit.cpp\
 		  commands/connection/user.cpp\
@@ -33,7 +37,9 @@ SRCFILES:=\
 		  commands/message/ping.cpp\
 		  commands/message/privmsg.cpp\
 		  commands/queries/who.cpp\
-		  commands/channel/part.cpp\
+		  commands/queries/time.cpp\
+		  commands/queries/version.cpp\
+		  commands/optional/ison.cpp\
 
 # ------------------------------------------
 # Do not change anything beyond this point!
