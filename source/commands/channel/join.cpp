@@ -32,12 +32,17 @@ void cmd::join(const ft::Message & msg, ft::Client& client, ft::IRC & irc)
 		}
 		else
 		{
-			if (iter->second._invite_only)
+			if (iter->second._invitelist.find(client.getNick()) != iter->second._invitelist.end())
+			{
+				// when invited to a channel the client being invited issues a JOIN which ends here
+				iter->second._invitelist.erase(client.getNick());
+			}
+			else if (iter->second._invite_only)
 			{
 				client.sendErrMsg(irc._hostname, ERR_INVITEONLYCHAN, channels.at(i));
 				return ;
 			}
-			if (iter->second._password.empty() == false) //If channel password is not empty
+			else if (iter->second._password.empty() == false) //If channel password is not empty
 			{
 				if (i < passwords.size() && passwords.at(i) == iter->second._password)
 				{

@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <set>
 
 #define NOT -1
 
@@ -20,22 +21,14 @@ namespace ft
 			bool		wall;
 			bool		snote;
 			ft::Client& client;
-
-			ChannelUser(ft::Client& clnt): client(clnt)
-			{
-				this->op_priv = false;
-				this->banned = false;
-				this->speak = true;
-				this->invis = false;
-				this->wall = true;
-				this->snote = true;
-			}
+			ChannelUser(ft::Client& clnt);
 	};
 
 	class Channel
 	{
 		public:
 			typedef std::map<std::string, ft::ChannelUser>	clients_map;
+			typedef std::set<std::string> invited;
 
 			std::string		_name;
 			std::string		_password;
@@ -48,6 +41,7 @@ namespace ft
 			bool			__topic_op;
 			bool			_clsd;
 			clients_map		_clients;
+			invited			_invitelist;
 			std::vector<std::string>	_ban_list;
 
 			Channel(const std::string & name, const std::string & password);
