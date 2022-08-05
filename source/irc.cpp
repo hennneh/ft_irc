@@ -38,6 +38,7 @@ ft::IRC::IRC(const int& port, const std::string& password): _port(port), _passwo
 	if (!this->_password.empty())
 		std::cout << " with password authentication enabled";
 	std::cout << std::endl;
+	this->_op_password = "";
 }
 
 // Destructor

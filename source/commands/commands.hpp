@@ -58,6 +58,7 @@ namespace cmd {
 	void part(const ft::Message & msg, ft::Client & client, ft::IRC & irc);
 	void invite(const ft::Message & msg, ft::Client& client, ft::IRC & irc);
 	void timer(const ft::Message & msg, ft::Client & client, ft::IRC & irc);
+	void oper(const ft::Message & msg, ft::Client & client, ft::IRC & irc);
 	void version(const ft::Message & msg, ft::Client & client, ft::IRC & irc);
 	void ison(const ft::Message & msg, ft::Client & client, ft::IRC & irc);
 
