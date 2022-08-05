@@ -1,5 +1,16 @@
 #include "channel.hpp"
 
+
+ft::ChannelUser::ChannelUser(ft::Client& clnt): client(clnt)
+{
+	this->op_priv = true;
+	this->banned = false;
+	this->speak = true;
+	this->invis = false;
+	this->wall = true;
+	this->snote = true;
+}
+
 ft::Channel::Channel(const std::string & name, const std::string & password)
 {
 	this->_name = name;
