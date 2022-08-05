@@ -9,7 +9,10 @@ static void send_client_who(ft::Client& client, const std::string& channel, ft::
 	args.push_back(target.getIp());
 	args.push_back(hostname);
 	args.push_back(target.getNick());
-	args.push_back("H");
+	if (target._awayMsg.empty())
+		args.push_back("H");
+	else
+		args.push_back("G");
 	args.push_back("0");
 	args.push_back(target.getFull());
 	client.sendErrMsg(hostname, RPL_WHOREPLY, args);
@@ -24,7 +27,7 @@ void cmd::who(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 		{
 			send_client_who(client, "*", it->second, irc._hostname);
 		}
-		client.sendErrMsg(irc._hostname, RPL_ENDOFWHO, msg.parameters.at(0));
+		client.sendErrMsg(irc._hostname, RPL_ENDOFWHO, "");
 		return;
 	}
 	ft::IRC::_channel_map::iterator it = irc._channels.find(msg.parameters.at(0));

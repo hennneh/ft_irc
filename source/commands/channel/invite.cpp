@@ -43,10 +43,14 @@ void cmd::invite(const ft::Message & msg, ft::Client& client, ft::IRC & irc)
 		client.sendErrMsg(irc._hostname, ERR_CHANOPRIVSNEEDED, msg.parameters.at(0), _channel.getName());
 		return ;
 	}
+	if (!iter_invt->second._awayMsg.empty())
+	{
+		client.sendErrMsg(iter_invt->second.getFullId(), RPL_AWAY, iter_invt->second.getNick(), iter_invt->second._awayMsg); 
+		return ;
+	}
 	_channel._clients.insert(std::make_pair(msg.parameters.at(0), ft::ChannelUser(iter_invt->second)));
 }
 
 /*
 RPL_INVITING
-RPL_AWAY
 */
