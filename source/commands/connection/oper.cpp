@@ -8,11 +8,10 @@ void cmd::oper(const ft::Message & msg, ft::Client & client, ft::IRC & irc)
 		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS, msg.command);
 		return ;
 	}
-	ft::Client _user;
-	for (ft::IRC::connection_map::iterator i_clnt = irc._connections.begin(); i_clnt != irc._connections.end(); i_clnt ++)
+	ft::IRC::connection_map::iterator i_clnt;
+	for (i_clnt = irc._connections.begin(); i_clnt != irc._connections.end(); i_clnt ++)
 	{
-		_user = i_clnt->second;
-		if (msg.parameters.at(0) == _user.getUser())
+		if (msg.parameters.at(0) == i_clnt->second.getUser())
 			break ;
 		if (i_clnt == --irc._connections.end())
 		{
@@ -25,6 +24,6 @@ void cmd::oper(const ft::Message & msg, ft::Client & client, ft::IRC & irc)
 		client.sendErrMsg(irc._hostname, ERR_PASSWDMISMATCH, msg.command);
 		return ;
 	}
-	_user._operator = true;
-	_user.sendErrMsg(irc._hostname, RPL_YOUREOPER);
+	i_clnt->second._operator = true;
+	i_clnt->second.sendErrMsg(irc._hostname, RPL_YOUREOPER);
 }
