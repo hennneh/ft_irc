@@ -35,6 +35,8 @@ int	main(int argc, char **argv)
 	irc.reg_cmd("OPER", cmd::oper);
 	irc.reg_cmd("VERSION", cmd::version);
 
+	irc.reg_cmd("ADMIN", cmd::admin);
+
 	irc.reg_cmd("ISON", cmd::ison);
 	irc.reg_cmd("DIE", cmd::dummy);
 

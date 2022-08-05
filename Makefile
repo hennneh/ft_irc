@@ -41,6 +41,7 @@ SRCFILES:=\
 		  commands/queries/version.cpp\
 		  commands/optional/ison.cpp\
 		  commands/optional/dummy.cpp\
+		  commands/server/admin.cpp\
 
 # ------------------------------------------
 # Do not change anything beyond this point!
