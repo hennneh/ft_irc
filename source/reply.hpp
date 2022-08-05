@@ -233,7 +233,7 @@
 #define RPL_LUSERME "255 :I have <integer> clients and <integer> servers"
 
 /** "256 RPL_ADMINME <server> :Administrative info" */
-#define RPL_ADMINME "256 <server> :Administrative info"
+#define RPL_ADMINME "256 <server> :Administrative info - King Hendrick, Prime Minister Pete, Alchemist Clemens & Head TroubleMaker Vincent"
 
 /** "257 RPL_ADMINLOC1 :<admin info>" */
 #define RPL_ADMINLOC1 "257 :<admin info>"

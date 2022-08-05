@@ -39,6 +39,7 @@ SRCFILES:=\
 		  commands/queries/time.cpp\
 		  commands/queries/version.cpp\
 		  commands/optional/ison.cpp\
+		  commands/server/admin.cpp\
 
 # ------------------------------------------
 # Do not change anything beyond this point!

@@ -61,6 +61,7 @@ namespace cmd {
 	void oper(const ft::Message & msg, ft::Client & client, ft::IRC & irc);
 	void version(const ft::Message & msg, ft::Client & client, ft::IRC & irc);
 	void ison(const ft::Message & msg, ft::Client & client, ft::IRC & irc);
+	void admin(const ft::Message & msg, ft::Client & client, ft::IRC & irc);
 
 	void reg_ft(m_channel_map & _c_ft , const char opt, m_channel_ft f);
 	void mk_map(m_channel_map & _c_ft);
