@@ -152,7 +152,7 @@ int	ft::IRC::__check_client(ft::Client& client)
 			client.sendErrMsg(this->_hostname, ERR_NOTREGISTERED);
 			return 4;
 		}
-		if (msg->command == "DIE")
+		if (msg->command == "DIE" && client._operator == true)
 		{
 			//Kill the server
 			return 2;
