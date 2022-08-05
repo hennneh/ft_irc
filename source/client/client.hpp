@@ -24,8 +24,6 @@ namespace ft {
 		public:
 			Client();
 			Client(const int& socket, const std::string& nick, const std::string& user, const std::string& full);
-			Client(const Client& client);
-			Client& operator=(const Client& client);
 			~Client();
 
 			std::string getNick(void) const;

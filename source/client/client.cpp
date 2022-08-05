@@ -33,29 +33,6 @@ void ft::Client::__init(void)
 
 }
 
-ft::Client::Client(const Client& client): _pi(client._pi), _raspberry(client._raspberry)
-{
-	*this = client;
-}
-
-//Assignment Operator
-ft::Client& ft::Client::operator=(const ft::Client& client)
-{
-	this->_socket = client._socket;
-	this->_nickname = client._nickname;
-	this->_username = client._username;
-	this->_fullname = client._fullname;
-	this->_ip = client._ip;
-	this->_pi = client._pi;
-	this->_raspberry = client._raspberry;
-	this->_here = client._here;
-	this->_operator = client._operator;
-	this->_invis = client._invis;
-	this->_wall = client._wall;
-	this->_snote = client._snote;
-	return *this;
-}
-
 //Destructor
 ft::Client::~Client() {};
 
