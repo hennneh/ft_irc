@@ -35,6 +35,7 @@ SRCFILES:=\
 		  commands/message/privmsg.cpp\
 		  commands/motd.cpp\
 		  commands/queries/who.cpp\
+		  commands/queries/time.cpp\
 
 # ------------------------------------------
 # Do not change anything beyond this point!
