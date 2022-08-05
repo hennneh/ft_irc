@@ -9,6 +9,18 @@ ft::Client::Client(const int& socket, const std::string& nick, const std::string
 	this->_nickname = nick;
 	this->_username = user;
 	this->_fullname = full;
+}
+
+void ft::Client::__init(void)
+{
+	this->_socket = 0;
+	this->_nickname = "";
+	this->_username = "";
+	this->_fullname = "";
+	this->_ip = "";
+	this->_pi = false;
+	this->_awayMsg = "";
+	this->_raspberry = false;
 	this->_operator = false;
 	this->_invis = false;
 	this->_wall = true;

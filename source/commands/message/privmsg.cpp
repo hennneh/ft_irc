@@ -43,9 +43,9 @@ void cmd::privmsg(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 				client.sendErrMsg(irc._hostname, ERR_NOSUCHNICK, targets.at(x));
 				continue;
 			}
-			if (itr->second._here == false)
+			if (!itr->second._awayMsg.empty())
 			{
-				client.sendErrMsg(irc._hostname, RPL_AWAY, "Away"); //TODO add away message
+				client.sendErrMsg(itr->second.getFullId(), RPL_AWAY, itr->second.getNick(), itr->second._awayMsg); 
 				continue;
 			}
 			std::vector<std::string> params;

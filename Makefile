@@ -22,16 +22,16 @@ SRCFILES:=\
 		  commands/channel/mode.cpp\
 		  commands/channel/modeusr.cpp\
 		  commands/channel/topic.cpp\
-		  commands/channel/names.cpp\
+		  commands/connection/away.cpp\
 		  commands/connection/nick.cpp\
 		  commands/connection/pass.cpp\
 		  commands/connection/quit.cpp\
 		  commands/connection/user.cpp\
 		  commands/connection/welcome.cpp\
+		  commands/connection/motd.cpp\
 		  commands/message/notice.cpp\
 		  commands/message/ping.cpp\
 		  commands/message/privmsg.cpp\
-		  commands/motd.cpp\
 		  commands/queries/who.cpp\
 		  commands/channel/part.cpp\
 
