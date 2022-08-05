@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <memory.h>
+#include <ctime>
 
 //US INCLUDE
 #include "message/message.hpp"
