@@ -27,6 +27,7 @@ int	main(int argc, char **argv)
 	irc.reg_cmd("PART", cmd::part);
 	irc.reg_cmd("INVITE", cmd::invite);
 	irc.reg_cmd("TIME", cmd::timer);
+	irc.reg_cmd("VERSION", cmd::version);
 
 	cmd::mk_map(irc._c_ft);
 	cmd::mk_map(irc._u_ft);
