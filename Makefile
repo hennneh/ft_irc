@@ -37,6 +37,8 @@ SRCFILES:=\
 		  commands/motd.cpp\
 		  commands/queries/who.cpp\
 		  commands/queries/time.cpp\
+		  commands/queries/version.cpp\
+		  commands/optional/ison.cpp\
 
 # ------------------------------------------
 # Do not change anything beyond this point!

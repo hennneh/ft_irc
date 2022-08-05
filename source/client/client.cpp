@@ -2,40 +2,35 @@
 #include <arpa/inet.h>
 
 //Constructors
-ft::Client::Client(): _pi(false), _raspberry(false) {};
-ft::Client::Client(const int& socket, const std::string& nick, const std::string& user, const std::string& full): _pi(false), _raspberry(false)
+ft::Client::Client()
 {
+	this->__init();
+}
+
+ft::Client::Client(const int& socket, const std::string& nick, const std::string& user, const std::string& full)
+{
+	this->__init();
 	this->_socket = socket;
 	this->_nickname = nick;
 	this->_username = user;
 	this->_fullname = full;
+}
+
+void ft::Client::__init(void)
+{
+	this->_socket = 0;
+	this->_nickname = "";
+	this->_username = "";
+	this->_fullname = "";
+	this->_ip = "";
+	this->_pi = false;
+	this->_here = true;
+	this->_raspberry = false;
 	this->_operator = false;
 	this->_invis = false;
 	this->_wall = true;
 	this->_snote = false;
-	this->_here = true;
-}
 
-ft::Client::Client(const Client& client): _pi(client._pi), _raspberry(client._raspberry)
-{
-	*this = client;
-}
-
-//Assignment Operator
-ft::Client& ft::Client::operator=(const ft::Client& client)
-{
-	this->_socket = client.getSocket();
-	this->_fullname = client.getFull();
-	this->_nickname = client.getNick();
-	this->_username = client.getUser();
-	this->_ip = client.getIp();
-	this->_operator = client._operator;
-	this->_invis = client._invis;
-	this->_wall = client._wall;
-	this->_snote = client._snote;
-	this->_pi = client._pi;
-	this->_raspberry = client._raspberry;
-	return *this;
 }
 
 //Destructor
