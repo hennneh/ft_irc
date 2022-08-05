@@ -40,6 +40,7 @@ SRCFILES:=\
 		  commands/queries/time.cpp\
 		  commands/queries/version.cpp\
 		  commands/optional/ison.cpp\
+		  commands/optional/dummy.cpp\
 
 # ------------------------------------------
 # Do not change anything beyond this point!
