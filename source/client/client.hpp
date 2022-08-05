@@ -19,6 +19,8 @@ namespace ft {
 			std::string	_fullname;
 			std::string	_ip;
 
+			void __init(void);
+
 		public:
 			Client();
 			Client(const int& socket, const std::string& nick, const std::string& user, const std::string& full);
