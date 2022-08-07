@@ -41,6 +41,7 @@ namespace cmd {
 
 	void invite(const ft::Message & msg, ft::Client& client, ft::IRC & irc);
 	void join(const ft::Message & msg, ft::Client& client, ft::IRC & irc);
+	void kick(const ft::Message& msg, ft::Client& client, ft::IRC& irc);
 	void mode(const ft::Message& msg, ft::Client& client, ft::IRC& irc);
 	void modeUsr(const ft::Message& msg, ft::Client& client, ft::IRC& irc);
 	void names(const ft::Message& msg, ft::Client& client, ft::IRC& irc);
