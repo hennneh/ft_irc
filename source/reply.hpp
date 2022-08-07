@@ -247,4 +247,9 @@
 /** "263 RPL_TRYAGAIN <command> :Please wait a while and try again." */
 #define RPL_TRYAGAIN "263 <command> :Please wait a while and try again."
 
+#define VERSION "VERSION: 0.5"
+#define COMPILED "Last Compiled: January 1st, 1970, the last time Clemens remembered not to work on Main"
+#define PATCHLEVEL "Patchlevel: 0.42, the last time Pete fixed everything"
+#define STARTED "Started: January 2nd, 1970, before Hendrik decided he didnt like the folder structure"
+
 #endif

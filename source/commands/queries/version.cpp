@@ -9,8 +9,6 @@
 void cmd::version(const ft::Message & msg, ft::Client & client, ft::IRC & irc)
 {
 	(void) msg;
-	std::string s;
-	
-	s = "VERSION: 0.5";
-	client.sendErrMsg(irc._hostname, RPL_VERSION, s);
+
+	client.sendErrMsg(irc._hostname, RPL_VERSION, VERSION);
 }
