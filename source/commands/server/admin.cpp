@@ -2,10 +2,6 @@
 #include "../commands.hpp"
 #include "../../irc.hpp"
 
-/*
-Command: ADMIN
-Parameters: [< server >]
-*/
 
 void cmd::admin(const ft::Message & msg, ft::Client & client, ft::IRC & irc)
 {

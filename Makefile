@@ -43,6 +43,7 @@ SRCFILES:=\
 		  commands/optional/ison.cpp\
 		  commands/optional/dummy.cpp\
 		  commands/server/admin.cpp\
+		  commands/server/info.cpp\
 
 # ------------------------------------------
 # Do not change anything beyond this point!
