@@ -28,7 +28,7 @@ namespace ft
 	{
 		public:
 			typedef std::map<std::string, ft::ChannelUser>	clients_map;
-			typedef std::set<std::string> invited;
+			typedef std::set<std::string> uniqString;
 
 			std::string		_name;
 			std::string		_password;
@@ -41,8 +41,8 @@ namespace ft
 			bool			__topic_op;
 			bool			_clsd;
 			clients_map		_clients;
-			invited			_invitelist;
-			std::vector<std::string>	_ban_list;
+			uniqString		_invitelist;
+			uniqString		_ban_list;
 
 			Channel(const std::string & name, const std::string & password);
 			~Channel();
