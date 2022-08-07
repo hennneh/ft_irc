@@ -128,10 +128,17 @@ void m_channel::clsd(ft::Client& client, ft::IRC& irc, ft::Channel& channel, boo
 */
 void m_channel::ban_msk(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
-	client.sendMsg(":" + irc._hostname + " NOTICE " + client.getNick() + " :Option ban_msk:");
-	(void)channel;
-	(void)sign;
-	(void)args;
+	std::cout << "bans\n";
+	for(std::vector<std::string>::const_iterator it = args.begin(); it != args.end(); it++)
+	{
+		std::cout << "banArg " << *it << "\n";
+		if (sign)
+			channel._ban_list.insert(*it);
+		else
+			channel._ban_list.erase(channel._ban_list.find(*it));
+	}
+	for(std::set<std::string>::const_iterator sit = channel._ban_list.begin(); sit != channel._ban_list.end(); sit++)
+		client.sendMsg(":" + irc._hostname + " NOTICE " + client.getNick() + " :Option ban_msk:" + *sit);
 	return ;
 }
 
@@ -244,7 +251,6 @@ void m_channel::limit(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bo
 
 void modeChannel(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {
-	bool sign = false;
 	ft::IRC::_channel_map::iterator iter = irc._channels.find(msg.parameters.at(0));
 	if (iter == irc._channels.end())
 	{
@@ -258,32 +264,47 @@ void modeChannel(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 		client.sendErrMsg(irc._hostname, ERR_NOTONCHANNEL, msg.parameters.at(0));
 		return ;
 	}
+	ft::ChannelUser _user = iter_client->second;
 	if (msg.parameters.size() == 1)
 	{
-		client.sendErrMsg(irc._hostname, RPL_CHANNELMODEIS, msg.parameters.at(0));
+		client.sendErrMsg(irc._hostname, RPL_CHANNELMODEIS, msg.parameters.at(0)); // this is not what its supposed to do? 
+		// isn't this supposed to reply whit the modes currently applied to the channel?
 		return ;
 	}
-	ft::ChannelUser _user = iter_client->second;
 	if (_user.op_priv == false)
 	{
 		client.sendErrMsg(irc._hostname, ERR_CHANOPRIVSNEEDED, msg.parameters.at(0));
 		return ;
 	}
-	if (msg.parameters.at(1)[0] == '+')
-		sign = true;
-	else if (msg.parameters.at(1)[0] != '-')
+	unsigned int	i = 1;
+	unsigned int	j = 1;
+	bool			sign = false;
+	cmd::m_channel_map::iterator cmd_itr;
+	do // loop parser begin
 	{
-		client.sendErrMsg(irc._hostname, ERR_UMODEUNKNOWNFLAG);
-		return ;
-	}
-	cmd::m_channel_map::iterator cmd_itr = irc._c_ft.find(msg.parameters.at(1)[1]);
-	if (cmd_itr == irc._c_ft.end())
-	{
-		client.sendErrMsg(irc._hostname, ERR_UNKNOWNMODE, std::string(&(msg.parameters.at(1)[1]), 1));
-		return ;
-	}
-	std::vector<std::string> args (msg.parameters.begin() + 1, msg.parameters.end());
-	cmd_itr->second(client, irc, _channel, sign, args);
+		sign = false;
+		if (msg.parameters.at(i)[0] == '+')
+			sign = true;
+		else if (msg.parameters.at(i)[0] != '-')
+		{
+			client.sendErrMsg(irc._hostname, ERR_UMODEUNKNOWNFLAG);
+			return ;
+		}
+		cmd_itr = irc._c_ft.find(msg.parameters.at(i)[1]);
+		if (cmd_itr == irc._c_ft.end())
+		{
+			client.sendErrMsg(irc._hostname, ERR_UNKNOWNMODE, std::string(&(msg.parameters.at(1)[1]), 1));
+			return ;
+		}
+		std::cout <<"\e[31mDEBUG\e[0m\n";
+		j = i + 1;
+		while (msg.parameters.begin() + j != msg.parameters.end() && msg.parameters.at(j)[0] != '+' && msg.parameters.at(j)[0] != '-')
+			j++;
+		std::cout <<"\e[31mDEBUG\e[0m\n";
+		std::vector<std::string> args (msg.parameters.begin() + i + 1, msg.parameters.begin() + j);
+		i = j;
+		cmd_itr->second(client, irc, _channel, sign, args);
+	} while ((msg.parameters.size()) - 1 > i);
 }
 
 void cmd::mode(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
