@@ -24,6 +24,12 @@ void cmd::nick(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 		client.sendErrMsg(irc._hostname, ERR_ERRONEUSNICKNAME, msg.parameters.at(0));
 		return ;
 	}
+	if (msg.parameters.at(0) == "bot")
+	{
+		// Nickname is already in use by bot
+		client.sendErrMsg(irc._hostname, ERR_NICKNAMEINUSE, msg.parameters.at(0));
+		return ;
+	}
 	if (irc._connections.find(msg.parameters.at(0)) != irc._connections.end())
 	{
 		// replacement for network-wide ERR_NICKCOLLISION

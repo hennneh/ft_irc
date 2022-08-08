@@ -1,5 +1,7 @@
 #include "../commands.hpp"
 #include "../../irc.hpp"
+#include "../../fortune.hpp"
+#include <ctime>
 
 void cmd::privmsg(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 {
@@ -37,6 +39,21 @@ void cmd::privmsg(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 		}
 		else
 		{
+			if (targets.at(x) == "bot")
+			{
+				std::vector<std::string> params;
+				params.push_back(client.getNick());
+				if (msg.parameters.at(1) != "!fortune")
+					params.push_back("Sorry, I don't know what to answer to that. Try: !fortune");
+				else
+				{
+					time_t	rawtime;
+					time(&rawtime);
+					params.push_back(fortunes[rawtime % 67]);
+				}
+				client.sendMsg(ft::Message("bot!bot@" + irc._hostname, msg.command, params));
+				continue;
+			}
 			ft::IRC::connection_map::iterator itr = irc._connections.find(targets.at(x));
 			if (itr == irc._connections.end())
 			{
