@@ -91,10 +91,6 @@ void	ft::IRC::run() {
 			if ((fds[i].revents & POLLRDNORM) == 0)
 				continue;
 			int status = this->__check_client(it->second);
-			if (status == 1) {
-				this->_connections.erase(it);
-				break;
-			}
 			if (status == 2) {
 				done = true;
 				break;
@@ -124,7 +120,8 @@ int	ft::IRC::__check_client(ft::Client& client)
 		throw std::runtime_error("Reading message failed");
 	std::string buf(buffer, readval);
 	if (buf.length() == 0) {
-		std::cout << TXT_FAT << "Client " << client.getNick() << " connection lost!" << TXT_NUL << std::endl;
+		// Send quit on behalf of the lost client
+		cmd::quit(ft::Message("", "QUIT", "Client connection lost!"), client, *this);
 		return 1;
 	}
 	std::vector<ft::Message> all_msg = ft::parse(buf);
