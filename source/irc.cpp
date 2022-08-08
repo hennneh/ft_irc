@@ -119,10 +119,24 @@ int	ft::IRC::__check_client(ft::Client& client)
 	if (readval == -1)
 		throw std::runtime_error("Reading message failed");
 	std::string buf(buffer, readval);
-	if (buf.length() == 0) {
+	if (buf.length() == 0)
+	{
 		// Send quit on behalf of the lost client
 		cmd::quit(ft::Message("", "QUIT", "Client connection lost!"), client, *this);
 		return 1;
+	}
+	client._recvbuffer += buf;
+	size_t end = client._recvbuffer.find_last_of("\r\n");
+	if (end == std::string::npos)
+	{
+		std::cout << TXT_FAT << "Couldn't find \\r\\n, storing partial for later" << TXT_NUL << std::endl;
+		return 6;
+	}
+	else
+	{
+		std::cout << TXT_FAT << "Got everything for a new message, continuing" << TXT_NUL << std::endl;
+		buf = client._recvbuffer.substr(0, end);
+		client._recvbuffer.erase(0, end);
 	}
 	std::vector<ft::Message> all_msg = ft::parse(buf);
 	for(std::vector<ft::Message>::iterator msg = all_msg.begin(); msg != all_msg.end(); msg++) {
