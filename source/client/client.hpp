@@ -50,6 +50,7 @@ namespace ft {
 			bool			_invis;	//standart false
 			bool			_wall;	//standart true
 			bool			_snote;	//standart false
+			std::string		_recvbuffer;
 	};
 }
 
