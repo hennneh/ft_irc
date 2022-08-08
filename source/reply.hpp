@@ -118,6 +118,9 @@
 /** "368 RPL_ENDOFBANLIST <channel> :End of channel ban list" */
 #define RPL_ENDOFBANLIST "368 <channel> :End of channel ban list"
 
+/** 321 RPL_LISTSTART "Channel :Users  Name" */
+#define RPL_LISTSTART "321 :Channel | Topic - Start of List"
+
 /** "371 RPL_INFO :<string>" */
 #define RPL_INFO "371 :<string>"
 

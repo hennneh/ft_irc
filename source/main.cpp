@@ -15,6 +15,7 @@ int	main(int argc, char **argv)
 	irc.reg_cmd("INVITE", cmd::invite);
 	irc.reg_cmd("JOIN", cmd::join);
 	irc.reg_cmd("KICK", cmd::kick);
+	irc.reg_cmd("LIST", cmd::list);
 	irc.reg_cmd("MODE", cmd::mode);
 	irc.reg_cmd("NAMES", cmd::names);
 	irc.reg_cmd("PART", cmd::part);
