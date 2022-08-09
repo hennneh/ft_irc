@@ -13,7 +13,7 @@ void cmd::oper(const ft::Message & msg, ft::Client & client, ft::IRC & irc)
 		client.sendErrMsg(irc._hostname, ERR_USERSDONTMATCH);
 		return ;
 	}
-	if (msg.parameters.at(1) != irc._op_password)
+	if (msg.parameters.size() < 2 || msg.parameters.at(1) != irc._op_password)
 	{
 		client.sendErrMsg(irc._hostname, ERR_PASSWDMISMATCH);
 		return ;
