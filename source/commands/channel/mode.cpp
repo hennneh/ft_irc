@@ -296,12 +296,10 @@ void modeChannel(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 			client.sendErrMsg(irc._hostname, ERR_UNKNOWNMODE, std::string(&(msg.parameters.at(1)[1]), 1));
 			return ;
 		}
-		std::cout <<"\e[31mDEBUG\e[0m\n";
 		j = i + 1;
 		while (msg.parameters.begin() + j != msg.parameters.end() && msg.parameters.at(j)[0] != '+' && msg.parameters.at(j)[0] != '-')
 			j++;
-		std::cout <<"\e[31mDEBUG\e[0m\n";
-		std::vector<std::string> args (msg.parameters.begin() + i + 1, msg.parameters.begin() + j);
+		std::vector<std::string> args (msg.parameters.begin() + i, msg.parameters.begin() + j);
 		i = j;
 		cmd_itr->second(client, irc, _channel, sign, args);
 	} while ((msg.parameters.size()) - 1 > i);

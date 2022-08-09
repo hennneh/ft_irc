@@ -3,7 +3,7 @@
 
 ft::ChannelUser::ChannelUser(ft::Client& clnt): client(clnt)
 {
-	this->op_priv = true;
+	this->op_priv = false;
 	this->banned = false;
 	this->speak = true;
 	this->invis = false;
