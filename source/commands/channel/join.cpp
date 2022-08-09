@@ -35,6 +35,7 @@ void cmd::join(const ft::Message & msg, ft::Client& client, ft::IRC & irc)
 			if (iter->second._invitelist.find(client.getNick()) != iter->second._invitelist.end())
 			{
 				// when invited to a channel the client being invited issues a JOIN which ends here
+				// depending on wether we want invites to circumvent bans too change the position of this block
 				iter->second._invitelist.erase(client.getNick());
 			}
 			else if (iter->second._invite_only)
