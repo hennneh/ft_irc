@@ -39,6 +39,7 @@ SRCFILES:=\
 		  commands/message/ping.cpp\
 		  commands/message/privmsg.cpp\
 		  commands/queries/who.cpp\
+		  commands/queries/whois.cpp\
 		  commands/queries/time.cpp\
 		  commands/queries/version.cpp\
 		  commands/optional/ison.cpp\
