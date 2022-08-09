@@ -87,3 +87,26 @@ bool ft::isChannel(const std::string& s)
 		return true;
 	return false;
 }
+
+bool ft::wildcardMatch(std::string wildcard, std::string str)
+{
+	if (wildcard.empty() && str.empty())
+		return true;
+
+	if (wildcard.at(0) == '*')
+	{
+		while (wildcard.at(1) == '*')
+			wildcard.erase(0);
+	}
+
+	if (wildcard.at(0) == '*' && wildcard.empty() == false && str.empty() == true)
+		return false;
+
+	if (wildcard.at(0) == '?' || wildcard.at(0) == str.at(0))
+		return ft::wildcardMatch(wildcard.substr(1), str.substr(1));
+
+	if (wildcard.at(0) == '*')
+		return ft::wildcardMatch(wildcard.substr(1), str)
+			|| ft::wildcardMatch(wildcard, str.substr(1));
+	return false;
+}
