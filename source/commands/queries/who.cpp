@@ -9,10 +9,13 @@ static void send_client_who(ft::Client& client, const std::string& channel, ft::
 	args.push_back(target.getIp());
 	args.push_back(hostname);
 	args.push_back(target.getNick());
+	std::string flags;
 	if (target._awayMsg.empty())
-		args.push_back("H");
+		flags.push_back('H');
 	else
-		args.push_back("G");
+		flags.push_back('G');
+	if (target._operator)
+		flags.push_back('*');
 	args.push_back("0");
 	args.push_back(target.getFull());
 	client.sendErrMsg(hostname, RPL_WHOREPLY, args);

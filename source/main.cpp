@@ -32,6 +32,7 @@ int	main(int argc, char **argv)
 	irc.reg_cmd("PRIVMSG", cmd::privmsg);
 
 	irc.reg_cmd("WHO", cmd::who);
+	irc.reg_cmd("WHOIS", cmd::whois);
 
 	irc.reg_cmd("TIME", cmd::timer);
 	irc.reg_cmd("OPER", cmd::oper);
