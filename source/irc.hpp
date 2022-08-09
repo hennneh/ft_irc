@@ -79,7 +79,7 @@ namespace ft
 	bool isNonWhite(char c);
 	std::vector<std::string> split(const std::string & s, char);
 	bool isChannel(const std::string& s);
-	bool ft::wildcardMatch(std::string wildcard, std::string str);
+	bool wildcardMatch(std::string wildcard, std::string str);
 };
 
 #endif

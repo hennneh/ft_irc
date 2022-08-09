@@ -93,15 +93,22 @@ bool ft::wildcardMatch(std::string wildcard, std::string str)
 	if (wildcard.empty() && str.empty())
 		return true;
 
-	if (wildcard.at(0) == '*')
-	{
-		while (wildcard.at(1) == '*')
-			wildcard.erase(0);
-	}
-
-	if (wildcard.at(0) == '*' && wildcard.empty() == false && str.empty() == true)
+	if (wildcard.empty())
 		return false;
 
+	if (wildcard.at(0) == '*')
+	{
+		while (wildcard.size() > 1 && wildcard.at(1) == '*')
+			wildcard.erase(0, 1);
+	}
+
+	if (wildcard == "*")
+		return true;
+
+	if (wildcard.at(0) == '*' && wildcard.size() > 1 && str.empty() == true)
+		return false;
+
+	std::cout << "Before recursion" << std::endl;
 	if (wildcard.at(0) == '?' || wildcard.at(0) == str.at(0))
 		return ft::wildcardMatch(wildcard.substr(1), str.substr(1));
 
