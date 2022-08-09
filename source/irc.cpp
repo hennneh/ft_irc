@@ -10,6 +10,7 @@ ft::IRC::IRC(const int& port, const std::string& password): _port(port), _passwo
 
 	this->_version = "ft_irc0.1";
 	this->_motd = "Hello People!";
+	this->_op_password = "vinnysucks";
 
 	prtdb = getprotobyname("TCP");
 	this->_server = socket(PF_INET, SOCK_STREAM, prtdb->p_proto);
@@ -38,7 +39,6 @@ ft::IRC::IRC(const int& port, const std::string& password): _port(port), _passwo
 	if (!this->_password.empty())
 		std::cout << " with password authentication enabled";
 	std::cout << std::endl;
-	this->_op_password = "";
 }
 
 // Destructor
