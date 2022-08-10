@@ -25,6 +25,8 @@ void cmd::part(const ft::Message & msg, ft::Client & client, ft::IRC & irc)
 				it->second._clients.erase(it_client);
 				client.sendMsg(std::string(":" + client.getFullId() + " " + msg.command + " " + c.at(i)));
 				it->second.sendMsg(std::string(":" + client.getFullId() + " " + msg.command + " " + c.at(i)));
+				if (it->second._clients.empty())
+					irc._channels.erase(it->second._name);
 				erased = true;
 				break ;
 			}
