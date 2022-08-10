@@ -16,6 +16,7 @@ static void send_client_who(ft::Client& client, const std::string& channel, ft::
 		flags.push_back('G');
 	if (target._operator)
 		flags.push_back('*');
+	args.push_back(flags);
 	args.push_back("0");
 	args.push_back(target.getFull());
 	client.sendErrMsg(hostname, RPL_WHOREPLY, args);
