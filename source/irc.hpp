@@ -73,6 +73,7 @@ namespace ft
 	bool isStringNumber(const std::string & s);
 	int error(const std::string & s);
 	int stoi(const std::string & s);
+	std::string itos(const long long& i);
 	bool isAlpha(char c);
 	bool isNumeric(char c);
 	bool isAlphaNumeric(char c);
