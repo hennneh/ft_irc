@@ -23,23 +23,16 @@ void cmd::list(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 			rpl.push_back(_chnl.getName());
 			if (_chnl._private == false || _chnl._secret == false)
 			{
-				rpl.push_back("Visible");
+				rpl.push_back(ft::itos(_chnl._clients.size()));
 				rpl.push_back(_chnl._topic);
 			}
 			else
 			{
-				rpl.push_back("Prv");
-				if (_chnl._secret)
-					rpl.at(1) = "Secret";
 				ft::Channel::clients_map::iterator _i_usr = _chnl._clients.find(client.getNick());
 				if (_i_usr == _chnl._clients.end())
-				{
-					if (_chnl._secret)
-						continue;
-					rpl.push_back("");
-				}
-				else
-					rpl.push_back(_chnl._topic);
+					continue;
+				rpl.push_back(ft::itos(_chnl._clients.size()));
+				rpl.push_back(_chnl._topic);
 			}
 			client.sendErrMsg(irc._hostname, RPL_LIST, rpl);
 		}

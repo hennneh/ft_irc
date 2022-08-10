@@ -24,6 +24,16 @@ int ft::stoi(const std::string & s)
 	return (i);
 }
 
+std::string ft::itos(const long long& i)
+{
+	std::stringstream stream;
+	std::string s;
+	stream.clear();
+	stream << i;
+	stream >> s;
+	return (s);
+}
+
 bool ft::isAlpha(char c)
 {
 	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
