@@ -129,13 +129,29 @@ void m_channel::clsd(ft::Client& client, ft::IRC& irc, ft::Channel& channel, boo
 void m_channel::ban_msk(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
 	(void) irc;
+	if (args.size() == 1 && !sign)
+	{
+		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS, "MODE -b");
+		return ;
+	}
+	if (args.size() == 1)
+	{
+		for(std::set<std::string>::const_iterator it = channel._ban_list.begin(); it != channel._ban_list.end(); it++)
+		{
+			client.sendErrMsg(irc._hostname, RPL_BANLIST, channel.getName(), *it);
+		}
+		client.sendErrMsg(irc._hostname, RPL_ENDOFBANLIST, channel.getName());
+		return ;
+	}
 	for(std::vector<std::string>::const_iterator it = args.begin() + 1; it != args.end(); it++)
 	{
 		if (sign)
 			channel._ban_list.insert(*it);
 		else
-			channel._ban_list.erase(channel._ban_list.find(*it));
-		//what if this fails?
+		{
+			if (channel._ban_list.find(*it) != channel._ban_list.end())
+				channel._ban_list.erase(channel._ban_list.find(*it));
+		}
 	}
 	channel.sendMsg(ft::Message(client.getFullId(), "MODE", args));
 	client.sendMsg(ft::Message(client.getFullId(), "MODE", args));
@@ -267,8 +283,28 @@ void modeChannel(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 	ft::ChannelUser _user = iter_client->second;
 	if (msg.parameters.size() == 1)
 	{
-		client.sendErrMsg(irc._hostname, RPL_CHANNELMODEIS, msg.parameters.at(0)); // this is not what its supposed to do? 
+		// client.sendErrMsg(irc._hostname, RPL_CHANNELMODEIS, msg.parameters.at(0));
+		// this is not what its supposed to do? 
 		// isn't this supposed to reply whit the modes currently applied to the channel?
+		if (_channel._private)
+			client.sendErrMsg(irc._hostname, RPL_CHANNELMODEIS, _channel.getName(), "+p", "");
+		if (_channel._secret)
+			client.sendErrMsg(irc._hostname, RPL_CHANNELMODEIS, _channel.getName(), "+s", "");
+		if (_channel._invite_only)
+			client.sendErrMsg(irc._hostname, RPL_CHANNELMODEIS, _channel.getName(), "+i", "");
+		if (_channel._user_limit)
+			client.sendErrMsg(irc._hostname, RPL_CHANNELMODEIS, _channel.getName(), "+l", std::to_string(_channel._user_limit));
+		if (_channel._moderated)
+			client.sendErrMsg(irc._hostname, RPL_CHANNELMODEIS, _channel.getName(), "+m", "");
+		if (!(_channel._ban_list.empty()))
+		{
+			std::string masks = "|";
+			for(std::set<std::string>::const_iterator it = _channel._ban_list.begin(); it != _channel._ban_list.end(); it++)
+				masks = masks + *it + "|";
+			client.sendErrMsg(irc._hostname, RPL_CHANNELMODEIS, _channel.getName(), "+b", masks);
+		}
+		// topic_op?
+		// clsd?
 		return ;
 	}
 	if (_user.op_priv == false)

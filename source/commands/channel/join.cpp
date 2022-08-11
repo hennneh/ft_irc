@@ -46,6 +46,11 @@ void cmd::join(const ft::Message & msg, ft::Client& client, ft::IRC & irc)
 				// depending on wether we want invites to circumvent bans too change the position of this block
 				iter->second._invitelist.erase(client.getNick());
 			}
+			else if (iter->second._clients.size() >= iter->second._user_limit)
+			{
+				client.sendErrMsg(irc._hostname, ERR_CHANNELISFULL, channels.at(i));
+				return ;
+			}
 			else if (iter->second._invite_only)
 			{
 				client.sendErrMsg(irc._hostname, ERR_INVITEONLYCHAN, channels.at(i));

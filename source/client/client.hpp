@@ -41,6 +41,7 @@ namespace ft {
 			void sendErrMsg(const std::string& hostname, const std::string& err);
 			void sendErrMsg(const std::string& hostname, const std::string& err, const std::string& s);
 			void sendErrMsg(const std::string& hostname, const std::string& err, const std::string& s, const std::string& c);
+			void sendErrMsg(const std::string& hostname, const std::string& err, const std::string& s, const std::string& c, const std::string& d);
 			void sendErrMsg(const std::string& hostname, const std::string& err, std::vector<std::string> args);
 
 			std::string		_awayMsg;
