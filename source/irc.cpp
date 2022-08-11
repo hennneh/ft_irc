@@ -51,6 +51,7 @@ ft::IRC::~IRC() {
 	}
 	this->_connections.clear();
 	shutdown(this->_server, SHUT_RDWR);
+	close(this->_server);
 }
 
 void	ft::IRC::run() {
