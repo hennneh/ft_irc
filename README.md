@@ -6,3 +6,4 @@ To run the server run:
 ```bash
 make run
 ```
+[VECTOR](https://www.youtube.com/watch?v=bOIe0DIMbI8&ab_channel=DSchnell)
