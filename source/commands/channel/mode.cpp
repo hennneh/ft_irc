@@ -13,7 +13,7 @@ k - set a channel key (password).
  */
 void m_channel::op_priv(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
-	client.sendMsg(":" + irc._hostname + " NOTICE " + client.getNick() + " :Option op_priv:");
+	// client.sendMsg(":" + irc._hostname + " NOTICE " + client.getNick() + " :Option op_priv:");
 	if (args.size() != 2)
 	{
 		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS, "MODE o");
@@ -30,6 +30,8 @@ void m_channel::op_priv(ft::Client& client, ft::IRC& irc, ft::Channel& channel, 
 		_user.op_priv = true;
 	else 
 		_user.op_priv = false;
+	channel.sendMsg(ft::Message(client.getFullId(), "MODE", args));
+	client.sendMsg(ft::Message(client.getFullId(), "MODE", args));
 	return ;
 }
 
@@ -38,7 +40,7 @@ void m_channel::op_priv(ft::Client& client, ft::IRC& irc, ft::Channel& channel, 
 */
 void m_channel::prvt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
-	client.sendMsg(":" + irc._hostname + " NOTICE " + client.getNick() + " :Option prvt:");
+	// client.sendMsg(":" + irc._hostname + " NOTICE " + client.getNick() + " :Option prvt:");
 	if (args.size() != 1)
 	{
 		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS, "MODE");
@@ -48,6 +50,8 @@ void m_channel::prvt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, boo
 		channel._private = true;
 	else
 		channel._private = false;
+	channel.sendMsg(ft::Message(client.getFullId(), "MODE", args));
+	client.sendMsg(ft::Message(client.getFullId(), "MODE", args));
 	return ;
 }
 
@@ -56,7 +60,7 @@ void m_channel::prvt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, boo
 */
 void m_channel::scrt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
-	client.sendMsg(":" + irc._hostname + " NOTICE " + client.getNick() + " :Option scrt:");
+	// client.sendMsg(":" + irc._hostname + " NOTICE " + client.getNick() + " :Option scrt:");
 	if (args.size() != 1)
 	{
 		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS, "MODE");
@@ -66,6 +70,8 @@ void m_channel::scrt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, boo
 		channel._secret = true;
 	else
 		channel._secret = false;
+	channel.sendMsg(ft::Message(client.getFullId(), "MODE", args));
+	client.sendMsg(ft::Message(client.getFullId(), "MODE", args));
 	return ;
 }
 
@@ -74,7 +80,7 @@ void m_channel::scrt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, boo
 */
 void m_channel::invt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
-	client.sendMsg(":" + irc._hostname + " NOTICE " + client.getNick() + " :Option invt:");
+	// client.sendMsg(":" + irc._hostname + " NOTICE " + client.getNick() + " :Option invt:");
 	if (args.size() != 1)
 	{
 		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS, "MODE");
@@ -84,6 +90,8 @@ void m_channel::invt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, boo
 		channel._invite_only = true;
 	else
 		channel._invite_only = false;
+	channel.sendMsg(ft::Message(client.getFullId(), "MODE", args));
+	client.sendMsg(ft::Message(client.getFullId(), "MODE", args));
 	return ;
 }
 
@@ -92,7 +100,7 @@ void m_channel::invt(ft::Client& client, ft::IRC& irc, ft::Channel& channel, boo
 */
 void m_channel::topic(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
-	client.sendMsg(":" + irc._hostname + " NOTICE " + client.getNick() + " :Option topic:");
+	// client.sendMsg(":" + irc._hostname + " NOTICE " + client.getNick() + " :Option topic:");
 	if (args.size() != 1)
 	{
 		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS, "MODE");
@@ -102,6 +110,8 @@ void m_channel::topic(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bo
 		channel.__topic_op = true;
 	else
 		channel.__topic_op = false;
+	channel.sendMsg(ft::Message(client.getFullId(), "MODE", args));
+	client.sendMsg(ft::Message(client.getFullId(), "MODE", args));
 	return ;
 }
 
@@ -110,7 +120,7 @@ void m_channel::topic(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bo
 */
 void m_channel::clsd(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
-	client.sendMsg(":" + irc._hostname + " NOTICE " + client.getNick() + " :Option clsd:");
+	// client.sendMsg(":" + irc._hostname + " NOTICE " + client.getNick() + " :Option clsd:");
 	if (args.size() != 1)
 	{
 		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS, "MODE n");
@@ -120,6 +130,8 @@ void m_channel::clsd(ft::Client& client, ft::IRC& irc, ft::Channel& channel, boo
 		channel._clsd = true;
 	else
 		channel._clsd = false;
+	channel.sendMsg(ft::Message(client.getFullId(), "MODE", args));
+	client.sendMsg(ft::Message(client.getFullId(), "MODE", args));
 	return ;
 }
 
@@ -163,7 +175,7 @@ void m_channel::ban_msk(ft::Client& client, ft::IRC& irc, ft::Channel& channel, 
 */
 void m_channel::speak(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
-	client.sendMsg(":" + irc._hostname + " NOTICE " + client.getNick() + " :Option speak:");
+	//  client.sendMsg(":" + irc._hostname + " NOTICE " + client.getNick() + " :Option speak:");
 	if (args.size() != 2)
 	{
 		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS, "MODE v");
@@ -180,6 +192,8 @@ void m_channel::speak(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bo
 		_user.speak = true;
 	else 
 		_user.speak = false;
+	channel.sendMsg(ft::Message(client.getFullId(), "MODE", args));
+	client.sendMsg(ft::Message(client.getFullId(), "MODE", args));
 	return ;
 }
 
@@ -188,7 +202,7 @@ void m_channel::speak(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bo
 */
 void m_channel::moderate(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
-	client.sendMsg(":" + irc._hostname + " NOTICE " + client.getNick() + " :Option Moderate:");
+	// client.sendMsg(":" + irc._hostname + " NOTICE " + client.getNick() + " :Option Moderate:");
 	if (args.size() != 1)
 	{
 		client.sendErrMsg(irc._hostname, ERR_NEEDMOREPARAMS, "MODE");
@@ -198,6 +212,8 @@ void m_channel::moderate(ft::Client& client, ft::IRC& irc, ft::Channel& channel,
 		channel._moderated = true;
 	else 
 		channel._moderated = false;
+	channel.sendMsg(ft::Message(client.getFullId(), "MODE", args));
+	client.sendMsg(ft::Message(client.getFullId(), "MODE", args));
 	return ;
 }
 
@@ -206,7 +222,7 @@ void m_channel::moderate(ft::Client& client, ft::IRC& irc, ft::Channel& channel,
 */
 void m_channel::key(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
-	client.sendMsg(":" + irc._hostname + " NOTICE " + client.getNick() + " :Option key:");
+	// client.sendMsg(":" + irc._hostname + " NOTICE " + client.getNick() + " :Option key:");
 	if (!sign)
 	{
 		if (args.size() != 1 )
@@ -225,7 +241,8 @@ void m_channel::key(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool
 		}
 		channel.setPassword(args.at(1));
 	}
-	channel.sendErrMsg(irc._hostname, RPL_INFO, "Key is now " + channel.getPassword()); // doesnt send to everyone
+	channel.sendMsg(ft::Message(client.getFullId(), "MODE", args.at(0)));
+	client.sendMsg(ft::Message(client.getFullId(), "MODE", args.at(0)));
 	return ;
 }
 
@@ -234,7 +251,7 @@ void m_channel::key(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool
 */
 void m_channel::limit(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
-	client.sendMsg(":" + irc._hostname + " NOTICE " + client.getNick() + " :Option limit:");
+	// client.sendMsg(":" + irc._hostname + " NOTICE " + client.getNick() + " :Option limit:");
 	if (sign == false)
 	{
 		if (args.size() != 1)
@@ -260,9 +277,9 @@ void m_channel::limit(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bo
 		}
 		channel._user_limit = num;
 	}
-	
+	channel.sendMsg(ft::Message(client.getFullId(), "MODE", args));
+	client.sendMsg(ft::Message(client.getFullId(), "MODE", args));
 	return ;
-	//send something on succes ?
 }
 
 void modeChannel(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
