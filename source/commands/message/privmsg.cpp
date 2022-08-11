@@ -43,13 +43,17 @@ void cmd::privmsg(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 			{
 				std::vector<std::string> params;
 				params.push_back(client.getNick());
-				if (msg.parameters.at(1) != "!fortune")
-					params.push_back("Sorry, I don't know what to answer to that. Try: !fortune");
-				else
+				if (msg.parameters.at(1) != "!fortune" && msg.parameters.at(1) != "!vector")
+					params.push_back("Sorry, I don't know what to answer to that. Try: !fortune or !vector");
+				else if (msg.parameters.at(1) == "!fortune")
 				{
 					time_t	rawtime;
 					time(&rawtime);
 					params.push_back(fortunes[rawtime % 67]);
+				}
+				else
+				{
+					params.push_back(VECTOR);
 				}
 				client.sendMsg(ft::Message("bot!bot@" + irc._hostname, msg.command, params));
 				continue;

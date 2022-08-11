@@ -1,6 +1,8 @@
 #ifndef FORTUNES_HPP
 # define FORTUNES_HPP
 
+# define VECTOR "https://www.youtube.com/watch?v=bOIe0DIMbI8&ab_channel=DSchnell"
+
 const char *fortunes[] = {
 "A dream you have will come true.",
 "A good way to keep healthy is to eat more Chinese food.",
