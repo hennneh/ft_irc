@@ -32,6 +32,14 @@ void cmd::join(const ft::Message & msg, ft::Client& client, ft::IRC & irc)
 		}
 		else
 		{
+			for (ft::Channel::uniqString::iterator it = iter->second._ban_list.begin(); it != iter->second._ban_list.end(); it++)
+			{
+				if (ft::wildcardMatch(*it, client.getFullId()))
+				{
+					client.sendErrMsg(irc._hostname, ERR_BANNEDFROMCHAN, iter->second._name);
+					return ;
+				}
+			}
 			if (iter->second._invitelist.find(client.getNick()) != iter->second._invitelist.end())
 			{
 				// when invited to a channel the client being invited issues a JOIN which ends here
