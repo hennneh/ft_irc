@@ -16,5 +16,10 @@ void cmd::ison(const ft::Message & msg, ft::Client & client, ft::IRC & irc)
 			continue;
 		online.push_back(*it);
 	}
-	client.sendErrMsg(irc._hostname, RPL_ISON, std::accumulate(online.begin(), online.end(), std::string("")));
+	std::string reply;
+	for (std::vector<std::string>::iterator user_on = online.begin(); user_on != online.end(); user_on++)
+		reply = reply + *user_on + " ";
+	if (reply.empty())
+		reply = " ";
+	client.sendErrMsg(irc._hostname, RPL_ISON, reply);
 }
