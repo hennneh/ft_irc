@@ -66,7 +66,7 @@ void	ft::IRC::run() {
 			ft::Client client(socket, "", "", "");
 			client.setIp(&(this->_address));
 			client._raspberry = this->_password.empty(); // If no password for server, clients don't need to send PASS
-			std::pair<connection_map::iterator, bool> status = this->_connections.insert(std::make_pair(client.getIp() + "_connecting", client));
+			std::pair<connection_map::iterator, bool> status = this->_connections.insert(std::make_pair(client.getIp() + ft::itos(client.getSocket()), client));
 			if (status.second == false)
 				std::cout << TXT_RED << "Duplicate Key" << TXT_NUL << std::endl;
 			else
