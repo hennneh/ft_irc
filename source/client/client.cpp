@@ -160,6 +160,31 @@ void ft::Client::sendErrMsg(const std::string& hostname, const std::string& err,
 }
 
 /**
+ * @brief To send Error Message with three additional argument
+ *
+ * @param hostname IP
+ * @param err Error macro
+ * @param s <channel> / <nickname> / ...
+ * @param c <channel> / <nickname> / ...
+ */
+void ft::Client::sendErrMsg(const std::string& hostname, const std::string& err, const std::string& s, const std::string& c, const std::string& d)
+{
+	std::string msg = err;
+
+	msg.insert(4, this->getNick() + " ");
+	msg.insert(msg.find('<'), s);
+	msg.erase(msg.find('<'), msg.find('>') - msg.find('<') + 1);
+	msg.insert(msg.find('<'), c);
+	msg.erase(msg.find('<'), msg.find('>') - msg.find('<') + 1);
+	msg.insert(msg.find('<'), d);
+	msg.erase(msg.find('<'), msg.find('>') - msg.find('<') + 1);
+	if (err.at(0) != ' ')
+		msg = " " + msg;
+	msg.insert(0, ":" + hostname);
+	this->sendMsg(msg);
+}
+
+/**
  * @brief To send Error Message with multiple additional arguments
  *
  * @param hostname IP

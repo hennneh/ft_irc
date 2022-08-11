@@ -36,7 +36,7 @@ namespace ft
 			bool			_private;
 			bool			_secret;
 			bool			_invite_only;
-			int				_user_limit;
+			size_t			_user_limit;
 			bool			_moderated;
 			bool			__topic_op;
 			bool			_clsd;
