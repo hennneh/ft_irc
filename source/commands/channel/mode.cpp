@@ -128,17 +128,17 @@ void m_channel::clsd(ft::Client& client, ft::IRC& irc, ft::Channel& channel, boo
 */
 void m_channel::ban_msk(ft::Client& client, ft::IRC& irc, ft::Channel& channel, bool sign, std::vector<std::string> args)
 {
-	std::cout << "bans\n";
-	for(std::vector<std::string>::const_iterator it = args.begin(); it != args.end(); it++)
+	(void) irc;
+	for(std::vector<std::string>::const_iterator it = args.begin() + 1; it != args.end(); it++)
 	{
-		std::cout << "banArg " << *it << "\n";
 		if (sign)
 			channel._ban_list.insert(*it);
 		else
 			channel._ban_list.erase(channel._ban_list.find(*it));
+		//what if this fails?
 	}
-	for(std::set<std::string>::const_iterator sit = channel._ban_list.begin(); sit != channel._ban_list.end(); sit++)
-		client.sendMsg(":" + irc._hostname + " NOTICE " + client.getNick() + " :Option ban_msk:" + *sit);
+	channel.sendMsg(ft::Message(client.getFullId(), "MODE", args));
+	client.sendMsg(ft::Message(client.getFullId(), "MODE", args));
 	return ;
 }
 

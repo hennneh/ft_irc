@@ -118,7 +118,6 @@ bool ft::wildcardMatch(std::string wildcard, std::string str)
 	if (wildcard.at(0) == '*' && wildcard.size() > 1 && str.empty() == true)
 		return false;
 
-	std::cout << "Before recursion" << std::endl;
 	if (wildcard.at(0) == '?' || wildcard.at(0) == str.at(0))
 		return ft::wildcardMatch(wildcard.substr(1), str.substr(1));
 
