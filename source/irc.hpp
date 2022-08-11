@@ -17,7 +17,6 @@
 #include <poll.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string>
 #include <memory.h>
 #include <ctime>
 

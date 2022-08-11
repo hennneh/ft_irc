@@ -293,7 +293,7 @@ void modeChannel(const ft::Message& msg, ft::Client& client, ft::IRC& irc)
 		if (_channel._invite_only)
 			client.sendErrMsg(irc._hostname, RPL_CHANNELMODEIS, _channel.getName(), "+i", "");
 		if (_channel._user_limit)
-			client.sendErrMsg(irc._hostname, RPL_CHANNELMODEIS, _channel.getName(), "+l", std::to_string(_channel._user_limit));
+			client.sendErrMsg(irc._hostname, RPL_CHANNELMODEIS, _channel.getName(), "+l", ft::itos(_channel._user_limit));
 		if (_channel._moderated)
 			client.sendErrMsg(irc._hostname, RPL_CHANNELMODEIS, _channel.getName(), "+m", "");
 		if (!(_channel._ban_list.empty()))
